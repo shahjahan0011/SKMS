@@ -1,0 +1,31 @@
+SCRUM MEETING #3 - 02/06/2026
+
+AGENDA:
+- Sprint progress review
+- Blockers and impediments
+- Task updates
+- Next steps
+
+ATTENDEES:
+Bheema Marabai, Gabriel Sofekun, Jahan Shah, Khushi Lakshmi Kishan
+
+COMPLETED TASKS:
+- Use Case Diagram illustrating the system's use cases and actors
+- Architectural overview, describing and justifying the chose architecture for the system
+- Identification of main components of the system
+- Data flow diagram (level 1)
+
+IN PROGRESS:
+- Class diagram
+- Traceability matrix
+
+BLOCKERS:
+- No Blockers
+
+NEXT ACTIONS:
+- Complete the class diagram, and Traceability matrix (Khushi)
+- Review and format all M2 documents (everyone)
+- Assignment of tasks and priorities to issues (everyone)
+- Add workflow (template) (Jahan)
+
+NOTES: M2 Review meeting on 02_11_2026 at 6.30 pm
