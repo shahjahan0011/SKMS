@@ -22,6 +22,11 @@ jobs:
       run: | 
         python -m pip install --upgrade pip 
         pip install pylint
+        if [ -f backend/requirements.txt ]; then
+          pip install -r backend/requirements.txt
+        elif [ -f requirements.txt ]; then
+          pip install -r requirements.txt
+        fi
     - name: Analysing the code with pylint
       run: |
         if [ -d "backend/app" ]; then
