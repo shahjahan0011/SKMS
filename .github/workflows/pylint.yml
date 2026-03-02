@@ -1,6 +1,10 @@
 name: Pylint
 
-on: [push]
+on: 
+  pull_request: 
+    branches: [ "main" ] 
+  push: 
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -14,10 +18,19 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install pylint 
+      run: | 
+        python -m pip install --upgrade pip 
+        pip install pylint
+        if [ -f backend/requirements.txt ]; then
+          pip install -r backend/requirements.txt
+        elif [ -f requirements.txt ]; then
+          pip install -r requirements.txt
+        fi
     - name: Analysing the code with pylint
       run: |
         if [ -d "backend/app" ]; then
           pylint backend/app
         else
-        echo "No backend code yet."
+          echo "No backend code yet."
         fi

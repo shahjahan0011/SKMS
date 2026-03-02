@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 SCRUM MEETING #4 - 02/13/2026
 
 AGENDA:
@@ -27,4 +28,35 @@ NEXT ACTIONS:
 - Review and format all M2 documents (everyone)
 - Data flow diagram (everyone)
 - Githb Actions (template) (Jahan)
+=======
+SCRUM MEETING #4 - 02/13/2026
+
+AGENDA:
+- Sprint progress review
+- Blockers and impediments
+- Task updates
+- Next steps
+
+ATTENDEES:
+Gabriel Sofekun, Jahan Shah, Khushi Lakshmi Kishan
+
+COMPLETED TASKS:
+- Class diagram
+- Traceability matrix
+- Formating M2 documents
+
+IN PROGRESS:
+- Points estimates, and assignments of issues to team members
+- Data flow diagram
+- Github Actions setup
+
+BLOCKERS:
+- No Blockers
+
+NEXT ACTIONS:
+- To Complete points estimations and assignments of issues(everyone)
+- Review and format all M2 documents (everyone)
+- Data flow diagram (everyone)
+- Githb Actions (template) (Jahan)
+>>>>>>> 3a4e28afda254f741ebbcaaba7e4dfbe6b54c758
 - Next scrum (9am , February 20th, 2026)
