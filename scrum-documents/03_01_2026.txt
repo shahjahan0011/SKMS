@@ -1,0 +1,36 @@
+SCRUM MEETING #5 - 03/01/2026
+
+AGENDA:
+- Sprint progress review
+- Blockers and impediments
+- Task updates
+- Next steps
+
+ATTENDEES:
+Bheema Marabai, Gabriel Sofekun, Khushi Lakshmi Kishan
+
+COMPLETED TASKS:
+- Implementation of project file structure and GitHub Actions
+- The team decided on approach to branching and integrated testing
+- Assignment of tasks and Features implementation
+    F1 - Authentication and Authorization, Bheema
+    F2 - Intem Listing Management, Kushi
+    F3 - Browsing, Gabi
+    F4- Order Management, Jahan
+- Naming Convention;
+    - branch naming; feature-itemlisting-particularpartofit
+    - functions; small_letter (snake_case)
+    - attributes/variables; (camelCase).
+    - all pytest classes; test_nameofthetestclass.py
+    - refer to the repos in the architecture.
+
+IN PROGRESS:
+- Implementation of assigned tasks and features
+
+BLOCKERS:
+- No Blockers
+
+NEXT ACTIONS:
+- Revies assigned features implementations during next scrum
+
+NOTES: 10 PRs each to be completed  by 03_16_2026 at 6.30 pm
