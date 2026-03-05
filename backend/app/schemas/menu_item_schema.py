@@ -1,3 +1,4 @@
+"""Menu Item Schema"""
 from pydantic import BaseModel
 
 
