@@ -1,3 +1,4 @@
+"""Schema for user"""
 from pydantic import BaseModel
 
 class userRegister(BaseModel):
