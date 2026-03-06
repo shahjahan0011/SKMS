@@ -1,12 +1,12 @@
-"""CVSStore: 
+"""CVSStore:
 """
 import csv
 from typing import List, Dict
 
-#A simple class to handle reading CSV files and returning their contents 
-
+#pylint: disable=too-few-public-methods
+#A simple class to handle reading CSV files and returning their contents
 class CSVStore:
-# Returns a list of dictionaries, where each dictionary represents a row 
+# Returns a list of dictionaries, where each dictionary represents a row
 # in the CSV file, # with the keys being the column headers and the values being
 # the corresponding cell values.
     @staticmethod
@@ -15,7 +15,7 @@ class CSVStore:
         try:
             with open(file_path, mode='r', encoding='utf-8') as csvfile:
                 reader = csv.DictReader(csvfile)
-                return list(reader)         
+                return list(reader)
 #If the file is not found, it prints an error message and returns an empty list.
         except FileNotFoundError:
             print(f"Error: The file {file_path} was not found.")

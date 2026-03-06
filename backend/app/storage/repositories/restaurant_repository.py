@@ -6,8 +6,8 @@ from backend.app.storage.csv_store import CSVStore
 class RestaurantRepository:
     """Repository for fetching restaurant data."""
     def __init__(self):
-        self.file_path = "backend/app/storage/data/restaurants.csv"
+        self.file_path = "app/storage/data/restaurants.csv"
 
     def get_all_restaurants(self) -> List[Dict]:
         """Fetch all restaurant data from the CSV file."""
-        return CSVStore.read_csv(self.file_path)    
+        return CSVStore.read_csv(self.file_path)
