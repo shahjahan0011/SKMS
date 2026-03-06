@@ -1,0 +1,20 @@
+[MASTER]
+ignore=venv,.venv,env,.env
+ignore-patterns=^venv/.*,^.venv/.*,^env/.*,^.env/.*
+fail-under=6.0
+
+[MESSAGES CONTROL]
+disable = C0114, C0116, C0411, C0115, R0903, C0410, R0902, C0303, C0305, W0621
+enable = W0611
+
+[FORMAT]
+max-line-length = 200
+
+[DESIGN]
+max-args = 8
+
+[SIMILARITIES]
+ignore-comments=yes
+
+[REPORTS]
+reports = no
