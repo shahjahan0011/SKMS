@@ -1,6 +1,6 @@
 """Fetch restaurant data from the database."""
 from typing import List, Dict
-from app.storage.csv_store import CSVStore
+from backend.app.storage.csv_store import CSVStore
 
 # pylint: disable=too-few-public-methods
 class RestaurantRepository:
