@@ -12,7 +12,7 @@ class CSVStore:
 # the corresponding cell values.
     @staticmethod
     def read_csv(file_path: str) -> List[Dict]:
-        """Reads a CSV file and returns a list of dictionaries. """
+        """Reads a CSV file and returns a list of dictionaries."""
         try:
             with open(file_path, mode='r', encoding='utf-8') as csvfile:
                 reader = csv.DictReader(csvfile)
