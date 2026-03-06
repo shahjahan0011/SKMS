@@ -28,8 +28,6 @@ jobs:
           pip install -r requirements.txt
         fi
     - name: Analysing the code with pylint
-      env:
-        PYTHONPATH: backend
       run: |
         if [ -d "backend/app" ]; then
           pylint backend/app
