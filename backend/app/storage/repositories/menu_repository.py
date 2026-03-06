@@ -9,8 +9,8 @@ class MenuRepository:
     def __init__(self):
         self.file_path = "app/storage/menus.csv"
     
-    def get_menu_by_restaurant(self, restaurant_id: str) -> Dict[]:
-        """Fetch a specific menu by restaurant ID and menu ID from the CSV file."""
+    def get_menu_by_restaurant(self, restaurant_id: str) -> List[Dict]:
+
         all_menus = CSVStore.read_csv(self.file_path)
         return [menu for menu in all_menus if menu['restaurant_id'] == restaurant_id]
 
