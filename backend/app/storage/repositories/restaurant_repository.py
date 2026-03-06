@@ -9,5 +9,5 @@ class RestaurantRepository:
         self.file_path = "app/storage/data/restaurants.csv"
 
     def get_all_restaurants(self) -> List[Dict]:
-        """Fetch all restaurant data from the CSV file."""
+        """Fetch all restaurant data from the CSV file. """
         return CSVStore.read_csv(self.file_path)
