@@ -3,9 +3,10 @@
 import csv
 from typing import List, Dict
 
-#pylint: disable=too-few-public-methods
 #A simple class to handle reading CSV files and returning their contents
+#pylint: disable=too-few-public-methods
 class CSVStore:
+    """A utility class to handle reading from CSV files."""
 # Returns a list of dictionaries, where each dictionary represents a row
 # in the CSV file, # with the keys being the column headers and the values being
 # the corresponding cell values.

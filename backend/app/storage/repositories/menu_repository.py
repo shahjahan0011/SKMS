@@ -1,7 +1,8 @@
 """Menu repository for fetching menu data."""
 from typing import List, Dict
-from backend.app.storage.csv_store import CSVStore
+from app.storage.csv_store import CSVStore
 
+# pylint: disable=too-few-public-methods
 class MenuRepository:
     """Repository for fetching menu data."""
     def __init__(self):
