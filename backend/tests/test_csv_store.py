@@ -1,5 +1,5 @@
 """Tests for CSVStore class."""
-
+# pylint: skip-file
 from backend.app.storage.csv_store import CSVStore
 def test_read_csv():
     """Test the read_csv method of CSVStore."""
@@ -10,7 +10,7 @@ def test_read_csv():
     sample_csv_path = 'sample_restaurants.csv'
     with open(sample_csv_path, 'w', encoding='utf-8') as f:
         f.write(sample_csv_content)
-    
+
     # Test reading the CSV file
     expected_output = [
         {'name': 'Pizza Place', 'location': 'New York', 'cuisine': 'Italian'},
