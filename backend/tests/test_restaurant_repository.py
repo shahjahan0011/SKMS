@@ -40,4 +40,3 @@ def test_invalid_restaurant_data():
         assert True
 
     CSVStore.read_csv = original_read_csv
-    
