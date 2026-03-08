@@ -15,3 +15,13 @@ class MenuRepository:
             menu for menu in all_menus
             if menu['restaurant_id'] == restaurant_id
             ]
+
+    def get_menu_item_by_id(self, item_id: str):
+        """Get menu item by id"""
+        menus = CSVStore.read_csv(self.file_path)
+
+        for item in menus:
+            if item["id"] == item_id:
+                return item
+
+        return None
