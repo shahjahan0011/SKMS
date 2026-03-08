@@ -15,10 +15,16 @@ def setup_test_csv(file_path):
         writer.writerow(["owner1", "ownerpass", "owner"])
 
 
+def get_test_file_path():
+    """return the path for the temporary test csv file"""
+
+    return Path(__file__).resolve().parent / "test_users.csv"
+
+
 def test_get_all_users():
     """test repository returns all users"""
 
-    test_file = Path("tests/test_users.csv")
+    test_file = get_test_file_path()
     setup_test_csv(test_file)
 
     repo = user_repository()
@@ -36,7 +42,7 @@ def test_get_all_users():
 def test_get_user_by_username_valid():
     """test repository returns correct user"""
 
-    test_file = Path("tests/test_users.csv")
+    test_file = get_test_file_path()
     setup_test_csv(test_file)
 
     repo = user_repository()
@@ -53,7 +59,7 @@ def test_get_user_by_username_valid():
 def test_get_user_by_username_invalid():
     """test repository returns none for invalid username"""
 
-    test_file = Path("tests/test_users.csv")
+    test_file = get_test_file_path()
     setup_test_csv(test_file)
 
     repo = user_repository()
@@ -69,7 +75,7 @@ def test_get_user_by_username_invalid():
 def test_create_user():
     """test repository adds new user"""
 
-    test_file = Path("tests/test_users.csv")
+    test_file = get_test_file_path()
     setup_test_csv(test_file)
 
     repo = user_repository()
@@ -83,3 +89,4 @@ def test_create_user():
     assert users[2]["username"] == "new_user"
 
     test_file.unlink()
+    
