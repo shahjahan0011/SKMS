@@ -20,3 +20,9 @@ def test_get_restaurant_by_id_valid():
 
     assert response.status_code == 200
     assert response.json()["id"] == "1"
+
+def test_get_restaurant_by_id_invalid():
+    """Test for GET /restaurants/{restaurant_id} endpoint for invalid id"""
+    response = client.get("/restaurants/999999")
+
+    assert response.status_code == 404
