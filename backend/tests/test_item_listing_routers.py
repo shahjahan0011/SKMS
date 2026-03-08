@@ -26,3 +26,11 @@ def test_get_restaurant_by_id_invalid():
     response = client.get("/restaurants/999999")
 
     assert response.status_code == 404
+
+def test_get_restaurant_menu_valid():
+    """Test for GET /restaurants/{restaurant_id}/menu endpoint with valid id"""
+    response = client.get("/restaurants/1/menu")
+
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+
