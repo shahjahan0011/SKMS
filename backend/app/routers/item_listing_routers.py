@@ -21,3 +21,12 @@ item_listing_service = ItemListingService(
 def get_all_restaurants():
     """Gets all restaurants"""
     return item_listing_service.get_all_restaurants()
+
+@router.get("/restaurants/{restaurant_id}")
+def get_restaurant_by_id(restaurant_id: str):
+    """Get a restaurant by id"""
+    try:
+        return item_listing_service.get_restaurant_by_id(restaurant_id)
+
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
