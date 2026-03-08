@@ -41,9 +41,8 @@ def test_get_restaurant_menu_invalid():
     assert response.status_code == 404
 
 def test_get_menu_item_by_id_valid():
-    """Test for GET /menu/{item_id} with valid id"""
+    """Test for GET /menu/{item_id} endpoint with valid id"""
     response = client.get("/menu/1")
 
     assert response.status_code == 200
     assert response.json()["id"] == "1"
-
