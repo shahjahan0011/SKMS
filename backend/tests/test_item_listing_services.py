@@ -33,3 +33,23 @@ def test_get_all_restaurants():
     restaurants = service.get_all_restaurants()
 
     assert len(restaurants) == 2
+
+def test_get_restaurant_menu_valid():
+    """Test for Get Restaurant Menu - Valid Restaurant"""
+    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+
+    menu = service.get_restaurant_menu("1")
+
+    assert len(menu) == 1
+    assert menu[0]["item_name"] == "Burger"
+
+
+def test_get_restaurant_menu_invalid():
+    """Test case for Get Restaurant Menu - Invalid Restaurant"""
+    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+
+    try:
+        service.get_restaurant_menu("999")
+        assert False
+    except ValueError:
+        assert True
