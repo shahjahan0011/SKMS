@@ -9,11 +9,11 @@ class MenuService:
     def __init__(self, repo: MenuRepository):
         self.menu_repository = repo
 
-    def get_all_menus_by_restaurant(self, restaurant_id: str) -> List[Dict]:
+    def get_all_menus_by_restaurant(self, restaurant_id: str) -> list[dict]:
         """Get all menu items for a specific restaurant."""
         return self.menu_repository.get_menu_by_restaurant(restaurant_id)
 
-    def get_active_menu_by_restaurant(self, restaurant_id: str) -> List[Dict]:
+    def get_active_menu_by_restaurant(self, restaurant_id: str) -> list[dict]:
         """Get active menu items for a specific restaurant."""
         all_menus = self.menu_repository.get_menu_by_restaurant(restaurant_id)
 
@@ -22,6 +22,6 @@ class MenuService:
 
         return active_menus
 
-    def get_menu_item_by_id(self, item_id: str) -> Dict:
+    def get_menu_item_by_id(self, item_id: str) -> dict:
         """Get menu item by id."""
         return self.menu_repository.get_menu_item_by_id(item_id)
