@@ -39,3 +39,12 @@ def get_restaurant_menu(restaurant_id: str):
 
     except ValueError as error:
         raise HTTPException(status_code=404, detail=str(error))
+
+@router.get("/menu/{item_id}")
+def get_menu_item_by_id(item_id: str):
+    """Get a specific menu item by its ID."""
+    try:
+        return item_listing_service.get_menu_item_by_id(item_id)
+
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
