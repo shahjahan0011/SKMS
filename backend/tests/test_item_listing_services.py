@@ -11,6 +11,11 @@ class TestRestaurantRepo:
             {"id": "1", "name": "Restaurant 1"},
             {"id": "2", "name": "Restaurant 2"}
         ]
+    def get_restaurant_by_id(self, restaurant_id):
+        for r in self.get_all_restaurants():
+            if r["id"] == restaurant_id:
+                return r
+        return None
 
 class TestMenuRepo:
     """Test menu repository for testing purposes"""
@@ -53,3 +58,21 @@ def test_get_restaurant_menu_invalid():
         assert False
     except ValueError:
         assert True
+
+def test_get_restaurant_by_id_valid():
+    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+
+    restaurant = service.get_restaurant_by_id("1")
+
+    assert restaurant["id"] == "1"
+
+
+def test_get_restaurant_by_id_invalid():
+    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+
+    try:
+        service.get_restaurant_by_id("999")
+        assert False
+    except ValueError:
+        assert True
+        
