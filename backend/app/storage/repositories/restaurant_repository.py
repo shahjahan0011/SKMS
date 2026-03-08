@@ -10,7 +10,13 @@ class RestaurantRepository:
 
     def get_all_restaurants(self) -> List[Dict]:
         """Fetch all restaurant data from the CSV file."""
-        return CSVStore.read_csv(self.file_path)
+        restaurants = CSVStore.read_csv(self.file_path)
+
+        for restaurant in restaurants:
+            if not restaurant.get("id") or not restaurant.get("name"):
+                raise ValueError("Invalid restaurant data")
+
+        return restaurants
 
     def get_restaurant_by_id(self, restaurant_id: str):
         """Get a restaurant by restaurant id"""
