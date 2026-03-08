@@ -29,6 +29,11 @@ class TestMenuRepo:
                 "price": "10"
             }
         ]
+    
+    def get_menu_item_by_id(self, item_id):
+        if item_id == "1":
+            return {"id": "1", "restaurant_id": "1", "item_name": "Burger", "price": "10"}
+        return None
 
 # pytests for item listing services
 def test_get_all_restaurants():
@@ -75,4 +80,21 @@ def test_get_restaurant_by_id_invalid():
         assert False
     except ValueError:
         assert True
-        
+
+
+def test_get_menu_item_by_id_valid():
+    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+
+    item = service.get_menu_item_by_id("1")
+
+    assert item["id"] == "1"
+
+
+def test_get_menu_item_by_id_invalid():
+    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+
+    try:
+        service.get_menu_item_by_id("999")
+        assert False
+    except ValueError:
+        assert True
