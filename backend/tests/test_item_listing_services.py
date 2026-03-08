@@ -65,6 +65,7 @@ def test_get_restaurant_menu_invalid():
         assert True
 
 def test_get_restaurant_by_id_valid():
+    """Test for Get a valid restaurant by id"""
     service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
 
     restaurant = service.get_restaurant_by_id("1")
@@ -73,6 +74,7 @@ def test_get_restaurant_by_id_valid():
 
 
 def test_get_restaurant_by_id_invalid():
+    """Test for Get an invalid restaurant by id"""
     service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
 
     try:
@@ -83,6 +85,7 @@ def test_get_restaurant_by_id_invalid():
 
 
 def test_get_menu_item_by_id_valid():
+    """Test for Get a valid menu item by id"""
     service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
 
     item = service.get_menu_item_by_id("1")
@@ -91,6 +94,7 @@ def test_get_menu_item_by_id_valid():
 
 
 def test_get_menu_item_by_id_invalid():
+    """Test for Get an invalid menu item by id"""
     service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
 
     try:

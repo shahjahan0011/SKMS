@@ -1,0 +1,23 @@
+"""Router module for item listing endpoints."""
+
+from fastapi import APIRouter, HTTPException
+
+from app.services.item_listing_services import ItemListingService
+from app.storage.repositories.restaurant_repository import RestaurantRepository
+from app.storage.repositories.menu_repository import MenuRepository
+
+
+router = APIRouter()
+"""Repos and services for item listing"""
+restaurant_repository = RestaurantRepository()
+menu_repository = MenuRepository()
+
+item_listing_service = ItemListingService(
+    restaurant_repository,
+    menu_repository
+)
+
+@router.get("/restaurants")
+def get_all_restaurants():
+    """Gets all restaurants"""
+    return item_listing_service.get_all_restaurants()
