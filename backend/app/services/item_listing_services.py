@@ -27,3 +27,12 @@ class ItemListingService:
             raise ValueError("Restaurant not found")
 
         return self.menu_repo.get_by_restaurant(restaurant_id)
+    
+    def get_restaurant_by_id(self, restaurant_id: str):
+        """Get a restaurant by its id"""
+        restaurant = self.restaurant_repo.get_restaurant_by_id(restaurant_id)
+
+        if restaurant is None:
+            raise ValueError("Restaurant not found")
+
+        return restaurant
