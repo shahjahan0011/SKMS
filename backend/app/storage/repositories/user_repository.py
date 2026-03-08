@@ -7,7 +7,9 @@ class user_repository:
     """repository responsible for reading and writing user data"""
 
     def __init__(self):
-        self.file_path = Path("app/storage/data/users.csv")
+        self.file_path = (
+            Path(__file__).resolve().parents[1] / "data" / "users.csv"
+        )
 
     def get_all_users(self):
         """return all users from csv storage"""
@@ -40,3 +42,4 @@ class user_repository:
         with open(self.file_path, mode="a", encoding="utf-8", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([username, password, role])
+            
