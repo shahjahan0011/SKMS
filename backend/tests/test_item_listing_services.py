@@ -102,3 +102,21 @@ def test_get_menu_item_by_id_invalid():
         assert False
     except ValueError:
         assert True
+
+def get_restaurant_menu(self, restaurant_id: str) -> list:
+    """Get menu items for a given restaurant"""
+    restaurants = self.restaurant_repo.get_all_restaurants()
+
+    exists = any(r["id"] == restaurant_id for r in restaurants)
+
+    if not exists:
+        raise ValueError("Restaurant not found")
+
+    menu_items = self.menu_repo.get_by_restaurant(restaurant_id)
+    restaurant_ids = {r["id"] for r in restaurants}
+
+    for item in menu_items:
+        if item["restaurant_id"] not in restaurant_ids:
+            raise ValueError("Menu item references invalid restaurant")
+
+    return menu_items
