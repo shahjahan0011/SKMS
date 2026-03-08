@@ -36,6 +36,7 @@ jobs:
     - name: Install pytest
       run: |
         pip install pytest
+        pip install httpx
     - name: Test with pytest
       run: |
         if ls backend/tests/test_*.py 1> /dev/null 2>&1; then
