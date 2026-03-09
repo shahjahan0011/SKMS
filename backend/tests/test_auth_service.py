@@ -96,7 +96,7 @@ def test_register_empty_username():
         service.register_user("", "pass213", "user")
         assert False
     except ValueError as error:
-        assert str(error) == "username cannot be empty"
+        assert str(error) == "Please enter a username"
 
 def test_register_empty_password():
     """tests registration fail for empty username"""
@@ -107,4 +107,4 @@ def test_register_empty_password():
         service.register_user("username", "", "user")
         assert False
     except ValueError as error:
-        assert str(error) == "password cannot be empty"
+        assert str(error) == "Please enter password"
