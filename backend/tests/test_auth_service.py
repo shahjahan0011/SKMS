@@ -86,3 +86,25 @@ def test_login_user_invalid_password():
         assert True
 
     test_file.unlink()
+
+def test_register_empty_username():
+    """tests registration fail for empty username"""
+
+    service = auth_service()
+
+    try:
+        service.register_user("", "pass213", "user")
+        assert False
+    except ValueError as error:
+        assert str(error) == "username cannot be empty"
+
+def test_register_empty_password():
+    """tests registration fail for empty username"""
+
+    service = auth_service()
+
+    try:
+        service.register_user("username", "", "user")
+        assert False
+    except ValueError as error:
+        assert str(error) == "password cannot be empty"
