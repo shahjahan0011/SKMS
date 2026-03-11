@@ -1,18 +1,9 @@
 """Menu routes module."""
 
-<<<<<<< Updated upstream
-from fastapi import APIRouter
-from app.services.menu_services import MenuService
-from app.storage.repositories.menu_repository import MenuRepository
-from app.schemas.menu_item_schema import MenuItem
-from app.services.menu_services import MenuService
-from typing import List
-=======
 from fastapi import APIRouter, Query
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import MenuRepository
 from typing import Any
->>>>>>> Stashed changes
 
 router = APIRouter(prefix="/menus", tags=["Menus"])
 # Repositories and services for menu routes
@@ -21,13 +12,6 @@ def get_menu_service():
     repo = MenuRepository()
     return MenuService(repo)
 
-<<<<<<< Updated upstream
-@router.get("/{restaurant_id}", response_model=List[MenuItem])
-def get_menu_by_restaurant(restaurant_id: str):
-    """Get menu for a specific restaurant."""
-    service = get_menu_service()
-    return service.get_all_menus_by_restaurant(restaurant_id)
-=======
 @router.get("/{restaurant_id}", response_model=dict[str, Any])
 def get_menu_by_restaurant(
     restaurant_id: str,
@@ -44,4 +28,3 @@ def get_menu_by_restaurant(
         page=page,
         page_size=page_size
     )
->>>>>>> Stashed changes
