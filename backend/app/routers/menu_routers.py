@@ -22,9 +22,9 @@ def get_menu_by_restaurant(
 
     """Get menu for a specific restaurant."""
     service = get_menu_service()
-    return service.get_active_menu_paginated_by_restaurant(
+    return service.get_paginated_menu_by_restaurant(
         restaurant_id=restaurant_id,
-        search_query=search,
+        search=search,
         page=page,
         page_size=page_size
     )
