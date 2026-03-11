@@ -11,6 +11,11 @@ class auth_service:
     def register_user(self, username, password, role="user"):
         """register a new user"""
 
+        if not username:
+            raise ValueError("Please enter a username")
+        if not password:
+            raise ValueError("Please enter password")
+
         existing_user = self.user_repo.get_user_by_username(username)
 
         if existing_user:
