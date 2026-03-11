@@ -1,0 +1,2084 @@
+id,restaurant_id,item_name,price,is_available
+1,1,Beef pie,24.88,True
+2,1,Briyani rice,27.98,True
+3,1,Burger,24.86,True
+4,1,Burritos,31.51,True
+5,1,Chicken rice,27.53,True
+6,1,Chicken wings,22.4,True
+7,1,CoffeeBoba tea,26.65,True
+8,1,Cookie,22.18,True
+9,1,Cup cake,29.27,True
+10,1,Dumplings,31.3,True
+11,1,Fried chicken,29.25,True
+12,1,Pasta,28.91,True
+13,1,PastrySmoothie,33.14,True
+14,1,Pizza,22.54,True
+15,1,Salad,21.78,True
+16,1,Shawarma,18.2,True
+17,1,Soup,20.69,True
+18,1,Sushi,37.09,True
+19,1,Taccos,35.27,True
+20,1,Whole cake,29.34,True
+21,2,Beef pie,26.51,True
+22,2,Briyani rice,30.05,True
+23,2,Burger,12.72,True
+24,2,Burritos,26.84,True
+25,2,Chicken pie,44.63,True
+26,2,Chicken rice,26.67,True
+27,2,Chicken wings,27.95,True
+28,2,CoffeeBoba tea,39.15,True
+29,2,Cookie,28.97,True
+30,2,Cup cake,29.04,True
+31,2,Dumplings,33.52,True
+32,2,Fried chicken,25.35,True
+33,2,Pasta,31.6,True
+34,2,PastrySmoothie,11.44,True
+35,2,Pizza,25.52,True
+36,2,Salad,21.79,True
+37,2,Shawarma,31.11,True
+38,2,Soup,32.75,True
+39,2,Sushi,33.1,True
+40,2,Taccos,28.11,True
+41,2,Whole cake,31.5,True
+42,3,Beef pie,25.29,True
+43,3,Briyani rice,23.96,True
+44,3,Burger,45.27,True
+45,3,Burritos,24.37,True
+46,3,Chicken pie,26.57,True
+47,3,Chicken rice,17.88,True
+48,3,Chicken wings,22.82,True
+49,3,CoffeeBoba tea,28.55,True
+50,3,Cookie,32.8,True
+51,3,Cup cake,19.87,True
+52,3,Dumplings,25.07,True
+53,3,Fried chicken,33.8,True
+54,3,Pasta,21.04,True
+55,3,PastrySmoothie,22.77,True
+56,3,Pizza,25.97,True
+57,3,Salad,26.54,True
+58,3,Shawarma,15.3,True
+59,3,Soup,31.35,True
+60,3,Sushi,26.25,True
+61,3,Taccos,35.2,True
+62,3,Whole cake,6.21,True
+63,4,Briyani rice,23.03,True
+64,4,Burger,30.42,True
+65,4,Burritos,24.52,True
+66,4,Chicken pie,29.11,True
+67,4,Chicken rice,27.39,True
+68,4,Chicken wings,23.93,True
+69,4,CoffeeBoba tea,30.62,True
+70,4,Cookie,22.64,True
+71,4,Cup cake,29.95,True
+72,4,Dumplings,35.88,True
+73,4,Fried chicken,15.21,True
+74,4,Pasta,37.44,True
+75,4,PastrySmoothie,27.73,True
+76,4,Pizza,29.38,True
+77,4,Salad,22.66,True
+78,4,Shawarma,26.76,True
+79,4,Soup,10.57,True
+80,4,Sushi,17.16,True
+81,4,Taccos,31.52,True
+82,4,Whole cake,24.29,True
+83,5,Beef pie,21.33,True
+84,5,Briyani rice,22.74,True
+85,5,Burger,27.12,True
+86,5,Burritos,18.75,True
+87,5,Chicken pie,48.76,True
+88,5,Chicken rice,22.61,True
+89,5,Chicken wings,26.75,True
+90,5,CoffeeBoba tea,23.95,True
+91,5,Cookie,27.64,True
+92,5,Cup cake,23.07,True
+93,5,Dumplings,32.51,True
+94,5,Fried chicken,30.1,True
+95,5,Pasta,27.2,True
+96,5,PastrySmoothie,25.67,True
+97,5,Pizza,42.36,True
+98,5,Salad,20.56,True
+99,5,Shawarma,27.32,True
+100,5,Soup,26.29,True
+101,5,Sushi,37.84,True
+102,5,Taccos,31.89,True
+103,5,Whole cake,19.55,True
+104,6,Beef pie,20.01,True
+105,6,Briyani rice,13.82,True
+106,6,Burger,22.37,True
+107,6,Burritos,24.77,True
+108,6,Chicken pie,25.26,True
+109,6,Chicken rice,25.67,True
+110,6,Chicken wings,26.93,True
+111,6,CoffeeBoba tea,25.76,True
+112,6,Cookie,27.83,True
+113,6,Cup cake,28.55,True
+114,6,Dumplings,25.47,True
+115,6,Fried chicken,30.95,True
+116,6,Pasta,29.67,True
+117,6,PastrySmoothie,26.06,True
+118,6,Pizza,27.13,True
+119,6,Salad,28.97,True
+120,6,Shawarma,39.05,True
+121,6,Soup,29.4,True
+122,6,Sushi,34.5,True
+123,6,Taccos,14.84,True
+124,6,Whole cake,23.56,True
+125,7,Beef pie,40.73,True
+126,7,Briyani rice,28.25,True
+127,7,Burger,23.35,True
+128,7,Burritos,32.32,True
+129,7,Chicken pie,31.46,True
+130,7,Chicken rice,25.8,True
+131,7,Chicken wings,38.17,True
+132,7,CoffeeBoba tea,23.73,True
+133,7,Cookie,9.15,True
+134,7,Cup cake,23.79,True
+135,7,Dumplings,25.99,True
+136,7,Fried chicken,33.12,True
+137,7,Pasta,18.81,True
+138,7,PastrySmoothie,18.33,True
+139,7,Pizza,27.34,True
+140,7,Salad,30.29,True
+141,7,Shawarma,41.82,True
+142,7,Soup,27.81,True
+143,7,Sushi,22.83,True
+144,7,Taccos,24.05,True
+145,7,Whole cake,10.3,True
+146,8,Beef pie,17.29,True
+147,8,Briyani rice,34.66,True
+148,8,Burger,24.59,True
+149,8,Burritos,25.67,True
+150,8,Chicken pie,26.32,True
+151,8,Chicken rice,23.22,True
+152,8,Chicken wings,22.54,True
+153,8,CoffeeBoba tea,28.21,True
+154,8,Cookie,27.1,True
+155,8,Cup cake,35.75,True
+156,8,Dumplings,22.29,True
+157,8,Fried chicken,29.25,True
+158,8,Pasta,24.72,True
+159,8,PastrySmoothie,35.48,True
+160,8,Pizza,30.35,True
+161,8,Salad,8.62,True
+162,8,Shawarma,18.06,True
+163,8,Soup,27.47,True
+164,8,Sushi,16.04,True
+165,8,Taccos,34.74,True
+166,8,Whole cake,17.35,True
+167,9,Beef pie,27.66,True
+168,9,Briyani rice,33.6,True
+169,9,Burger,36.98,True
+170,9,Burritos,28.57,True
+171,9,Chicken pie,31.84,True
+172,9,Chicken rice,36.41,True
+173,9,Chicken wings,35.96,True
+174,9,CoffeeBoba tea,29.26,True
+175,9,Cookie,37.45,True
+176,9,Cup cake,26.8,True
+177,9,Dumplings,30.83,True
+178,9,Fried chicken,31.03,True
+179,9,Pasta,20.7,True
+180,9,PastrySmoothie,22.83,True
+181,9,Pizza,27.7,True
+182,9,Salad,33.23,True
+183,9,Shawarma,31.74,True
+184,9,Soup,33.29,True
+185,9,Sushi,36.77,True
+186,9,Taccos,31.38,True
+187,9,Whole cake,21.65,True
+188,10,Beef pie,21.34,True
+189,10,Briyani rice,23.23,True
+190,10,Burger,18.63,True
+191,10,Burritos,25.44,True
+192,10,Chicken pie,34.38,True
+193,10,Chicken rice,28.49,True
+194,10,Chicken wings,21.96,True
+195,10,CoffeeBoba tea,27.26,True
+196,10,Cookie,29.19,True
+197,10,Cup cake,32.24,True
+198,10,Dumplings,19.2,True
+199,10,Fried chicken,42.89,True
+200,10,Pasta,25.14,True
+201,10,PastrySmoothie,32.47,True
+202,10,Pizza,28.86,True
+203,10,Salad,21.8,True
+204,10,Shawarma,46.08,True
+205,10,Soup,25.84,True
+206,10,Sushi,22.94,True
+207,10,Taccos,32.36,True
+208,10,Whole cake,27.77,True
+209,11,Beef pie,19.91,True
+210,11,Briyani rice,22.58,True
+211,11,Burger,25.01,True
+212,11,Burritos,27.27,True
+213,11,Chicken pie,36.63,True
+214,11,Chicken rice,11.75,True
+215,11,Chicken wings,24.42,True
+216,11,CoffeeBoba tea,22.12,True
+217,11,Cookie,19.31,True
+218,11,Cup cake,22.66,True
+219,11,Dumplings,30.05,True
+220,11,Fried chicken,13.92,True
+221,11,Pasta,24.52,True
+222,11,PastrySmoothie,26.56,True
+223,11,Pizza,37.63,True
+224,11,Salad,34.87,True
+225,11,Shawarma,29.54,True
+226,11,Soup,25.21,True
+227,11,Sushi,13.59,True
+228,11,Taccos,24.16,True
+229,11,Whole cake,25.17,True
+230,12,Beef pie,23.07,True
+231,12,Briyani rice,20.5,True
+232,12,Burger,23.15,True
+233,12,Burritos,13.25,True
+234,12,Chicken pie,31.9,True
+235,12,Chicken rice,26.2,True
+236,12,Chicken wings,30.22,True
+237,12,CoffeeBoba tea,32.63,True
+238,12,Cookie,25.32,True
+239,12,Cup cake,24.66,True
+240,12,Dumplings,28.64,True
+241,12,Fried chicken,42.51,True
+242,12,Pasta,20.3,True
+243,12,PastrySmoothie,28.99,True
+244,12,Pizza,28.76,True
+245,12,Salad,32.68,True
+246,12,Shawarma,17.2,True
+247,12,Soup,23.45,True
+248,12,Sushi,42.29,True
+249,12,Taccos,16.15,True
+250,12,Whole cake,22.91,True
+251,13,Briyani rice,27.64,True
+252,13,Burger,29.15,True
+253,13,Burritos,34.48,True
+254,13,Chicken pie,22.31,True
+255,13,Chicken rice,27.95,True
+256,13,Chicken wings,30.0,True
+257,13,CoffeeBoba tea,21.9,True
+258,13,Cookie,30.25,True
+259,13,Cup cake,25.13,True
+260,13,Dumplings,22.81,True
+261,13,Fried chicken,35.81,True
+262,13,Pasta,27.0,True
+263,13,PastrySmoothie,26.7,True
+264,13,Pizza,29.82,True
+265,13,Salad,28.13,True
+266,13,Shawarma,28.97,True
+267,13,Soup,22.21,True
+268,13,Sushi,25.63,True
+269,13,Taccos,27.94,True
+270,13,Whole cake,35.18,True
+271,14,Beef pie,15.53,True
+272,14,Briyani rice,27.41,True
+273,14,Burger,30.44,True
+274,14,Burritos,31.61,True
+275,14,Chicken pie,26.13,True
+276,14,Chicken rice,20.79,True
+277,14,Chicken wings,23.1,True
+278,14,CoffeeBoba tea,27.54,True
+279,14,Cookie,31.41,True
+280,14,Cup cake,19.28,True
+281,14,Dumplings,19.2,True
+282,14,Fried chicken,32.46,True
+283,14,Pasta,32.59,True
+284,14,PastrySmoothie,29.1,True
+285,14,Pizza,20.73,True
+286,14,Salad,41.0,True
+287,14,Shawarma,24.03,True
+288,14,Soup,31.33,True
+289,14,Sushi,30.83,True
+290,14,Taccos,32.08,True
+291,14,Whole cake,14.84,True
+292,15,Beef pie,22.52,True
+293,15,Briyani rice,38.22,True
+294,15,Burger,26.61,True
+295,15,Burritos,17.28,True
+296,15,Chicken pie,26.83,True
+297,15,Chicken rice,26.06,True
+298,15,Chicken wings,20.79,True
+299,15,CoffeeBoba tea,28.02,True
+300,15,Cookie,29.29,True
+301,15,Cup cake,20.88,True
+302,15,Dumplings,27.29,True
+303,15,Fried chicken,33.62,True
+304,15,Pasta,28.93,True
+305,15,PastrySmoothie,23.93,True
+306,15,Pizza,41.31,True
+307,15,Salad,26.42,True
+308,15,Shawarma,24.37,True
+309,15,Soup,16.33,True
+310,15,Sushi,21.9,True
+311,15,Taccos,30.0,True
+312,15,Whole cake,43.78,True
+313,16,Beef pie,28.28,True
+314,16,Briyani rice,10.82,True
+315,16,Burger,29.34,True
+316,16,Burritos,12.46,True
+317,16,Chicken pie,34.47,True
+318,16,Chicken rice,28.78,True
+319,16,Chicken wings,25.71,True
+320,16,CoffeeBoba tea,22.25,True
+321,16,Cookie,25.75,True
+322,16,Cup cake,29.1,True
+323,16,Dumplings,22.81,True
+324,16,Fried chicken,22.32,True
+325,16,Pasta,23.63,True
+326,16,PastrySmoothie,27.53,True
+327,16,Pizza,39.13,True
+328,16,Salad,31.11,True
+329,16,Shawarma,26.3,True
+330,16,Soup,20.71,True
+331,16,Sushi,34.96,True
+332,16,Taccos,30.49,True
+333,16,Whole cake,12.03,True
+334,17,Beef pie,36.77,True
+335,17,Briyani rice,29.21,True
+336,17,Burger,40.44,True
+337,17,Burritos,22.4,True
+338,17,Chicken pie,16.26,True
+339,17,Chicken rice,26.32,True
+340,17,CoffeeBoba tea,34.09,True
+341,17,Cookie,19.05,True
+342,17,Cup cake,21.58,True
+343,17,Dumplings,34.17,True
+344,17,Fried chicken,25.63,True
+345,17,Pasta,25.83,True
+346,17,PastrySmoothie,24.86,True
+347,17,Pizza,22.06,True
+348,17,Salad,34.35,True
+349,17,Shawarma,36.8,True
+350,17,Soup,28.39,True
+351,17,Sushi,29.07,True
+352,17,Taccos,13.36,True
+353,17,Whole cake,30.16,True
+354,18,Beef pie,20.02,True
+355,18,Briyani rice,12.34,True
+356,18,Burger,28.37,True
+357,18,Burritos,16.63,True
+358,18,Chicken pie,29.19,True
+359,18,Chicken rice,23.96,True
+360,18,Chicken wings,34.53,True
+361,18,CoffeeBoba tea,37.35,True
+362,18,Cup cake,30.45,True
+363,18,Dumplings,24.84,True
+364,18,Fried chicken,21.09,True
+365,18,Pasta,29.27,True
+366,18,PastrySmoothie,27.17,True
+367,18,Pizza,32.54,True
+368,18,Salad,23.79,True
+369,18,Shawarma,42.23,True
+370,18,Soup,33.8,True
+371,18,Sushi,19.75,True
+372,18,Taccos,34.46,True
+373,18,Whole cake,27.52,True
+374,19,Beef pie,23.3,True
+375,19,Briyani rice,28.9,True
+376,19,Burger,27.84,True
+377,19,Burritos,23.25,True
+378,19,Chicken pie,19.26,True
+379,19,Chicken rice,33.34,True
+380,19,Chicken wings,24.93,True
+381,19,CoffeeBoba tea,26.47,True
+382,19,Cookie,32.93,True
+383,19,Cup cake,30.42,True
+384,19,Dumplings,28.98,True
+385,19,Fried chicken,13.69,True
+386,19,Pasta,31.2,True
+387,19,PastrySmoothie,15.23,True
+388,19,Pizza,34.88,True
+389,19,Salad,19.8,True
+390,19,Shawarma,30.31,True
+391,19,Soup,28.48,True
+392,19,Taccos,12.84,True
+393,19,Whole cake,18.34,True
+394,20,Beef pie,25.59,True
+395,20,Briyani rice,24.07,True
+396,20,Burger,19.09,True
+397,20,Burritos,22.15,True
+398,20,Chicken pie,34.41,True
+399,20,Chicken rice,26.82,True
+400,20,Chicken wings,25.11,True
+401,20,CoffeeBoba tea,33.81,True
+402,20,Cookie,30.67,True
+403,20,Cup cake,27.07,True
+404,20,Dumplings,25.76,True
+405,20,Fried chicken,35.29,True
+406,20,Pasta,27.88,True
+407,20,PastrySmoothie,33.56,True
+408,20,Pizza,26.34,True
+409,20,Salad,42.44,True
+410,20,Shawarma,37.85,True
+411,20,Soup,11.71,True
+412,20,Sushi,21.73,True
+413,20,Taccos,36.1,True
+414,20,Whole cake,30.78,True
+415,21,Beef pie,29.75,True
+416,21,Briyani rice,34.48,True
+417,21,Burger,43.5,True
+418,21,Burritos,28.99,True
+419,21,Chicken pie,22.54,True
+420,21,Chicken rice,22.25,True
+421,21,Chicken wings,23.69,True
+422,21,CoffeeBoba tea,38.12,True
+423,21,Cookie,22.73,True
+424,21,Cup cake,25.11,True
+425,21,Dumplings,23.37,True
+426,21,Fried chicken,42.55,True
+427,21,Pasta,23.98,True
+428,21,PastrySmoothie,27.34,True
+429,21,Pizza,23.34,True
+430,21,Salad,31.67,True
+431,21,Shawarma,27.52,True
+432,21,Soup,24.35,True
+433,21,Sushi,35.59,True
+434,21,Taccos,30.7,True
+435,21,Whole cake,41.09,True
+436,22,Beef pie,16.61,True
+437,22,Briyani rice,15.85,True
+438,22,Burger,22.13,True
+439,22,Burritos,18.18,True
+440,22,Chicken pie,22.51,True
+441,22,Chicken rice,20.32,True
+442,22,Chicken wings,32.46,True
+443,22,CoffeeBoba tea,35.57,True
+444,22,Cookie,39.88,True
+445,22,Cup cake,25.41,True
+446,22,Dumplings,24.36,True
+447,22,Fried chicken,39.34,True
+448,22,Pasta,30.68,True
+449,22,PastrySmoothie,28.93,True
+450,22,Pizza,33.62,True
+451,22,Salad,24.44,True
+452,22,Shawarma,23.39,True
+453,22,Soup,21.35,True
+454,22,Sushi,20.75,True
+455,22,Taccos,27.93,True
+456,22,Whole cake,44.61,True
+457,23,Beef pie,24.29,True
+458,23,Briyani rice,32.05,True
+459,23,Burger,27.29,True
+460,23,Burritos,38.77,True
+461,23,Chicken pie,38.0,True
+462,23,Chicken rice,25.27,True
+463,23,Chicken wings,30.63,True
+464,23,CoffeeBoba tea,33.75,True
+465,23,Cookie,12.89,True
+466,23,Cup cake,22.79,True
+467,23,Dumplings,32.08,True
+468,23,Fried chicken,25.43,True
+469,23,Pasta,25.09,True
+470,23,PastrySmoothie,36.93,True
+471,23,Pizza,27.08,True
+472,23,Salad,30.48,True
+473,23,Shawarma,25.15,True
+474,23,Soup,22.03,True
+475,23,Sushi,23.38,True
+476,23,Taccos,19.58,True
+477,23,Whole cake,24.38,True
+478,24,Beef pie,26.61,True
+479,24,Briyani rice,30.56,True
+480,24,Burger,30.47,True
+481,24,Burritos,24.06,True
+482,24,Chicken pie,18.81,True
+483,24,Chicken rice,29.83,True
+484,24,Chicken wings,26.1,True
+485,24,CoffeeBoba tea,18.14,True
+486,24,Cookie,18.76,True
+487,24,Cup cake,28.52,True
+488,24,Dumplings,25.59,True
+489,24,Fried chicken,39.44,True
+490,24,Pasta,25.02,True
+491,24,PastrySmoothie,24.07,True
+492,24,Pizza,27.63,True
+493,24,Salad,26.17,True
+494,24,Shawarma,23.4,True
+495,24,Soup,30.56,True
+496,24,Sushi,28.74,True
+497,24,Taccos,32.71,True
+498,24,Whole cake,25.24,True
+499,25,Beef pie,25.65,True
+500,25,Briyani rice,28.96,True
+501,25,Burger,33.66,True
+502,25,Burritos,26.18,True
+503,25,Chicken pie,24.55,True
+504,25,Chicken rice,28.39,True
+505,25,Chicken wings,24.25,True
+506,25,CoffeeBoba tea,30.47,True
+507,25,Cookie,29.83,True
+508,25,Cup cake,25.76,True
+509,25,Dumplings,24.22,True
+510,25,Fried chicken,28.09,True
+511,25,Pasta,25.09,True
+512,25,PastrySmoothie,38.9,True
+513,25,Pizza,31.33,True
+514,25,Salad,19.91,True
+515,25,Shawarma,27.84,True
+516,25,Soup,25.95,True
+517,25,Sushi,28.34,True
+518,25,Taccos,22.96,True
+519,25,Whole cake,25.64,True
+520,26,Beef pie,32.71,True
+521,26,Briyani rice,27.47,True
+522,26,Burger,16.93,True
+523,26,Burritos,23.54,True
+524,26,Chicken pie,27.93,True
+525,26,Chicken rice,22.96,True
+526,26,Chicken wings,22.77,True
+527,26,CoffeeBoba tea,39.21,True
+528,26,Cookie,21.69,True
+529,26,Cup cake,33.25,True
+530,26,Dumplings,22.6,True
+531,26,Fried chicken,26.47,True
+532,26,Pasta,30.98,True
+533,26,PastrySmoothie,24.53,True
+534,26,Pizza,36.62,True
+535,26,Salad,35.83,True
+536,26,Shawarma,20.2,True
+537,26,Soup,27.27,True
+538,26,Sushi,20.65,True
+539,26,Taccos,31.09,True
+540,26,Whole cake,30.67,True
+541,27,Beef pie,34.05,True
+542,27,Briyani rice,30.69,True
+543,27,Burger,28.76,True
+544,27,Burritos,34.66,True
+545,27,Chicken pie,24.58,True
+546,27,Chicken rice,32.53,True
+547,27,Chicken wings,29.98,True
+548,27,CoffeeBoba tea,24.49,True
+549,27,Cookie,39.41,True
+550,27,Cup cake,17.86,True
+551,27,Dumplings,26.32,True
+552,27,Fried chicken,19.9,True
+553,27,Pasta,33.81,True
+554,27,PastrySmoothie,27.62,True
+555,27,Pizza,16.83,True
+556,27,Salad,30.64,True
+557,27,Shawarma,37.42,True
+558,27,Soup,46.2,True
+559,27,Sushi,30.79,True
+560,27,Taccos,38.53,True
+561,27,Whole cake,36.37,True
+562,28,Beef pie,33.78,True
+563,28,Briyani rice,30.12,True
+564,28,Burger,35.36,True
+565,28,Burritos,35.59,True
+566,28,Chicken pie,31.63,True
+567,28,Chicken rice,26.39,True
+568,28,Chicken wings,14.46,True
+569,28,CoffeeBoba tea,20.63,True
+570,28,Cookie,29.16,True
+571,28,Cup cake,19.89,True
+572,28,Dumplings,28.66,True
+573,28,Fried chicken,22.83,True
+574,28,Pasta,25.01,True
+575,28,PastrySmoothie,34.84,True
+576,28,Pizza,30.05,True
+577,28,Salad,28.93,True
+578,28,Shawarma,14.67,True
+579,28,Soup,22.51,True
+580,28,Sushi,21.4,True
+581,28,Taccos,29.7,True
+582,28,Whole cake,17.52,True
+583,29,Beef pie,27.96,True
+584,29,Briyani rice,31.45,True
+585,29,Burger,27.98,True
+586,29,Burritos,36.04,True
+587,29,Chicken pie,38.38,True
+588,29,Chicken rice,23.63,True
+589,29,Chicken wings,23.02,True
+590,29,CoffeeBoba tea,25.64,True
+591,29,Cookie,29.06,True
+592,29,Cup cake,28.82,True
+593,29,Dumplings,26.61,True
+594,29,Fried chicken,30.67,True
+595,29,Pasta,26.26,True
+596,29,PastrySmoothie,27.24,True
+597,29,Pizza,33.87,True
+598,29,Salad,35.02,True
+599,29,Shawarma,42.99,True
+600,29,Soup,28.81,True
+601,29,Sushi,24.75,True
+602,29,Taccos,31.16,True
+603,29,Whole cake,27.58,True
+604,30,Beef pie,23.61,True
+605,30,Briyani rice,27.07,True
+606,30,Burger,17.96,True
+607,30,Burritos,33.35,True
+608,30,Chicken pie,34.15,True
+609,30,Chicken rice,18.09,True
+610,30,Chicken wings,35.16,True
+611,30,CoffeeBoba tea,41.83,True
+612,30,Cup cake,35.79,True
+613,30,Dumplings,26.61,True
+614,30,Fried chicken,27.45,True
+615,30,Pasta,24.32,True
+616,30,PastrySmoothie,34.1,True
+617,30,Pizza,38.48,True
+618,30,Salad,29.41,True
+619,30,Shawarma,27.85,True
+620,30,Soup,26.66,True
+621,30,Sushi,31.34,True
+622,30,Taccos,22.77,True
+623,30,Whole cake,32.51,True
+624,31,Beef pie,35.92,True
+625,31,Burger,34.83,True
+626,31,Burritos,13.05,True
+627,31,Chicken pie,15.98,True
+628,31,Chicken rice,34.06,True
+629,31,Chicken wings,13.09,True
+630,31,CoffeeBoba tea,18.18,True
+631,31,Cookie,37.0,True
+632,31,Cup cake,16.11,True
+633,31,Dumplings,25.31,True
+634,31,Fried chicken,26.7,True
+635,31,Pasta,26.14,True
+636,31,PastrySmoothie,26.27,True
+637,31,Pizza,40.23,True
+638,31,Salad,14.98,True
+639,31,Shawarma,23.53,True
+640,31,Soup,33.13,True
+641,31,Sushi,31.31,True
+642,31,Taccos,24.62,True
+643,31,Whole cake,36.65,True
+644,32,Beef pie,27.84,True
+645,32,Briyani rice,18.55,True
+646,32,Burger,30.4,True
+647,32,Burritos,16.69,True
+648,32,Chicken pie,26.29,True
+649,32,Chicken rice,33.88,True
+650,32,Chicken wings,13.85,True
+651,32,CoffeeBoba tea,29.15,True
+652,32,Cookie,23.54,True
+653,32,Cup cake,35.14,True
+654,32,Dumplings,25.25,True
+655,32,Fried chicken,23.87,True
+656,32,Pasta,18.41,True
+657,32,PastrySmoothie,40.75,True
+658,32,Pizza,22.89,True
+659,32,Salad,14.02,True
+660,32,Shawarma,19.75,True
+661,32,Sushi,28.93,True
+662,32,Taccos,30.48,True
+663,32,Whole cake,23.13,True
+664,33,Beef pie,24.75,True
+665,33,Briyani rice,33.27,True
+666,33,Burger,20.04,True
+667,33,Burritos,22.42,True
+668,33,Chicken pie,6.35,True
+669,33,Chicken rice,20.36,True
+670,33,Chicken wings,25.56,True
+671,33,CoffeeBoba tea,29.85,True
+672,33,Cookie,11.99,True
+673,33,Cup cake,30.43,True
+674,33,Dumplings,23.52,True
+675,33,Fried chicken,21.97,True
+676,33,Pasta,32.67,True
+677,33,PastrySmoothie,33.33,True
+678,33,Pizza,23.18,True
+679,33,Salad,32.19,True
+680,33,Shawarma,28.66,True
+681,33,Soup,19.59,True
+682,33,Sushi,22.68,True
+683,33,Taccos,18.01,True
+684,33,Whole cake,30.27,True
+685,34,Beef pie,32.02,True
+686,34,Briyani rice,29.55,True
+687,34,Burger,37.26,True
+688,34,Burritos,29.5,True
+689,34,Chicken pie,21.45,True
+690,34,Chicken rice,27.24,True
+691,34,Chicken wings,32.01,True
+692,34,CoffeeBoba tea,29.93,True
+693,34,Cookie,40.33,True
+694,34,Cup cake,24.59,True
+695,34,Dumplings,18.43,True
+696,34,Fried chicken,27.75,True
+697,34,Pasta,26.25,True
+698,34,PastrySmoothie,35.42,True
+699,34,Pizza,15.91,True
+700,34,Salad,36.03,True
+701,34,Shawarma,33.05,True
+702,34,Soup,14.42,True
+703,34,Sushi,29.25,True
+704,34,Taccos,33.09,True
+705,34,Whole cake,21.86,True
+706,35,Beef pie,25.62,True
+707,35,Briyani rice,27.93,True
+708,35,Burger,29.32,True
+709,35,Burritos,30.56,True
+710,35,Chicken pie,27.82,True
+711,35,Chicken rice,25.28,True
+712,35,Chicken wings,29.06,True
+713,35,CoffeeBoba tea,32.27,True
+714,35,Cookie,33.29,True
+715,35,Cup cake,22.26,True
+716,35,Dumplings,22.39,True
+717,35,Fried chicken,17.77,True
+718,35,Pasta,29.56,True
+719,35,PastrySmoothie,26.02,True
+720,35,Pizza,21.0,True
+721,35,Salad,26.6,True
+722,35,Shawarma,26.99,True
+723,35,Soup,37.11,True
+724,35,Sushi,22.11,True
+725,35,Taccos,29.59,True
+726,35,Whole cake,29.5,True
+727,36,Beef pie,28.76,True
+728,36,Briyani rice,35.62,True
+729,36,Burger,29.46,True
+730,36,Chicken pie,24.48,True
+731,36,Chicken rice,42.03,True
+732,36,Chicken wings,38.99,True
+733,36,CoffeeBoba tea,47.88,True
+734,36,Cookie,24.21,True
+735,36,Cup cake,26.38,True
+736,36,Dumplings,28.98,True
+737,36,Fried chicken,24.02,True
+738,36,Pasta,29.28,True
+739,36,PastrySmoothie,35.05,True
+740,36,Pizza,29.91,True
+741,36,Salad,24.67,True
+742,36,Shawarma,32.41,True
+743,36,Soup,33.02,True
+744,36,Sushi,19.48,True
+745,36,Taccos,21.89,True
+746,36,Whole cake,34.3,True
+747,37,Beef pie,13.35,True
+748,37,Briyani rice,29.42,True
+749,37,Burger,26.64,True
+750,37,Burritos,19.26,True
+751,37,Chicken pie,21.05,True
+752,37,Chicken rice,22.26,True
+753,37,Chicken wings,31.0,True
+754,37,CoffeeBoba tea,11.71,True
+755,37,Cookie,12.79,True
+756,37,Cup cake,24.38,True
+757,37,Dumplings,25.21,True
+758,37,Fried chicken,32.12,True
+759,37,Pasta,28.52,True
+760,37,PastrySmoothie,33.69,True
+761,37,Pizza,26.16,True
+762,37,Salad,30.19,True
+763,37,Shawarma,26.71,True
+764,37,Soup,24.28,True
+765,37,Sushi,46.29,True
+766,37,Taccos,22.36,True
+767,37,Whole cake,18.2,True
+768,38,Beef pie,32.12,True
+769,38,Briyani rice,25.56,True
+770,38,Burger,34.49,True
+771,38,Burritos,22.52,True
+772,38,Chicken pie,26.88,True
+773,38,Chicken rice,27.03,True
+774,38,Chicken wings,18.21,True
+775,38,CoffeeBoba tea,19.69,True
+776,38,Cookie,30.02,True
+777,38,Cup cake,27.21,True
+778,38,Dumplings,29.12,True
+779,38,Fried chicken,27.18,True
+780,38,Pasta,23.78,True
+781,38,PastrySmoothie,33.6,True
+782,38,Pizza,19.81,True
+783,38,Salad,24.05,True
+784,38,Shawarma,17.29,True
+785,38,Soup,26.24,True
+786,38,Sushi,17.46,True
+787,38,Taccos,26.74,True
+788,38,Whole cake,32.74,True
+789,39,Beef pie,18.02,True
+790,39,Briyani rice,40.42,True
+791,39,Burger,29.29,True
+792,39,Burritos,24.68,True
+793,39,Chicken pie,28.27,True
+794,39,Chicken rice,26.19,True
+795,39,Chicken wings,36.46,True
+796,39,CoffeeBoba tea,16.43,True
+797,39,Cookie,27.56,True
+798,39,Cup cake,38.22,True
+799,39,Dumplings,38.77,True
+800,39,Fried chicken,31.68,True
+801,39,Pasta,24.68,True
+802,39,PastrySmoothie,16.43,True
+803,39,Pizza,16.26,True
+804,39,Salad,21.12,True
+805,39,Shawarma,34.7,True
+806,39,Soup,32.77,True
+807,39,Sushi,27.19,True
+808,39,Taccos,27.0,True
+809,39,Whole cake,28.07,True
+810,40,Beef pie,30.17,True
+811,40,Briyani rice,29.99,True
+812,40,Burger,35.12,True
+813,40,Burritos,17.74,True
+814,40,Chicken pie,28.52,True
+815,40,Chicken rice,33.27,True
+816,40,Chicken wings,35.65,True
+817,40,CoffeeBoba tea,15.14,True
+818,40,Cookie,34.15,True
+819,40,Cup cake,23.18,True
+820,40,Dumplings,24.48,True
+821,40,Fried chicken,30.38,True
+822,40,Pasta,25.28,True
+823,40,PastrySmoothie,27.5,True
+824,40,Pizza,33.48,True
+825,40,Salad,33.04,True
+826,40,Shawarma,30.73,True
+827,40,Soup,29.8,True
+828,40,Sushi,29.34,True
+829,40,Taccos,26.36,True
+830,40,Whole cake,22.89,True
+831,41,Beef pie,26.29,True
+832,41,Briyani rice,30.99,True
+833,41,Burger,26.01,True
+834,41,Burritos,26.32,True
+835,41,Chicken pie,19.66,True
+836,41,Chicken rice,24.6,True
+837,41,Chicken wings,27.15,True
+838,41,CoffeeBoba tea,25.05,True
+839,41,Cookie,26.5,True
+840,41,Cup cake,30.53,True
+841,41,Dumplings,37.32,True
+842,41,Fried chicken,25.8,True
+843,41,Pasta,31.74,True
+844,41,PastrySmoothie,23.59,True
+845,41,Pizza,33.14,True
+846,41,Salad,37.67,True
+847,41,Shawarma,31.9,True
+848,41,Soup,27.96,True
+849,41,Sushi,35.59,True
+850,41,Taccos,28.95,True
+851,41,Whole cake,26.88,True
+852,42,Beef pie,35.07,True
+853,42,Burger,22.17,True
+854,42,Burritos,21.25,True
+855,42,Chicken pie,14.23,True
+856,42,Chicken rice,18.03,True
+857,42,Chicken wings,28.08,True
+858,42,CoffeeBoba tea,17.57,True
+859,42,Cookie,28.75,True
+860,42,Cup cake,28.77,True
+861,42,Dumplings,27.17,True
+862,42,Fried chicken,36.41,True
+863,42,Pasta,26.41,True
+864,42,PastrySmoothie,23.04,True
+865,42,Pizza,26.85,True
+866,42,Salad,39.39,True
+867,42,Shawarma,32.3,True
+868,42,Soup,22.05,True
+869,42,Sushi,29.33,True
+870,42,Taccos,23.8,True
+871,42,Whole cake,38.69,True
+872,43,Beef pie,24.47,True
+873,43,Briyani rice,22.64,True
+874,43,Burger,27.05,True
+875,43,Burritos,37.36,True
+876,43,Chicken pie,24.35,True
+877,43,Chicken rice,28.25,True
+878,43,Chicken wings,28.7,True
+879,43,CoffeeBoba tea,28.16,True
+880,43,Cookie,30.81,True
+881,43,Cup cake,44.01,True
+882,43,Dumplings,29.74,True
+883,43,Fried chicken,42.23,True
+884,43,Pasta,29.95,True
+885,43,PastrySmoothie,10.67,True
+886,43,Pizza,32.59,True
+887,43,Salad,29.12,True
+888,43,Shawarma,20.27,True
+889,43,Soup,27.99,True
+890,43,Sushi,29.42,True
+891,43,Taccos,22.4,True
+892,43,Whole cake,26.51,True
+893,44,Beef pie,30.29,True
+894,44,Briyani rice,27.7,True
+895,44,Burger,23.81,True
+896,44,Burritos,35.69,True
+897,44,Chicken pie,23.11,True
+898,44,Chicken rice,36.12,True
+899,44,Chicken wings,30.0,True
+900,44,CoffeeBoba tea,25.78,True
+901,44,Cookie,30.04,True
+902,44,Cup cake,16.2,True
+903,44,Dumplings,21.08,True
+904,44,Fried chicken,8.54,True
+905,44,Pasta,32.91,True
+906,44,PastrySmoothie,30.09,True
+907,44,Pizza,34.79,True
+908,44,Salad,26.81,True
+909,44,Shawarma,28.96,True
+910,44,Soup,30.87,True
+911,44,Sushi,42.21,True
+912,44,Taccos,33.34,True
+913,44,Whole cake,17.58,True
+914,45,Beef pie,28.3,True
+915,45,Briyani rice,24.14,True
+916,45,Burger,36.52,True
+917,45,Burritos,17.12,True
+918,45,Chicken pie,21.98,True
+919,45,Chicken rice,29.58,True
+920,45,Chicken wings,24.17,True
+921,45,CoffeeBoba tea,25.94,True
+922,45,Cookie,16.97,True
+923,45,Cup cake,21.33,True
+924,45,Dumplings,23.94,True
+925,45,Fried chicken,38.44,True
+926,45,Pasta,19.22,True
+927,45,PastrySmoothie,28.6,True
+928,45,Pizza,19.37,True
+929,45,Salad,19.95,True
+930,45,Shawarma,25.5,True
+931,45,Soup,27.31,True
+932,45,Sushi,27.17,True
+933,45,Taccos,32.46,True
+934,45,Whole cake,23.57,True
+935,46,Beef pie,26.95,True
+936,46,Briyani rice,17.0,True
+937,46,Burger,28.94,True
+938,46,Burritos,22.0,True
+939,46,Chicken pie,23.96,True
+940,46,Chicken rice,32.54,True
+941,46,Chicken wings,24.72,True
+942,46,CoffeeBoba tea,19.72,True
+943,46,Cookie,30.21,True
+944,46,Cup cake,30.23,True
+945,46,Dumplings,41.93,True
+946,46,Fried chicken,33.04,True
+947,46,Pasta,21.6,True
+948,46,PastrySmoothie,31.38,True
+949,46,Pizza,12.6,True
+950,46,Salad,19.22,True
+951,46,Shawarma,39.44,True
+952,46,Soup,30.84,True
+953,46,Sushi,37.09,True
+954,46,Taccos,37.78,True
+955,46,Whole cake,19.74,True
+956,47,Beef pie,47.26,True
+957,47,Briyani rice,26.2,True
+958,47,Burger,27.89,True
+959,47,Burritos,11.98,True
+960,47,Chicken pie,40.26,True
+961,47,Chicken rice,30.54,True
+962,47,Chicken wings,28.39,True
+963,47,CoffeeBoba tea,40.7,True
+964,47,Cookie,28.51,True
+965,47,Cup cake,17.73,True
+966,47,Dumplings,15.59,True
+967,47,Fried chicken,26.78,True
+968,47,Pasta,34.75,True
+969,47,PastrySmoothie,31.82,True
+970,47,Pizza,21.16,True
+971,47,Salad,12.61,True
+972,47,Shawarma,33.38,True
+973,47,Soup,27.21,True
+974,47,Sushi,27.94,True
+975,47,Taccos,25.88,True
+976,47,Whole cake,30.89,True
+977,48,Beef pie,28.31,True
+978,48,Briyani rice,23.89,True
+979,48,Burger,30.0,True
+980,48,Burritos,31.32,True
+981,48,Chicken pie,28.67,True
+982,48,Chicken rice,26.37,True
+983,48,Chicken wings,12.7,True
+984,48,CoffeeBoba tea,28.87,True
+985,48,Cookie,11.24,True
+986,48,Cup cake,27.29,True
+987,48,Dumplings,29.23,True
+988,48,Fried chicken,37.09,True
+989,48,Pasta,28.48,True
+990,48,PastrySmoothie,29.4,True
+991,48,Pizza,38.52,True
+992,48,Salad,25.66,True
+993,48,Shawarma,24.82,True
+994,48,Soup,33.43,True
+995,48,Sushi,36.7,True
+996,48,Taccos,22.27,True
+997,48,Whole cake,27.18,True
+998,49,Beef pie,35.82,True
+999,49,Briyani rice,29.78,True
+1000,49,Burger,26.55,True
+1001,49,Burritos,30.5,True
+1002,49,Chicken pie,24.76,True
+1003,49,Chicken rice,35.23,True
+1004,49,Chicken wings,23.82,True
+1005,49,CoffeeBoba tea,35.21,True
+1006,49,Cookie,23.05,True
+1007,49,Cup cake,36.98,True
+1008,49,Dumplings,29.92,True
+1009,49,Fried chicken,30.49,True
+1010,49,Pasta,28.06,True
+1011,49,PastrySmoothie,18.03,True
+1012,49,Pizza,17.94,True
+1013,49,Salad,32.46,True
+1014,49,Shawarma,25.97,True
+1015,49,Soup,23.9,True
+1016,49,Sushi,38.37,True
+1017,49,Taccos,22.64,True
+1018,49,Whole cake,20.67,True
+1019,50,Beef pie,32.15,True
+1020,50,Briyani rice,22.56,True
+1021,50,Burger,20.0,True
+1022,50,Burritos,26.15,True
+1023,50,Chicken pie,27.14,True
+1024,50,Chicken rice,40.41,True
+1025,50,Chicken wings,29.53,True
+1026,50,CoffeeBoba tea,24.16,True
+1027,50,Cookie,31.68,True
+1028,50,Cup cake,25.3,True
+1029,50,Dumplings,29.39,True
+1030,50,Fried chicken,25.39,True
+1031,50,Pasta,30.12,True
+1032,50,PastrySmoothie,18.12,True
+1033,50,Pizza,21.92,True
+1034,50,Salad,38.93,True
+1035,50,Shawarma,29.65,True
+1036,50,Soup,16.82,True
+1037,50,Sushi,48.34,True
+1038,50,Taccos,35.37,True
+1039,50,Whole cake,10.96,True
+1040,51,Beef pie,24.02,True
+1041,51,Briyani rice,27.59,True
+1042,51,Burger,28.6,True
+1043,51,Burritos,26.85,True
+1044,51,Chicken pie,18.54,True
+1045,51,Chicken rice,33.02,True
+1046,51,Chicken wings,25.01,True
+1047,51,CoffeeBoba tea,23.12,True
+1048,51,Cookie,35.13,True
+1049,51,Cup cake,30.13,True
+1050,51,Dumplings,32.77,True
+1051,51,Fried chicken,22.27,True
+1052,51,Pasta,31.53,True
+1053,51,PastrySmoothie,24.19,True
+1054,51,Pizza,42.77,True
+1055,51,Salad,19.88,True
+1056,51,Shawarma,21.63,True
+1057,51,Soup,35.68,True
+1058,51,Sushi,35.36,True
+1059,51,Taccos,24.95,True
+1060,51,Whole cake,35.55,True
+1061,52,Beef pie,45.19,True
+1062,52,Briyani rice,28.48,True
+1063,52,Burger,24.47,True
+1064,52,Burritos,40.73,True
+1065,52,Chicken pie,16.81,True
+1066,52,Chicken rice,29.76,True
+1067,52,Chicken wings,30.37,True
+1068,52,CoffeeBoba tea,37.0,True
+1069,52,Cookie,29.02,True
+1070,52,Cup cake,28.74,True
+1071,52,Dumplings,22.98,True
+1072,52,Fried chicken,25.93,True
+1073,52,Pasta,35.49,True
+1074,52,PastrySmoothie,25.94,True
+1075,52,Pizza,25.08,True
+1076,52,Salad,16.42,True
+1077,52,Shawarma,36.81,True
+1078,52,Soup,30.91,True
+1079,52,Sushi,28.03,True
+1080,52,Taccos,24.28,True
+1081,52,Whole cake,31.81,True
+1082,53,Beef pie,36.2,True
+1083,53,Briyani rice,16.91,True
+1084,53,Burger,28.37,True
+1085,53,Burritos,40.6,True
+1086,53,Chicken pie,41.47,True
+1087,53,Chicken rice,36.08,True
+1088,53,Chicken wings,25.79,True
+1089,53,CoffeeBoba tea,29.3,True
+1090,53,Cookie,24.07,True
+1091,53,Cup cake,35.94,True
+1092,53,Dumplings,24.72,True
+1093,53,Fried chicken,19.21,True
+1094,53,Pasta,36.13,True
+1095,53,PastrySmoothie,24.34,True
+1096,53,Pizza,30.81,True
+1097,53,Salad,22.45,True
+1098,53,Shawarma,29.3,True
+1099,53,Soup,31.59,True
+1100,53,Sushi,24.66,True
+1101,53,Taccos,29.33,True
+1102,53,Whole cake,26.22,True
+1103,54,Beef pie,22.71,True
+1104,54,Briyani rice,23.09,True
+1105,54,Burger,14.32,True
+1106,54,Burritos,19.79,True
+1107,54,Chicken pie,11.44,True
+1108,54,Chicken rice,24.69,True
+1109,54,Chicken wings,22.56,True
+1110,54,CoffeeBoba tea,28.1,True
+1111,54,Cookie,31.26,True
+1112,54,Cup cake,35.36,True
+1113,54,Dumplings,9.73,True
+1114,54,Fried chicken,31.69,True
+1115,54,Pasta,32.81,True
+1116,54,PastrySmoothie,27.27,True
+1117,54,Pizza,24.95,True
+1118,54,Salad,25.12,True
+1119,54,Shawarma,14.11,True
+1120,54,Soup,30.5,True
+1121,54,Sushi,36.49,True
+1122,54,Taccos,25.49,True
+1123,54,Whole cake,29.7,True
+1124,55,Beef pie,18.14,True
+1125,55,Briyani rice,22.79,True
+1126,55,Burger,27.33,True
+1127,55,Burritos,24.45,True
+1128,55,Chicken pie,37.42,True
+1129,55,Chicken rice,30.01,True
+1130,55,Chicken wings,43.14,True
+1131,55,CoffeeBoba tea,23.13,True
+1132,55,Cookie,32.38,True
+1133,55,Cup cake,29.09,True
+1134,55,Dumplings,29.67,True
+1135,55,Fried chicken,23.25,True
+1136,55,Pasta,27.15,True
+1137,55,PastrySmoothie,26.49,True
+1138,55,Pizza,20.15,True
+1139,55,Salad,13.41,True
+1140,55,Shawarma,10.15,True
+1141,55,Soup,25.56,True
+1142,55,Sushi,26.1,True
+1143,55,Taccos,18.66,True
+1144,55,Whole cake,7.37,True
+1145,56,Beef pie,43.33,True
+1146,56,Briyani rice,11.84,True
+1147,56,Burger,20.68,True
+1148,56,Burritos,25.42,True
+1149,56,Chicken pie,38.58,True
+1150,56,Chicken rice,22.34,True
+1151,56,Chicken wings,17.34,True
+1152,56,CoffeeBoba tea,28.97,True
+1153,56,Cookie,29.69,True
+1154,56,Cup cake,43.19,True
+1155,56,Dumplings,27.51,True
+1156,56,Fried chicken,35.95,True
+1157,56,Pasta,22.81,True
+1158,56,PastrySmoothie,28.95,True
+1159,56,Pizza,22.97,True
+1160,56,Salad,27.73,True
+1161,56,Shawarma,30.03,True
+1162,56,Soup,24.73,True
+1163,56,Sushi,22.78,True
+1164,56,Taccos,36.73,True
+1165,56,Whole cake,29.28,True
+1166,57,Beef pie,25.68,True
+1167,57,Briyani rice,21.82,True
+1168,57,Burger,16.13,True
+1169,57,Burritos,29.95,True
+1170,57,Chicken pie,26.38,True
+1171,57,Chicken rice,24.79,True
+1172,57,Chicken wings,37.95,True
+1173,57,CoffeeBoba tea,27.43,True
+1174,57,Cookie,25.7,True
+1175,57,Cup cake,34.18,True
+1176,57,Dumplings,27.16,True
+1177,57,Fried chicken,38.25,True
+1178,57,Pasta,23.82,True
+1179,57,PastrySmoothie,30.95,True
+1180,57,Pizza,31.39,True
+1181,57,Salad,25.43,True
+1182,57,Shawarma,32.59,True
+1183,57,Soup,20.72,True
+1184,57,Sushi,25.13,True
+1185,57,Taccos,17.2,True
+1186,57,Whole cake,42.39,True
+1187,58,Beef pie,16.64,True
+1188,58,Briyani rice,9.46,True
+1189,58,Burger,39.25,True
+1190,58,Burritos,33.06,True
+1191,58,Chicken pie,23.34,True
+1192,58,Chicken rice,28.55,True
+1193,58,Chicken wings,28.52,True
+1194,58,CoffeeBoba tea,36.36,True
+1195,58,Cookie,26.99,True
+1196,58,Cup cake,29.75,True
+1197,58,Dumplings,29.87,True
+1198,58,Fried chicken,31.01,True
+1199,58,Pasta,22.07,True
+1200,58,PastrySmoothie,24.85,True
+1201,58,Pizza,34.34,True
+1202,58,Salad,29.01,True
+1203,58,Shawarma,38.05,True
+1204,58,Soup,22.76,True
+1205,58,Sushi,25.14,True
+1206,58,Taccos,25.29,True
+1207,58,Whole cake,11.11,True
+1208,59,Beef pie,26.05,True
+1209,59,Briyani rice,22.79,True
+1210,59,Burger,18.1,True
+1211,59,Burritos,20.13,True
+1212,59,Chicken pie,25.51,True
+1213,59,Chicken rice,31.53,True
+1214,59,Chicken wings,19.33,True
+1215,59,CoffeeBoba tea,30.58,True
+1216,59,Cookie,26.1,True
+1217,59,Cup cake,18.97,True
+1218,59,Dumplings,29.91,True
+1219,59,Fried chicken,40.55,True
+1220,59,Pasta,20.77,True
+1221,59,PastrySmoothie,24.7,True
+1222,59,Pizza,21.26,True
+1223,59,Salad,12.52,True
+1224,59,Shawarma,30.9,True
+1225,59,Soup,11.61,True
+1226,59,Sushi,17.86,True
+1227,59,Taccos,22.5,True
+1228,59,Whole cake,32.16,True
+1229,60,Beef pie,26.07,True
+1230,60,Briyani rice,30.38,True
+1231,60,Burger,33.9,True
+1232,60,Burritos,36.46,True
+1233,60,Chicken pie,30.38,True
+1234,60,Chicken rice,28.53,True
+1235,60,Chicken wings,32.73,True
+1236,60,CoffeeBoba tea,32.04,True
+1237,60,Cookie,31.03,True
+1238,60,Cup cake,26.76,True
+1239,60,Dumplings,30.69,True
+1240,60,Fried chicken,19.9,True
+1241,60,Pasta,24.2,True
+1242,60,PastrySmoothie,33.18,True
+1243,60,Pizza,37.69,True
+1244,60,Salad,14.53,True
+1245,60,Shawarma,25.2,True
+1246,60,Soup,23.53,True
+1247,60,Sushi,17.12,True
+1248,60,Taccos,16.34,True
+1249,60,Whole cake,27.29,True
+1250,61,Beef pie,32.2,True
+1251,61,Briyani rice,25.09,True
+1252,61,Burger,23.27,True
+1253,61,Burritos,29.62,True
+1254,61,Chicken pie,19.01,True
+1255,61,Chicken rice,28.03,True
+1256,61,Chicken wings,39.6,True
+1257,61,CoffeeBoba tea,23.66,True
+1258,61,Cookie,21.87,True
+1259,61,Cup cake,28.83,True
+1260,61,Dumplings,25.1,True
+1261,61,Fried chicken,35.82,True
+1262,61,Pasta,26.29,True
+1263,61,PastrySmoothie,27.68,True
+1264,61,Pizza,38.28,True
+1265,61,Salad,32.26,True
+1266,61,Shawarma,34.52,True
+1267,61,Soup,39.9,True
+1268,61,Sushi,32.14,True
+1269,61,Taccos,30.82,True
+1270,61,Whole cake,28.06,True
+1271,62,Beef pie,24.74,True
+1272,62,Briyani rice,37.77,True
+1273,62,Burger,43.16,True
+1274,62,Burritos,28.92,True
+1275,62,Chicken pie,14.17,True
+1276,62,Chicken rice,25.0,True
+1277,62,Chicken wings,27.63,True
+1278,62,CoffeeBoba tea,28.6,True
+1279,62,Cookie,24.45,True
+1280,62,Cup cake,34.3,True
+1281,62,Dumplings,33.49,True
+1282,62,Fried chicken,21.96,True
+1283,62,Pasta,31.33,True
+1284,62,PastrySmoothie,20.28,True
+1285,62,Pizza,25.65,True
+1286,62,Salad,30.78,True
+1287,62,Shawarma,25.55,True
+1288,62,Soup,16.43,True
+1289,62,Sushi,28.16,True
+1290,62,Taccos,23.94,True
+1291,62,Whole cake,21.35,True
+1292,63,Beef pie,33.87,True
+1293,63,Briyani rice,34.66,True
+1294,63,Burger,25.14,True
+1295,63,Burritos,44.66,True
+1296,63,Chicken pie,24.85,True
+1297,63,Chicken rice,28.39,True
+1298,63,Chicken wings,21.55,True
+1299,63,CoffeeBoba tea,21.29,True
+1300,63,Cookie,21.98,True
+1301,63,Cup cake,37.63,True
+1302,63,Dumplings,21.96,True
+1303,63,Fried chicken,29.93,True
+1304,63,Pasta,26.73,True
+1305,63,PastrySmoothie,41.81,True
+1306,63,Pizza,26.99,True
+1307,63,Salad,26.97,True
+1308,63,Shawarma,28.01,True
+1309,63,Soup,25.37,True
+1310,63,Sushi,14.72,True
+1311,63,Taccos,23.38,True
+1312,63,Whole cake,17.35,True
+1313,64,Beef pie,21.3,True
+1314,64,Briyani rice,31.12,True
+1315,64,Burger,27.71,True
+1316,64,Burritos,13.16,True
+1317,64,Chicken pie,34.75,True
+1318,64,Chicken rice,26.14,True
+1319,64,Chicken wings,14.21,True
+1320,64,CoffeeBoba tea,22.81,True
+1321,64,Cookie,20.8,True
+1322,64,Cup cake,29.09,True
+1323,64,Dumplings,17.76,True
+1324,64,Fried chicken,23.08,True
+1325,64,Pasta,25.72,True
+1326,64,PastrySmoothie,40.5,True
+1327,64,Pizza,32.19,True
+1328,64,Salad,40.27,True
+1329,64,Shawarma,31.3,True
+1330,64,Soup,24.04,True
+1331,64,Sushi,36.58,True
+1332,64,Taccos,33.22,True
+1333,64,Whole cake,39.87,True
+1334,65,Beef pie,33.75,True
+1335,65,Briyani rice,29.47,True
+1336,65,Burger,19.34,True
+1337,65,Burritos,22.62,True
+1338,65,Chicken pie,24.02,True
+1339,65,Chicken rice,21.52,True
+1340,65,Chicken wings,26.01,True
+1341,65,CoffeeBoba tea,34.72,True
+1342,65,Cookie,38.23,True
+1343,65,Cup cake,37.79,True
+1344,65,Dumplings,26.0,True
+1345,65,Fried chicken,37.33,True
+1346,65,Pasta,35.84,True
+1347,65,PastrySmoothie,31.36,True
+1348,65,Pizza,30.18,True
+1349,65,Salad,20.55,True
+1350,65,Shawarma,42.25,True
+1351,65,Soup,29.95,True
+1352,65,Sushi,26.39,True
+1353,65,Taccos,20.91,True
+1354,65,Whole cake,23.14,True
+1355,66,Beef pie,27.78,True
+1356,66,Briyani rice,32.93,True
+1357,66,Burger,25.6,True
+1358,66,Burritos,28.64,True
+1359,66,Chicken pie,33.94,True
+1360,66,Chicken rice,26.58,True
+1361,66,Chicken wings,38.88,True
+1362,66,CoffeeBoba tea,23.71,True
+1363,66,Cookie,9.11,True
+1364,66,Cup cake,27.66,True
+1365,66,Dumplings,31.0,True
+1366,66,Fried chicken,26.18,True
+1367,66,Pasta,25.64,True
+1368,66,PastrySmoothie,30.03,True
+1369,66,Pizza,36.01,True
+1370,66,Salad,16.01,True
+1371,66,Shawarma,28.73,True
+1372,66,Soup,17.79,True
+1373,66,Sushi,19.08,True
+1374,66,Taccos,25.09,True
+1375,66,Whole cake,18.95,True
+1376,67,Beef pie,24.04,True
+1377,67,Briyani rice,30.28,True
+1378,67,Burger,23.45,True
+1379,67,Burritos,24.19,True
+1380,67,Chicken pie,28.91,True
+1381,67,Chicken rice,42.1,True
+1382,67,Chicken wings,25.39,True
+1383,67,CoffeeBoba tea,30.62,True
+1384,67,Cookie,26.59,True
+1385,67,Cup cake,21.29,True
+1386,67,Dumplings,7.74,True
+1387,67,Fried chicken,38.89,True
+1388,67,Pasta,31.8,True
+1389,67,PastrySmoothie,24.67,True
+1390,67,Pizza,31.06,True
+1391,67,Salad,34.25,True
+1392,67,Shawarma,23.88,True
+1393,67,Soup,9.46,True
+1394,67,Sushi,21.09,True
+1395,67,Taccos,38.22,True
+1396,67,Whole cake,32.77,True
+1397,68,Beef pie,30.05,True
+1398,68,Briyani rice,14.0,True
+1399,68,Burritos,25.74,True
+1400,68,Chicken pie,32.51,True
+1401,68,Chicken rice,26.65,True
+1402,68,Chicken wings,28.66,True
+1403,68,CoffeeBoba tea,11.78,True
+1404,68,Cookie,39.52,True
+1405,68,Cup cake,28.93,True
+1406,68,Dumplings,24.53,True
+1407,68,Fried chicken,19.62,True
+1408,68,Pasta,34.03,True
+1409,68,PastrySmoothie,22.26,True
+1410,68,Pizza,24.43,True
+1411,68,Salad,24.93,True
+1412,68,Shawarma,24.45,True
+1413,68,Soup,25.37,True
+1414,68,Sushi,34.42,True
+1415,68,Taccos,14.64,True
+1416,68,Whole cake,32.38,True
+1417,69,Beef pie,17.59,True
+1418,69,Briyani rice,22.83,True
+1419,69,Burger,33.66,True
+1420,69,Burritos,25.77,True
+1421,69,Chicken pie,15.61,True
+1422,69,Chicken rice,18.1,True
+1423,69,Chicken wings,19.8,True
+1424,69,CoffeeBoba tea,20.28,True
+1425,69,Cookie,36.59,True
+1426,69,Cup cake,35.11,True
+1427,69,Dumplings,37.81,True
+1428,69,Fried chicken,32.19,True
+1429,69,Pasta,38.59,True
+1430,69,PastrySmoothie,13.61,True
+1431,69,Pizza,19.91,True
+1432,69,Salad,34.13,True
+1433,69,Shawarma,21.9,True
+1434,69,Soup,27.42,True
+1435,69,Sushi,24.04,True
+1436,69,Taccos,6.71,True
+1437,69,Whole cake,42.4,True
+1438,70,Beef pie,38.41,True
+1439,70,Briyani rice,37.59,True
+1440,70,Burger,26.8,True
+1441,70,Burritos,18.56,True
+1442,70,Chicken pie,29.18,True
+1443,70,Chicken rice,19.81,True
+1444,70,Chicken wings,26.66,True
+1445,70,CoffeeBoba tea,36.41,True
+1446,70,Cookie,23.5,True
+1447,70,Cup cake,19.35,True
+1448,70,Dumplings,39.9,True
+1449,70,Fried chicken,28.23,True
+1450,70,Pasta,24.07,True
+1451,70,PastrySmoothie,32.42,True
+1452,70,Pizza,33.01,True
+1453,70,Salad,22.4,True
+1454,70,Shawarma,14.43,True
+1455,70,Soup,26.35,True
+1456,70,Sushi,30.7,True
+1457,70,Taccos,23.52,True
+1458,70,Whole cake,40.18,True
+1459,71,Beef pie,23.19,True
+1460,71,Briyani rice,39.19,True
+1461,71,Burger,41.45,True
+1462,71,Burritos,25.91,True
+1463,71,Chicken pie,31.33,True
+1464,71,Chicken rice,28.86,True
+1465,71,Chicken wings,23.48,True
+1466,71,CoffeeBoba tea,31.94,True
+1467,71,Cookie,22.47,True
+1468,71,Cup cake,40.94,True
+1469,71,Dumplings,34.12,True
+1470,71,Fried chicken,24.94,True
+1471,71,Pasta,28.57,True
+1472,71,Pizza,30.16,True
+1473,71,Salad,18.47,True
+1474,71,Shawarma,36.62,True
+1475,71,Soup,32.92,True
+1476,71,Sushi,37.49,True
+1477,71,Taccos,13.29,True
+1478,71,Whole cake,38.45,True
+1479,72,Beef pie,33.91,True
+1480,72,Briyani rice,32.2,True
+1481,72,Burger,27.61,True
+1482,72,Burritos,20.23,True
+1483,72,Chicken pie,23.29,True
+1484,72,Chicken rice,27.75,True
+1485,72,Chicken wings,21.38,True
+1486,72,CoffeeBoba tea,32.21,True
+1487,72,Cookie,26.46,True
+1488,72,Cup cake,24.97,True
+1489,72,Dumplings,29.82,True
+1490,72,Fried chicken,19.5,True
+1491,72,Pasta,27.83,True
+1492,72,PastrySmoothie,27.87,True
+1493,72,Pizza,19.46,True
+1494,72,Salad,13.2,True
+1495,72,Shawarma,44.35,True
+1496,72,Soup,34.6,True
+1497,72,Sushi,29.94,True
+1498,72,Taccos,35.36,True
+1499,72,Whole cake,30.27,True
+1500,73,Beef pie,26.43,True
+1501,73,Briyani rice,29.4,True
+1502,73,Burger,23.06,True
+1503,73,Burritos,16.99,True
+1504,73,Chicken pie,16.33,True
+1505,73,Chicken rice,30.86,True
+1506,73,Chicken wings,23.29,True
+1507,73,CoffeeBoba tea,32.79,True
+1508,73,Cookie,27.48,True
+1509,73,Cup cake,11.02,True
+1510,73,Dumplings,41.01,True
+1511,73,Fried chicken,7.18,True
+1512,73,Pasta,29.63,True
+1513,73,PastrySmoothie,29.75,True
+1514,73,Pizza,22.07,True
+1515,73,Salad,29.81,True
+1516,73,Shawarma,38.55,True
+1517,73,Soup,23.2,True
+1518,73,Sushi,12.87,True
+1519,73,Taccos,38.51,True
+1520,73,Whole cake,24.71,True
+1521,74,Beef pie,39.92,True
+1522,74,Briyani rice,19.19,True
+1523,74,Burger,33.03,True
+1524,74,Burritos,18.6,True
+1525,74,Chicken pie,22.98,True
+1526,74,Chicken rice,20.18,True
+1527,74,Chicken wings,25.79,True
+1528,74,CoffeeBoba tea,37.14,True
+1529,74,Cookie,17.95,True
+1530,74,Cup cake,36.38,True
+1531,74,Dumplings,40.53,True
+1532,74,Fried chicken,27.55,True
+1533,74,Pasta,30.14,True
+1534,74,PastrySmoothie,27.37,True
+1535,74,Pizza,15.7,True
+1536,74,Salad,12.27,True
+1537,74,Shawarma,28.94,True
+1538,74,Soup,29.95,True
+1539,74,Sushi,34.73,True
+1540,74,Taccos,28.42,True
+1541,74,Whole cake,26.23,True
+1542,75,Beef pie,28.95,True
+1543,75,Briyani rice,24.16,True
+1544,75,Burger,31.62,True
+1545,75,Burritos,33.62,True
+1546,75,Chicken pie,29.63,True
+1547,75,Chicken rice,23.95,True
+1548,75,Chicken wings,34.7,True
+1549,75,CoffeeBoba tea,28.31,True
+1550,75,Cookie,27.07,True
+1551,75,Cup cake,28.02,True
+1552,75,Dumplings,34.37,True
+1553,75,Fried chicken,32.5,True
+1554,75,Pasta,33.66,True
+1555,75,PastrySmoothie,28.74,True
+1556,75,Pizza,33.45,True
+1557,75,Salad,16.46,True
+1558,75,Shawarma,31.54,True
+1559,75,Soup,29.03,True
+1560,75,Sushi,22.28,True
+1561,75,Taccos,22.04,True
+1562,75,Whole cake,32.81,True
+1563,76,Beef pie,12.11,True
+1564,76,Briyani rice,24.34,True
+1565,76,Burger,15.38,True
+1566,76,Burritos,29.28,True
+1567,76,Chicken pie,20.91,True
+1568,76,Chicken rice,46.81,True
+1569,76,Chicken wings,25.32,True
+1570,76,CoffeeBoba tea,27.82,True
+1571,76,Cookie,21.7,True
+1572,76,Cup cake,21.21,True
+1573,76,Dumplings,26.24,True
+1574,76,Fried chicken,31.94,True
+1575,76,Pasta,31.4,True
+1576,76,PastrySmoothie,24.85,True
+1577,76,Pizza,20.04,True
+1578,76,Salad,20.23,True
+1579,76,Shawarma,31.42,True
+1580,76,Soup,16.29,True
+1581,76,Sushi,22.41,True
+1582,76,Taccos,27.57,True
+1583,76,Whole cake,26.49,True
+1584,77,Beef pie,34.61,True
+1585,77,Briyani rice,23.32,True
+1586,77,Burger,33.97,True
+1587,77,Burritos,31.23,True
+1588,77,Chicken pie,18.46,True
+1589,77,Chicken rice,35.7,True
+1590,77,Chicken wings,30.61,True
+1591,77,CoffeeBoba tea,28.43,True
+1592,77,Cookie,24.81,True
+1593,77,Cup cake,22.67,True
+1594,77,Dumplings,25.34,True
+1595,77,Fried chicken,28.12,True
+1596,77,Pasta,25.59,True
+1597,77,PastrySmoothie,28.1,True
+1598,77,Pizza,29.29,True
+1599,77,Salad,25.54,True
+1600,77,Shawarma,27.66,True
+1601,77,Soup,27.88,True
+1602,77,Sushi,25.12,True
+1603,77,Taccos,36.51,True
+1604,77,Whole cake,21.86,True
+1605,78,Beef pie,26.49,True
+1606,78,Briyani rice,21.3,True
+1607,78,Burger,37.61,True
+1608,78,Burritos,26.99,True
+1609,78,Chicken pie,30.99,True
+1610,78,Chicken rice,33.36,True
+1611,78,Chicken wings,21.01,True
+1612,78,CoffeeBoba tea,26.18,True
+1613,78,Cookie,29.71,True
+1614,78,Cup cake,14.33,True
+1615,78,Dumplings,28.95,True
+1616,78,Fried chicken,18.38,True
+1617,78,Pasta,37.4,True
+1618,78,PastrySmoothie,22.01,True
+1619,78,Pizza,27.81,True
+1620,78,Salad,26.33,True
+1621,78,Shawarma,38.48,True
+1622,78,Soup,30.12,True
+1623,78,Sushi,23.84,True
+1624,78,Taccos,34.84,True
+1625,78,Whole cake,34.84,True
+1626,79,Beef pie,22.85,True
+1627,79,Briyani rice,23.89,True
+1628,79,Burger,25.59,True
+1629,79,Burritos,12.48,True
+1630,79,Chicken pie,19.15,True
+1631,79,Chicken rice,29.0,True
+1632,79,Chicken wings,29.64,True
+1633,79,CoffeeBoba tea,26.03,True
+1634,79,Cookie,33.61,True
+1635,79,Cup cake,29.23,True
+1636,79,Dumplings,20.0,True
+1637,79,Fried chicken,27.71,True
+1638,79,Pasta,32.8,True
+1639,79,PastrySmoothie,26.66,True
+1640,79,Pizza,21.16,True
+1641,79,Salad,29.34,True
+1642,79,Shawarma,26.83,True
+1643,79,Soup,26.45,True
+1644,79,Sushi,31.34,True
+1645,79,Taccos,19.89,True
+1646,79,Whole cake,10.78,True
+1647,80,Beef pie,32.13,True
+1648,80,Briyani rice,20.16,True
+1649,80,Burger,26.01,True
+1650,80,Burritos,27.33,True
+1651,80,Chicken pie,35.14,True
+1652,80,Chicken rice,33.66,True
+1653,80,Chicken wings,36.57,True
+1654,80,CoffeeBoba tea,29.94,True
+1655,80,Cookie,27.19,True
+1656,80,Cup cake,29.96,True
+1657,80,Dumplings,29.84,True
+1658,80,Fried chicken,32.52,True
+1659,80,Pasta,27.44,True
+1660,80,PastrySmoothie,29.72,True
+1661,80,Pizza,23.73,True
+1662,80,Salad,14.87,True
+1663,80,Shawarma,28.39,True
+1664,80,Soup,21.44,True
+1665,80,Sushi,12.33,True
+1666,80,Taccos,27.84,True
+1667,80,Whole cake,25.96,True
+1668,81,Beef pie,29.55,True
+1669,81,Briyani rice,31.08,True
+1670,81,Burger,25.2,True
+1671,81,Burritos,27.73,True
+1672,81,Chicken pie,37.04,True
+1673,81,Chicken rice,40.55,True
+1674,81,Chicken wings,31.17,True
+1675,81,CoffeeBoba tea,21.62,True
+1676,81,Cookie,22.5,True
+1677,81,Cup cake,20.7,True
+1678,81,Dumplings,25.22,True
+1679,81,Fried chicken,31.41,True
+1680,81,Pasta,23.9,True
+1681,81,PastrySmoothie,21.54,True
+1682,81,Pizza,28.52,True
+1683,81,Salad,23.56,True
+1684,81,Shawarma,22.78,True
+1685,81,Soup,32.85,True
+1686,81,Sushi,28.63,True
+1687,81,Taccos,23.39,True
+1688,81,Whole cake,33.24,True
+1689,82,Beef pie,30.56,True
+1690,82,Briyani rice,15.14,True
+1691,82,Burger,35.69,True
+1692,82,Burritos,27.01,True
+1693,82,Chicken pie,33.11,True
+1694,82,Chicken rice,21.78,True
+1695,82,Chicken wings,16.74,True
+1696,82,CoffeeBoba tea,17.61,True
+1697,82,Cookie,33.45,True
+1698,82,Cup cake,16.31,True
+1699,82,Dumplings,33.8,True
+1700,82,Fried chicken,24.14,True
+1701,82,Pasta,31.88,True
+1702,82,PastrySmoothie,29.92,True
+1703,82,Pizza,25.06,True
+1704,82,Salad,26.81,True
+1705,82,Shawarma,29.18,True
+1706,82,Soup,16.12,True
+1707,82,Sushi,31.81,True
+1708,82,Taccos,24.6,True
+1709,82,Whole cake,29.54,True
+1710,83,Beef pie,23.73,True
+1711,83,Briyani rice,31.77,True
+1712,83,Burger,29.71,True
+1713,83,Burritos,19.91,True
+1714,83,Chicken pie,25.27,True
+1715,83,Chicken rice,26.56,True
+1716,83,Chicken wings,11.26,True
+1717,83,CoffeeBoba tea,18.77,True
+1718,83,Cookie,22.93,True
+1719,83,Cup cake,39.58,True
+1720,83,Dumplings,36.71,True
+1721,83,Fried chicken,15.02,True
+1722,83,Pasta,25.26,True
+1723,83,PastrySmoothie,18.15,True
+1724,83,Pizza,17.35,True
+1725,83,Salad,24.56,True
+1726,83,Shawarma,27.09,True
+1727,83,Soup,20.37,True
+1728,83,Sushi,34.07,True
+1729,83,Taccos,27.88,True
+1730,83,Whole cake,16.88,True
+1731,84,Beef pie,22.57,True
+1732,84,Briyani rice,21.31,True
+1733,84,Burger,35.61,True
+1734,84,Burritos,22.26,True
+1735,84,Chicken pie,27.18,True
+1736,84,Chicken rice,28.2,True
+1737,84,Chicken wings,28.66,True
+1738,84,CoffeeBoba tea,28.99,True
+1739,84,Cookie,33.06,True
+1740,84,Cup cake,30.09,True
+1741,84,Dumplings,29.25,True
+1742,84,Fried chicken,33.04,True
+1743,84,Pasta,27.57,True
+1744,84,PastrySmoothie,22.6,True
+1745,84,Pizza,22.7,True
+1746,84,Salad,32.54,True
+1747,84,Shawarma,26.01,True
+1748,84,Soup,24.41,True
+1749,84,Sushi,22.34,True
+1750,84,Taccos,19.95,True
+1751,84,Whole cake,36.01,True
+1752,85,Beef pie,30.91,True
+1753,85,Briyani rice,28.07,True
+1754,85,Burger,19.77,True
+1755,85,Burritos,20.1,True
+1756,85,Chicken pie,25.5,True
+1757,85,Chicken rice,13.25,True
+1758,85,Chicken wings,35.26,True
+1759,85,CoffeeBoba tea,30.37,True
+1760,85,Cookie,28.88,True
+1761,85,Cup cake,29.86,True
+1762,85,Dumplings,26.66,True
+1763,85,Fried chicken,20.67,True
+1764,85,Pasta,33.85,True
+1765,85,PastrySmoothie,27.98,True
+1766,85,Pizza,40.94,True
+1767,85,Salad,31.28,True
+1768,85,Shawarma,24.49,True
+1769,85,Soup,29.59,True
+1770,85,Sushi,32.33,True
+1771,85,Taccos,24.02,True
+1772,85,Whole cake,30.62,True
+1773,86,Beef pie,20.18,True
+1774,86,Briyani rice,26.69,True
+1775,86,Burger,21.19,True
+1776,86,Burritos,36.07,True
+1777,86,Chicken pie,26.92,True
+1778,86,Chicken rice,18.8,True
+1779,86,Chicken wings,33.49,True
+1780,86,CoffeeBoba tea,21.97,True
+1781,86,Cookie,33.04,True
+1782,86,Cup cake,34.17,True
+1783,86,Dumplings,34.1,True
+1784,86,Fried chicken,25.46,True
+1785,86,Pasta,31.08,True
+1786,86,PastrySmoothie,27.03,True
+1787,86,Pizza,6.9,True
+1788,86,Salad,26.6,True
+1789,86,Shawarma,21.06,True
+1790,86,Soup,39.15,True
+1791,86,Sushi,24.22,True
+1792,86,Taccos,31.53,True
+1793,86,Whole cake,16.13,True
+1794,87,Beef pie,21.69,True
+1795,87,Briyani rice,25.06,True
+1796,87,Burger,31.78,True
+1797,87,Burritos,35.37,True
+1798,87,Chicken pie,22.17,True
+1799,87,Chicken rice,37.5,True
+1800,87,Chicken wings,31.56,True
+1801,87,CoffeeBoba tea,28.63,True
+1802,87,Cookie,24.23,True
+1803,87,Cup cake,29.09,True
+1804,87,Dumplings,18.14,True
+1805,87,Fried chicken,26.68,True
+1806,87,Pasta,29.05,True
+1807,87,PastrySmoothie,28.23,True
+1808,87,Pizza,21.75,True
+1809,87,Salad,21.49,True
+1810,87,Shawarma,29.64,True
+1811,87,Soup,31.81,True
+1812,87,Sushi,20.23,True
+1813,87,Taccos,27.28,True
+1814,87,Whole cake,23.5,True
+1815,88,Beef pie,36.94,True
+1816,88,Briyani rice,24.54,True
+1817,88,Burger,33.32,True
+1818,88,Burritos,32.69,True
+1819,88,Chicken pie,41.52,True
+1820,88,Chicken rice,23.61,True
+1821,88,Chicken wings,26.25,True
+1822,88,CoffeeBoba tea,39.78,True
+1823,88,Cookie,16.6,True
+1824,88,Cup cake,33.56,True
+1825,88,Dumplings,17.93,True
+1826,88,Fried chicken,15.93,True
+1827,88,Pasta,22.86,True
+1828,88,PastrySmoothie,30.99,True
+1829,88,Pizza,20.31,True
+1830,88,Salad,37.44,True
+1831,88,Shawarma,23.55,True
+1832,88,Soup,16.04,True
+1833,88,Sushi,16.27,True
+1834,88,Taccos,32.64,True
+1835,88,Whole cake,19.96,True
+1836,89,Beef pie,23.52,True
+1837,89,Burger,38.0,True
+1838,89,Burritos,35.87,True
+1839,89,Chicken pie,22.09,True
+1840,89,Chicken rice,31.43,True
+1841,89,Chicken wings,30.71,True
+1842,89,CoffeeBoba tea,28.87,True
+1843,89,Cookie,22.79,True
+1844,89,Cup cake,29.29,True
+1845,89,Dumplings,22.65,True
+1846,89,Fried chicken,32.45,True
+1847,89,Pasta,25.1,True
+1848,89,PastrySmoothie,12.38,True
+1849,89,Salad,37.27,True
+1850,89,Shawarma,31.72,True
+1851,89,Soup,18.72,True
+1852,89,Sushi,34.7,True
+1853,89,Taccos,24.38,True
+1854,89,Whole cake,23.11,True
+1855,90,Beef pie,17.79,True
+1856,90,Briyani rice,14.04,True
+1857,90,Burger,11.9,True
+1858,90,Burritos,18.92,True
+1859,90,Chicken pie,25.04,True
+1860,90,Chicken rice,18.16,True
+1861,90,Chicken wings,24.23,True
+1862,90,CoffeeBoba tea,37.88,True
+1863,90,Cookie,26.55,True
+1864,90,Cup cake,25.78,True
+1865,90,Dumplings,35.5,True
+1866,90,Fried chicken,24.68,True
+1867,90,Pasta,31.44,True
+1868,90,PastrySmoothie,13.94,True
+1869,90,Pizza,27.36,True
+1870,90,Salad,42.81,True
+1871,90,Shawarma,36.31,True
+1872,90,Soup,33.57,True
+1873,90,Sushi,23.83,True
+1874,90,Taccos,18.11,True
+1875,90,Whole cake,23.08,True
+1876,91,Beef pie,27.88,True
+1877,91,Briyani rice,38.36,True
+1878,91,Burger,25.86,True
+1879,91,Burritos,28.06,True
+1880,91,Chicken pie,41.94,True
+1881,91,Chicken rice,27.34,True
+1882,91,Chicken wings,25.11,True
+1883,91,CoffeeBoba tea,22.6,True
+1884,91,Cookie,23.02,True
+1885,91,Cup cake,31.77,True
+1886,91,Dumplings,22.34,True
+1887,91,Fried chicken,33.63,True
+1888,91,Pasta,40.74,True
+1889,91,PastrySmoothie,19.62,True
+1890,91,Salad,23.17,True
+1891,91,Shawarma,36.85,True
+1892,91,Soup,32.88,True
+1893,91,Sushi,25.99,True
+1894,91,Taccos,28.37,True
+1895,91,Whole cake,29.14,True
+1896,92,Beef pie,27.08,True
+1897,92,Briyani rice,33.74,True
+1898,92,Burger,16.57,True
+1899,92,Burritos,25.64,True
+1900,92,Chicken pie,28.9,True
+1901,92,Chicken rice,11.82,True
+1902,92,Chicken wings,32.57,True
+1903,92,CoffeeBoba tea,21.14,True
+1904,92,Cookie,26.9,True
+1905,92,Cup cake,34.33,True
+1906,92,Dumplings,19.46,True
+1907,92,Fried chicken,29.39,True
+1908,92,Pasta,27.26,True
+1909,92,PastrySmoothie,27.72,True
+1910,92,Pizza,28.37,True
+1911,92,Salad,39.45,True
+1912,92,Shawarma,41.65,True
+1913,92,Soup,34.62,True
+1914,92,Sushi,24.94,True
+1915,92,Taccos,37.99,True
+1916,92,Whole cake,35.38,True
+1917,93,Beef pie,13.9,True
+1918,93,Briyani rice,29.04,True
+1919,93,Burger,26.98,True
+1920,93,Burritos,32.01,True
+1921,93,Chicken pie,19.23,True
+1922,93,Chicken rice,38.09,True
+1923,93,Chicken wings,29.7,True
+1924,93,CoffeeBoba tea,35.98,True
+1925,93,Cookie,21.6,True
+1926,93,Cup cake,17.02,True
+1927,93,Dumplings,16.98,True
+1928,93,Fried chicken,35.71,True
+1929,93,Pasta,32.25,True
+1930,93,PastrySmoothie,28.65,True
+1931,93,Pizza,31.28,True
+1932,93,Salad,28.7,True
+1933,93,Shawarma,13.68,True
+1934,93,Soup,30.72,True
+1935,93,Sushi,21.41,True
+1936,93,Taccos,26.17,True
+1937,93,Whole cake,34.32,True
+1938,94,Beef pie,46.75,True
+1939,94,Briyani rice,25.6,True
+1940,94,Burger,22.69,True
+1941,94,Burritos,16.55,True
+1942,94,Chicken pie,21.38,True
+1943,94,Chicken rice,17.77,True
+1944,94,Chicken wings,27.18,True
+1945,94,Cookie,32.28,True
+1946,94,Cup cake,23.92,True
+1947,94,Dumplings,27.95,True
+1948,94,Fried chicken,31.62,True
+1949,94,Pasta,23.65,True
+1950,94,PastrySmoothie,31.6,True
+1951,94,Pizza,27.76,True
+1952,94,Salad,37.5,True
+1953,94,Shawarma,23.97,True
+1954,94,Soup,25.86,True
+1955,94,Sushi,31.43,True
+1956,94,Taccos,29.74,True
+1957,94,Whole cake,24.67,True
+1958,95,Beef pie,33.77,True
+1959,95,Briyani rice,30.98,True
+1960,95,Burger,22.21,True
+1961,95,Burritos,31.82,True
+1962,95,Chicken pie,25.07,True
+1963,95,Chicken rice,26.87,True
+1964,95,Chicken wings,16.22,True
+1965,95,CoffeeBoba tea,35.55,True
+1966,95,Cookie,33.2,True
+1967,95,Cup cake,32.05,True
+1968,95,Dumplings,33.48,True
+1969,95,Fried chicken,23.4,True
+1970,95,Pasta,25.79,True
+1971,95,PastrySmoothie,26.65,True
+1972,95,Pizza,33.97,True
+1973,95,Salad,29.53,True
+1974,95,Shawarma,25.48,True
+1975,95,Soup,29.47,True
+1976,95,Sushi,34.2,True
+1977,95,Taccos,20.19,True
+1978,95,Whole cake,27.84,True
+1979,96,Beef pie,43.94,True
+1980,96,Briyani rice,32.29,True
+1981,96,Burger,41.11,True
+1982,96,Burritos,11.45,True
+1983,96,Chicken pie,34.95,True
+1984,96,Chicken rice,38.7,True
+1985,96,Chicken wings,31.07,True
+1986,96,CoffeeBoba tea,28.17,True
+1987,96,Cookie,23.83,True
+1988,96,Cup cake,23.72,True
+1989,96,Dumplings,19.06,True
+1990,96,Fried chicken,29.98,True
+1991,96,Pasta,30.37,True
+1992,96,PastrySmoothie,11.2,True
+1993,96,Pizza,28.43,True
+1994,96,Salad,29.86,True
+1995,96,Shawarma,29.89,True
+1996,96,Soup,19.28,True
+1997,96,Sushi,44.81,True
+1998,96,Taccos,30.24,True
+1999,96,Whole cake,21.3,True
+2000,97,Beef pie,36.2,True
+2001,97,Briyani rice,28.39,True
+2002,97,Burger,12.62,True
+2003,97,Burritos,31.31,True
+2004,97,Chicken pie,37.29,True
+2005,97,Chicken rice,24.06,True
+2006,97,Chicken wings,26.74,True
+2007,97,CoffeeBoba tea,22.62,True
+2008,97,Cookie,25.26,True
+2009,97,Cup cake,30.88,True
+2010,97,Dumplings,33.34,True
+2011,97,Fried chicken,29.75,True
+2012,97,Pasta,24.99,True
+2013,97,PastrySmoothie,18.61,True
+2014,97,Pizza,27.15,True
+2015,97,Salad,25.06,True
+2016,97,Shawarma,15.59,True
+2017,97,Soup,26.19,True
+2018,97,Sushi,29.61,True
+2019,97,Taccos,29.36,True
+2020,97,Whole cake,19.91,True
+2021,98,Beef pie,23.56,True
+2022,98,Briyani rice,34.91,True
+2023,98,Burger,30.3,True
+2024,98,Burritos,28.14,True
+2025,98,Chicken pie,24.56,True
+2026,98,Chicken rice,36.39,True
+2027,98,Chicken wings,28.13,True
+2028,98,CoffeeBoba tea,26.01,True
+2029,98,Cookie,20.04,True
+2030,98,Cup cake,28.23,True
+2031,98,Dumplings,26.11,True
+2032,98,Fried chicken,30.8,True
+2033,98,Pasta,25.8,True
+2034,98,PastrySmoothie,41.06,True
+2035,98,Pizza,26.86,True
+2036,98,Salad,21.76,True
+2037,98,Shawarma,26.64,True
+2038,98,Soup,16.9,True
+2039,98,Sushi,21.69,True
+2040,98,Taccos,22.1,True
+2041,98,Whole cake,20.35,True
+2042,99,Beef pie,40.06,True
+2043,99,Briyani rice,26.81,True
+2044,99,Burger,25.11,True
+2045,99,Burritos,36.18,True
+2046,99,Chicken pie,32.08,True
+2047,99,Chicken rice,35.3,True
+2048,99,Chicken wings,31.32,True
+2049,99,CoffeeBoba tea,30.91,True
+2050,99,Cookie,32.74,True
+2051,99,Cup cake,18.49,True
+2052,99,Dumplings,27.63,True
+2053,99,Fried chicken,27.21,True
+2054,99,Pasta,27.72,True
+2055,99,PastrySmoothie,24.18,True
+2056,99,Pizza,21.85,True
+2057,99,Salad,34.66,True
+2058,99,Shawarma,37.05,True
+2059,99,Soup,25.92,True
+2060,99,Sushi,16.52,True
+2061,99,Taccos,26.62,True
+2062,99,Whole cake,25.88,True
+2063,100,Beef pie,36.46,True
+2064,100,Briyani rice,17.59,True
+2065,100,Burger,19.9,True
+2066,100,Burritos,32.31,True
+2067,100,Chicken pie,42.6,True
+2068,100,Chicken rice,27.36,True
+2069,100,Chicken wings,16.95,True
+2070,100,CoffeeBoba tea,36.75,True
+2071,100,Cookie,32.32,True
+2072,100,Cup cake,33.15,True
+2073,100,Dumplings,34.18,True
+2074,100,Fried chicken,25.94,True
+2075,100,Pasta,32.4,True
+2076,100,PastrySmoothie,13.8,True
+2077,100,Pizza,38.92,True
+2078,100,Salad,26.28,True
+2079,100,Shawarma,29.03,True
+2080,100,Soup,37.06,True
+2081,100,Sushi,26.09,True
+2082,100,Taccos,24.88,True
+2083,100,Whole cake,20.25,True
