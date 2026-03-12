@@ -1,0 +1,30 @@
+SCRUM MEETING #6 - 03/08/2026
+
+AGENDA:
+Sprint progress review
+Blockers and impediments
+Task updates
+Next steps
+
+ATTENDEES:
+Bheema Marabai, Gabriel Sofekun, Khushi Lakshmi Kishan
+
+COMPLETED TASKS:
+Worked on our own features
+are close to completion, 90% overall completion
+two team members(Bheema, Kushi) have moved onto the next feature
+  F8 - notifications, Bheema
+  F6 - Cost calculation, Jahan
+  F5 - Delivery managment, kushi
+  F7 - Simulated Payment, Gabi
+
+IN PROGRESS:
+Implementation of next assigned tasks and features
+
+BLOCKERS:
+There was a blocker where the data and the schema had slight discrpencies, the issue was disscucesed and we have the go ahead signal for Gabi to fix.
+
+NEXT ACTIONS:
+Reviews assigned features implementations during next scrum
+
+NOTES: 10 PRs each to be completed  by 03_16_2026 at 6.30 pm (Still a goal for next scrum in one week). 
