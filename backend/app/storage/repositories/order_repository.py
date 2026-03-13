@@ -4,6 +4,7 @@ from typing import List, Optional
 
 
 DATA_FILE = Path(__file__).resolve().parents[1] / "storage" / "data" / "orders.csv"
+MENU_DATA_FILE = Path(__file__).resolve().parents[1] / "storage" / "data" / "menus.csv"
 
 FIELDNAMES = [
     "order_id",
@@ -52,3 +53,12 @@ def save_order(order_data: dict) -> dict:
         writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
         writer.writerow(order_data)
     return order_data
+
+def get_menu_item_by_id(id: str) -> Optional[dict]:
+    with open(MENU_DATA_FILE, "r", newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            row_id = row.get("id")
+            if row_id == id:
+                return row
+    return None
