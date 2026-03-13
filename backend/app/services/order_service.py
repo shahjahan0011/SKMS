@@ -1,8 +1,8 @@
 from datetime import datetime
 from uuid import uuid4
 
-from repositories.order_repository import save_order
-from repositories.order_repository import get_menu_item_by_id
+from app.storage.repositories.order_repository import save_order
+from app.storage.repositories.order_repository import get_menu_item_by_id
 from app.schemas.order_schema import OrderStatus
 
 
