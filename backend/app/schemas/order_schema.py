@@ -11,6 +11,6 @@ class OrderStatus(str, Enum):
 
 
 class CreateOrderRequest(BaseModel):
-    user_id: str = Field(..., min_length=1)
-    menu_item_id: str = Field(..., min_length=1)
+    username: str = Field(..., min_length=1)
+    id: str = Field(..., min_length=1)
     quantity: int = Field(default=1, ge=1)
