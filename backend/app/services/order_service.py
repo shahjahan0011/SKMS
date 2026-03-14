@@ -1,6 +1,8 @@
 from datetime import datetime
 from uuid import uuid4
+from fastapi import HTTPException
 
+from app.storage.repositories.order_repository import get_order_by_id, update_order
 from app.storage.repositories.order_repository import save_order
 from app.storage.repositories.order_repository import get_menu_item_by_id
 from app.schemas.order_schema import OrderStatus
@@ -53,3 +55,41 @@ def create_order(username: str, id: str, quantity: int) -> dict:
     }
 
     return save_order(order)
+
+def get_order_status(order_id: str) -> dict:
+    order = get_order_by_id(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    return order
+
+
+def update_order_status(order_id: str, new_status: str) -> dict:
+    order = get_order_by_id(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    current_status = order["status"]
+
+    valid_transitions = {
+        "pending": {"preparing", "cancelled"},
+        "preparing": {"in-transit"},
+        "in-transit": {"delivered"},
+        "delivered": set(),
+        "cancelled": set(),
+    }
+
+    if new_status not in valid_transitions[current_status]:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid status transition from '{current_status}' to '{new_status}'",
+        )
+
+    order["status"] = new_status
+    order["updated_at"] = _now_iso()
+
+    if new_status == "delivered":
+        order["delivered_at"] = _now_iso()
+
+    updated_order = update_order(order)
+    assert updated_order is not None, "Failed to update order"
+    return updated_order
