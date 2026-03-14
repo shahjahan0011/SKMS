@@ -2,7 +2,6 @@
 import csv
 from typing import List, Dict, Optional
 from app.storage.csv_store import CSVStore
-from app.storage.repositories.order_repository import MENU_DATA_FILE
 
 # pylint: disable=too-few-public-methods
 class MenuRepository:
@@ -22,19 +21,9 @@ class MenuRepository:
             menu for menu in all_menus
             if menu['restaurant_id'] == restaurant_id
             ]
-
-    # def get_menu_item_by_id(self, item_id: str):
-    #     """Get menu item by id"""
-    #     menus = CSVStore.read_csv(self.file_path)
-
-    #     for item in menus:
-    #         if item["id"] == item_id:
-    #             return item
-
-    #     return None
     
     def get_menu_item_by_id(self, id: str) -> Optional[dict]:
-        with open(MENU_DATA_FILE, "r", newline="", encoding="utf-8") as file:
+        with open(self.file_path, "r", newline="", encoding="utf-8") as file:
             reader = csv.DictReader(file)
             for row in reader:
                 row_id = row.get("id")
