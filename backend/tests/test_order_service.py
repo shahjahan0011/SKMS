@@ -38,9 +38,10 @@ def test_create_order_invalid_menu_item(monkeypatch):
 
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
 
-    with pytest.raises(ValueError, match="Menu item not found"):
+    with pytest.raises(HTTPException) as exc:
         order_service.create_order("jahan", "bad_item", 1)
 
+    assert exc.value.status_code == 404
 
 def test_get_order_status_success(monkeypatch):
     mock_order = {"order_id": "o1", "status": "pending"}

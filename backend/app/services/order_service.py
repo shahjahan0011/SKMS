@@ -25,7 +25,7 @@ def create_order(username: str, id: str, quantity: int) -> dict:
     
     menu_item = get_menu_item_by_id(id)
     if menu_item is None:
-        raise ValueError(f"Menu item not found: {id}")
+        raise HTTPException(status_code=404, detail=f"Menu item not found: {id}")
 
     restaurant_id = menu_item.get("restaurant_id")
     price = _safe_float(menu_item.get("price"))
