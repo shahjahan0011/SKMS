@@ -2,7 +2,7 @@
 import csv
 from typing import List, Dict, Optional
 from app.storage.csv_store import CSVStore
-from repositories.order_repository import MENU_DATA_FILE
+from app.storage.repositories.order_repository import MENU_DATA_FILE
 
 # pylint: disable=too-few-public-methods
 class MenuRepository:
