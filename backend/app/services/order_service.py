@@ -93,3 +93,22 @@ def update_order_status(order_id: str, new_status: str) -> dict:
     updated_order = update_order(order)
     assert updated_order is not None, "Failed to update order"
     return updated_order
+
+def cancel_order(order_id: str) -> dict:
+    order = get_order_by_id(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    if order["status"] != OrderStatus.pending.value:
+        raise HTTPException(
+            status_code=400,
+            detail="Only pending orders can be cancelled",
+        )
+
+    order["status"] = OrderStatus.cancelled.value
+    order["updated_at"] = _now_iso()
+    order["cancelled_at"] = _now_iso()
+
+    updated_order = update_order(order)
+    assert updated_order is not None, "Failed to update order"
+    return updated_order
