@@ -22,6 +22,7 @@ def _safe_float(value) -> float:
 
 
 def create_order(username: str, id: str, quantity: int) -> dict:
+    
     menu_item = get_menu_item_by_id(id)
     if menu_item is None:
         raise ValueError(f"Menu item not found: {id}")
