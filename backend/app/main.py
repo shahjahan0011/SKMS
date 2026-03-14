@@ -11,5 +11,5 @@ app = FastAPI(title="SKMS Backend")
 
 app.include_router(item_listing_router)
 app.include_router(restaurants_router)
-app.include_router(menu_router)
+app.include_router(menu_router, prefix="/menus", tags=["Menus"])
 app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
