@@ -1,9 +1,8 @@
 from fastapi import APIRouter
 
 from app.schemas.order_schema import UpdateOrderStatusRequest
-from app.services.order_service import get_order_status, update_order_status
+from app.services.order_service import get_order_status, update_order_status, create_order, cancel_order, list_active_orders
 from app.schemas.order_schema import CreateOrderRequest
-from app.services.order_service import create_order, cancel_order
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
@@ -28,3 +27,7 @@ def patch_order_status(order_id: str, payload: UpdateOrderStatusRequest):
 @router.patch("/{order_id}/cancel")
 def patch_cancel_order(order_id: str):
     return cancel_order(order_id)
+
+@router.get("/restaurant/{restaurant_id}/active")
+def get_active_orders_for_restaurant(restaurant_id: str):
+    return list_active_orders(restaurant_id)
