@@ -82,3 +82,14 @@ def update_order(updated_order: dict) -> Optional[dict]:
         writer.writerows(orders)
 
     return updated
+
+def get_active_orders_by_restaurant(restaurant_id: str) -> list[dict]:
+    active_statuses = {"pending", "preparing", "in-transit"}
+
+    orders = [
+        order for order in get_all_orders()
+        if order["restaurant_id"] == restaurant_id and order["status"] in active_statuses
+    ]
+
+    orders.sort(key=lambda order: order["created_at"])
+    return orders
