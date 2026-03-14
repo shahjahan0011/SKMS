@@ -2,9 +2,7 @@ from datetime import datetime
 from uuid import uuid4
 from fastapi import HTTPException
 
-from app.storage.repositories.order_repository import get_order_by_id, update_order
-from app.storage.repositories.order_repository import save_order
-from app.storage.repositories.order_repository import get_menu_item_by_id
+from app.storage.repositories.order_repository import get_order_by_id, update_order, save_order, get_menu_item_by_id, get_active_orders_by_restaurant
 from app.schemas.order_schema import OrderStatus
 
 
@@ -93,6 +91,9 @@ def update_order_status(order_id: str, new_status: str) -> dict:
     updated_order = update_order(order)
     assert updated_order is not None, "Failed to update order"
     return updated_order
+
+def list_active_orders(restaurant_id: str) -> list[dict]:
+    return get_active_orders_by_restaurant(restaurant_id)
 
 def cancel_order(order_id: str) -> dict:
     order = get_order_by_id(order_id)
