@@ -27,10 +27,8 @@ def mock_menu_repo():
                 return item
         return None
 
-    #Assign the mock method to the repo
     repo.get_menu_by_restaurant = MagicMock(side_effect = get_item_by_id)
 
-    #For testing get_menu_by_restaurant, return all items that match the restaurant_id
     repo.get_menu_by_restaurant = MagicMock(return_value=[mock_data[0], mock_data[1]])
 
     return repo

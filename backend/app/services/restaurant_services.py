@@ -7,20 +7,24 @@ from typing import Dict, List
 class RestaurantService:
     """Restaurant service class."""
 
-    def _init__(self, repo: RestaurantRepository):
+    def __init__(self, repo: RestaurantRepository):
         """Initialize the restaurant service."""
         self.repo = repo
 
     def browse_restaurants(self, keyword: str = None, page: int = 1, limit: int = 20) -> List[Dict]:
         """Browse all restaurants."""
-        all_restaurants =  self.repo.get_menu_by_restaurant()
+        #all_restaurants =  self.repo.get_menu_by_restaurant()
+        all_restaurants = self.repo.get_all_restaurants()
 
-        # Filter for active restaurants using True of 1 in the 'status' field
-        result = [restaurant for restaurant in all_restaurants if str(restaurant.get('status', '')).lower() in ['true', '1']]
+         # Filter for active restaurants using True of 1 in the 'is_active' field
 
-        # If a keyword is provided, filter the restaurants by name
+        result = [
+            restaurant for restaurant in all_restaurants
+            if str(restaurant.get('is_active', '')).lower() in ['true', '1']
+            ]
+
         if keyword:
-            keyword = keyword.lower.strip()
+            keyword = keyword.lower().strip()
             result = [restaurant for restaurant in result if keyword.lower() in restaurant.get('name', '').lower()]
 
          # handle empty list of result after filtering by keyword return graceful message
@@ -36,7 +40,6 @@ class RestaurantService:
         end = start + limit
         paginated_result = result[start:end]
 
-        #return paginated result with total items and total pages for better client handling of pagination
         return {
             metadata: {
                 "total_items": total_items,
