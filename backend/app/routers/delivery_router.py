@@ -67,4 +67,14 @@ def update_delivery_status(order_id: int, status: dict):
 
     except ValueError as error:
         raise HTTPException(status_code=404, detail=str(error))
-    
+
+
+@router.get("/deliveries/user/{user_id}")
+def get_user_deliveries(user_id: int):
+    """get deliveries for a user"""
+
+    service = delivery_service()
+
+    deliveries = service.get_user_deliveries(user_id)
+
+    return deliveries
