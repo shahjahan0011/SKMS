@@ -66,3 +66,11 @@ class delivery_services:
             "new_status": new_status
         }
     
+
+    def get_user_deliveries(self, user_id):
+        """returns deliveries for a user"""
+
+        deliveries = self.repo.get_user_deliveries(user_id)
+
+        return deliveries
+    
