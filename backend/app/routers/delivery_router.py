@@ -49,4 +49,22 @@ def create_delivery(delivery: dict):
 
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
+
+
+@router.patch("/deliveries/{order_id}/status")
+def update_delivery_status(order_id: int, status: dict):
+    """update delivery status"""
+
+    service = delivery_service()
+
+    try:
+        updated = service.update_delivery_status(
+            order_id,
+            status["new_status"]
+        )
+
+        return updated
+
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
     
