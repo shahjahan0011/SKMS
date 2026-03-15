@@ -43,3 +43,15 @@ class auth_service:
             "username": user["username"],
             "role": user["role"]
         }
+    def check_role(self, username, required_role):
+        """check whether a user has the required role"""
+
+        user = self.user_repo.get_user_by_username(username)
+
+        if user is None:
+            raise ValueError("user does not exist")
+
+        if user["role"] != required_role:
+            raise PermissionError("user does not have required role")
+
+        return True
