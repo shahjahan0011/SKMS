@@ -6,7 +6,7 @@ class delivery_repository:
     """Stores and retrieves delivery data"""
 
     def __init__(self):
-        self.file_path = "data/deliveries.csv"
+        self.file_path = "backend/app/storage/data/deliveries.csv"
 
     def get_all_deliveries(self):
         """returns all deliveries from csv """
@@ -67,7 +67,7 @@ class delivery_repository:
 
         with open(self.file_path, mode="w", encoding="utf-8", newline="") as file:
             fields = ["order_id", "restaurant_id", "user_id", "user_name", "status", "is_emergency"]
-            writer = csv.DictWriter(file, fields=fields)
+            writer = csv.DictWriter(file, fieldnames=fields)
 
             writer.writeheader()
             writer.writerows(deliveries)
