@@ -3,6 +3,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.services.delivery_services import delivery_services
+from app.schemas.delivery_schema import delivery
 
 router = APIRouter()
 """Repo and services for delivery management"""
@@ -28,17 +29,18 @@ def get_delivery_by_order_id(order_id: int):
     
 
 @router.post("/deliveries")
-def create_delivery(delivery: dict):
+def create_delivery(delivery: delivery):
     """create a new delivery"""
 
     try:
         created_delivery = delivery_service.create_delivery(
-            delivery["order_id"],
-            delivery["restaurant_id"],
-            delivery["user_id"],
-            delivery["user_name"],
-            delivery["status"],
-            delivery["is_emergency"]
+            delivery.order_id,
+            delivery.restaurant_id,
+            delivery.user_id,
+            delivery.user_name,
+            delivery.delivery_location,
+            delivery.status,
+            delivery.is_emergency
         )
 
         return created_delivery
