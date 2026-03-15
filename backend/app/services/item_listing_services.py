@@ -26,7 +26,7 @@ class item_listing_service:
         if not exists:
             raise ValueError("Restaurant not found")
 
-        menu_items = self.menu_repo.get_by_restaurant(restaurant_id)
+        menu_items = self.menu_repo.get_menu_by_restaurant(restaurant_id)
         restaurant_ids = {r["id"] for r in restaurants}
 
         for item in menu_items:
@@ -34,7 +34,7 @@ class item_listing_service:
                 raise ValueError("Menu item references invalid restaurant")
 
         return menu_items
-    
+
     def get_restaurant_by_id(self, restaurant_id: str):
         """Get a restaurant by its id"""
         restaurant = self.restaurant_repo.get_restaurant_by_id(restaurant_id)
@@ -43,7 +43,7 @@ class item_listing_service:
             raise ValueError("Restaurant not found")
 
         return restaurant
-    
+
     def get_menu_item_by_id(self, item_id: str):
         """Get a menu item by menu item id"""
         item = self.menu_repo.get_menu_item_by_id(item_id)
