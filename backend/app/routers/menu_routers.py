@@ -1,53 +1,42 @@
 """Menu routes module."""
-
+from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, Query
-from app.services.menu_services import MenuService
-from app.storage.repositories.menu_repository import MenuRepository
-from typing import List, Dict, Any
-
 
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import MenuRepository
-from typing import Any, Optional, List, Dict
 from app.storage.repositories.restaurant_repository import RestaurantRepository
 
 router = APIRouter(tags=["Menus"])
 
 def get_menu_service():
-    """Get menu service instance."""
-    menu_repo = MenuRepository()
-    res_repo = RestaurantRepository()
+    """Dependency injection for MenuService."""
+    return MenuService(MenuRepository(), RestaurantRepository())
 
-    return MenuService(menu_repo, res_repo)
-
-@router.get("/{restaurant_id}", response_model=List[Dict[str, Any]])
+@router.get("/{restaurant_id}", response_model=Dict[str, Any])
 def get_menu_by_restaurant(
-    restaurant_id:str,
-    search: str = Query(None, description="Search query for menu items"),
-    page: int = Query(1, ge=1, description="Page number for pagination"),
-    page_size: int = Query(10, ge=1, le=100, description="Items per page"),
+    restaurant_id: str,
+    search: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(10, ge=1, le=100),
     service: MenuService = Depends(get_menu_service)
 ):
-
-    """Get menu for a specific restaurant."""
+    """Get menu for a specific restaurant with pagination and search."""
     return service.get_active_menu_paginated_by_restaurant(
         restaurant_id=restaurant_id,
-        search=search,
+        search_query=search,
         page=page,
         page_size=page_size
     )
 
 @router.get("/")
 def browse_menus(
-    restaurant_id: Optional[str] = Query(None, description="Filter menu items by restaurant ID"),
-    item_name: Optional[str]= Query(None, description="Search query for menu items"),
-    price: Optional[float] = Query(None, description="Filter menu items by max_price"),
+    restaurant_id: Optional[str] = None,
+    item_name: Optional[str] = None,
+    price: Optional[float] = None,
+    service: MenuService = Depends(get_menu_service)
 ):
-    service = get_menu_service()
-
     return service.get_global_menus(
         item_name=item_name,
         price=price,
         restaurant_id=restaurant_id
-        )
-EOF
+    )

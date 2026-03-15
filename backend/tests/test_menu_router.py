@@ -46,6 +46,8 @@ def test_menu_search_case_insensitivity_and_partial(client):
     """
     response = client.get("/menus/13?search=BRIY")
     assert response.status_code == 200
-    items = response.json()
+
+    data = response.json()
+    items = data["items"]
 
     assert any("Briyani" in item["item_name"] for item in items)
