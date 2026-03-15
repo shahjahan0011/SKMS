@@ -62,3 +62,23 @@ def get_menu_item_by_id(id: str) -> Optional[dict]:
             if row_id == id:
                 return row
     return None
+
+def update_order(updated_order: dict) -> Optional[dict]:
+    orders = get_all_orders()
+    updated = None
+
+    for index, order in enumerate(orders):
+        if order["order_id"] == updated_order["order_id"]:
+            orders[index] = updated_order
+            updated = updated_order
+            break
+
+    if updated is None:
+        return None
+
+    with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
+        writer.writeheader()
+        writer.writerows(orders)
+
+    return updated
