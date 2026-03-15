@@ -34,3 +34,22 @@ class delivery_repository:
                 
             return None
     
+
+    def create_delivery(self, delivery):
+        """writes a new delivery into csv data"""
+
+        with open(self.file_path, mode = "a", encoding = "utf-8", newline = "") as file:
+            writer = csv.writer(file)
+
+            writer.writerow([
+                delivery["order_id"],
+                delivery["restaurant_id"],
+                delivery["user_id"],
+                delivery["user_name"],
+                delivery["status"],
+                delivery["is_emergency"]
+            ])
+
+    
+    
+                
