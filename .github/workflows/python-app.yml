@@ -36,10 +36,12 @@ jobs:
     - name: Install pytest
       run: |
         pip install pytest
-    - name: Test with pytest
+        pip install httpx
+    - name: python -m pytest tests/
+      working-directory: ./backend
       run: |
-        if ls backend/tests/test_*.py 1> /dev/null 2>&1; then
-          pytest backend/tests
+        if ls tests/test_*.py 1> /dev/null 2>&1; then
+          python -m pytest tests
         else
           echo "No tests yet"
         fi
