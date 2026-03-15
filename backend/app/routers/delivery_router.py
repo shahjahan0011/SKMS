@@ -18,3 +18,13 @@ def get_all_deliveries():
     return delivery_service.get_all_deliveries()
 
 
+@router.get("/deliveries/{order_id}")
+def get_delivery_by_order_id(order_id: int):
+    """get delivery by order id"""
+
+    try:
+        return delivery_service.get_delivery_by_order_id(order_id)
+
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    
