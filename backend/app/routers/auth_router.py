@@ -1,5 +1,5 @@
 """endpooints for the fastapi"""
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from app.schemas.user_schema import user_login, user_register
 from app.services.auth_service import auth_service
@@ -45,3 +45,17 @@ def logout():
     """log out the current user"""
 
     return {"message": "logout successful"}
+
+@router.get("/admin")
+def admin_access(username: str = Query(...)):
+    """allow access only to admin users"""
+
+    service = auth_service()
+
+    try:
+        service.check_role(username, "admin")
+        return {"message": "admin access granted"}
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except PermissionError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
