@@ -2,13 +2,11 @@
 
 from fastapi import APIRouter, HTTPException
 
-from app.services.delivery_services import delivery_service
-from app.storage.repositories.delivery_repository import delivery_repository
+from app.services.delivery_services import delivery_services
 
 router = APIRouter()
 """Repo and services for delivery management"""
-delivery_repository = delivery_repository()
-delivery_service = delivery_service()
+delivery_service = delivery_services()
 
 
 @router.get("/deliveries")
@@ -33,10 +31,8 @@ def get_delivery_by_order_id(order_id: int):
 def create_delivery(delivery: dict):
     """create a new delivery"""
 
-    service = delivery_service()
-
     try:
-        created_delivery = service.create_delivery(
+        created_delivery = delivery_service.create_delivery(
             delivery["order_id"],
             delivery["restaurant_id"],
             delivery["user_id"],
@@ -55,10 +51,9 @@ def create_delivery(delivery: dict):
 def update_delivery_status(order_id: int, status: dict):
     """update delivery status"""
 
-    service = delivery_service()
 
     try:
-        updated = service.update_delivery_status(
+        updated = delivery_service.update_delivery_status(
             order_id,
             status["new_status"]
         )
@@ -73,8 +68,6 @@ def update_delivery_status(order_id: int, status: dict):
 def get_user_deliveries(user_id: int):
     """get deliveries for a user"""
 
-    service = delivery_service()
-
-    deliveries = service.get_user_deliveries(user_id)
+    deliveries = delivery_service.get_user_deliveries(user_id)
 
     return deliveries
