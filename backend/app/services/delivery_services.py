@@ -50,3 +50,19 @@ class delivery_services:
 
         return delivery_data
     
+
+    def update_delivery_status(self, order_id, new_status):
+        """updates status of a delivery"""
+
+        delivery = self.repo.get_delivery_by_order_id(order_id)
+
+        if delivery is None:
+            raise ValueError("delivery not found")
+
+        self.delivery_repo.update_delivery_status(order_id, new_status)
+
+        return {
+            "order_id": order_id,
+            "new_status": new_status
+        }
+    
