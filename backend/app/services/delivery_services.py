@@ -46,7 +46,7 @@ class delivery_services:
             "is_emergency": is_emergency
         }
 
-        self.delivery_repo.create_delivery(delivery_data)
+        self.repo.create_delivery(delivery_data)
 
         return delivery_data
     
@@ -59,7 +59,7 @@ class delivery_services:
         if delivery is None:
             raise ValueError("delivery not found")
 
-        self.delivery_repo.update_delivery_status(order_id, new_status)
+        self.repo.update_delivery_status(order_id, new_status)
 
         return {
             "order_id": order_id,
