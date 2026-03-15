@@ -10,7 +10,7 @@ class ItemListingService:
     Service for Item Listing from Menu
     """
 
-    def __init__(self, restaurant_repo, menu_repo):
+    def __init__(self, restaurant_repo:RestaurantRepository, menu_repo:MenuRepository):
         self.restaurant_repo = restaurant_repo
         self.menu_repo = menu_repo
 
@@ -45,9 +45,9 @@ class ItemListingService:
 
         return restaurant
 
-    def get_menu_item_by_id(self, item_id: str):
+    def get_menu_item_by_id(self, restaurant_id:str, item_id: str):
         """Get a menu item by menu item id"""
-        item = self.menu_repo.get_menu_item_by_id(item_id)
+        item = self.menu_repo.get_menu_item_by_id(restaurant_id, item_id)
 
         if item is None:
             raise ValueError("Menu item not found")

@@ -51,16 +51,18 @@ class MenuRepository:
 
     def get_menu_by_restaurant(self, restaurant_id: str) -> List[Dict]:
         """Legacy method for other parts of the app."""
+
         result = self.get_active_menu_paginated_by_restaurant(restaurant_id)
         return result.get("items", [])
 
 
-    def get_menu_item_by_id(self, menu_item_id: str):
+    def get_menu_item_by_id(self, restuarant_id: str, item_id: str):
         """Fetch a menu item by its ID from the CSV file."""
         all_menus = self.get_all()
 
         for item in all_menus:
-            if str(item.get("id")) == str(menu_item_id):
+            if (str(item.get("restaurant_id")) == str(restuarant_id) and
+                str(item.get("id")) == str(item_id)):
                 return item
         return None
 

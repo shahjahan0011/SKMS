@@ -1,6 +1,8 @@
 """Menu services module."""
 
 from typing import Any, Dict, List, Optional
+
+from fastapi import HTTPException
 from app.storage.repositories.menu_repository import MenuRepository
 from app.storage.repositories.restaurant_repository import RestaurantRepository
 
@@ -29,6 +31,21 @@ class MenuService:
         active_menus = [menu for menu in all_menus if str(menu.get('status', '')).lower() in ['true', '1']]
 
         return active_menus
+
+
+    def get_menu_item_details(self, restaurant_id: str, item_id: str):
+        """ Retrieve menu items details """
+        item = self.menu_repo.get_menu_item_by_id(restaurant_id, item_id)
+
+        if item:
+            item["description"] = item.get("description", "No description available")
+            raw_val = str(item.get("is_available", "False")).lower()
+            item["is_available"] = raw_val == "true"
+
+        if not item:
+            raise HTTPException(status_code=404, detail="Menu item not found")
+        return item
+
 
     def get_active_menu_paginated_by_restaurant(
         self,

@@ -11,6 +11,7 @@ class TestRestaurantRepo:
             {"id": "1", "name": "Restaurant 1"},
             {"id": "2", "name": "Restaurant 2"}
         ]
+
     def get_restaurant_by_id(self, restaurant_id):
         for r in self.get_all_restaurants():
             if r["id"] == restaurant_id:
@@ -26,14 +27,19 @@ class TestMenuRepo:
                 "id": "1",
                 "restaurant_id": restaurant_id,
                 "item_name": "Burger",
-                "price": "10"
+                "price": "10",
+                "description": "Juicy beef burger",
+                "is_available": True
             }
         ]
 
-    def get_menu_item_by_id(self, item_id):
-        if item_id == "1":
-            return {"id": "1", "restaurant_id": "1", "item_name": "Burger", "price": "10"}
+
+    def get_menu_item_by_id(self, restaurant_id, item_id):
+        if item_id == "1" and restaurant_id == "1":
+            return {"id": "1", "restaurant_id": "1", "item_name": "Burger", "price": "10", "description": "Juicy beef burger",
+                "is_available": True}
         return None
+
 
 # pytests for item listing services
 def test_get_all_restaurants():
@@ -43,6 +49,7 @@ def test_get_all_restaurants():
     restaurants = service.get_all_restaurants()
 
     assert len(restaurants) == 2
+
 
 def test_get_restaurant_menu_valid():
     """Test for Get Restaurant Menu - Valid Restaurant"""
@@ -63,6 +70,7 @@ def test_get_restaurant_menu_invalid():
         assert False
     except ValueError:
         assert True
+
 
 def test_get_restaurant_by_id_valid():
     """Test for Get a valid restaurant by id"""
@@ -88,7 +96,7 @@ def test_get_menu_item_by_id_valid():
     """Test for Get a valid menu item by id"""
     service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
 
-    item = service.get_menu_item_by_id("1")
+    item = service.get_menu_item_by_id("1", "1")
 
     assert item["id"] == "1"
 
@@ -98,10 +106,11 @@ def test_get_menu_item_by_id_invalid():
     service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
 
     try:
-        service.get_menu_item_by_id("999")
+        service.get_menu_item_by_id("1", "999")
         assert False
     except ValueError:
         assert True
+
 
 def get_restaurant_menu(self, restaurant_id: str) -> list:
     """Get menu items for a given restaurant"""

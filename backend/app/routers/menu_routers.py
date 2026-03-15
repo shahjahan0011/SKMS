@@ -12,6 +12,7 @@ def get_menu_service():
     """Dependency injection for MenuService."""
     return MenuService(MenuRepository(), RestaurantRepository())
 
+
 @router.get("/{restaurant_id}", response_model=Dict[str, Any])
 def get_menu_by_restaurant(
     restaurant_id: str,
@@ -27,6 +28,17 @@ def get_menu_by_restaurant(
         page=page,
         page_size=page_size
     )
+
+
+@router.get("/{restaurant_id}/items/{item_id}", response_model=Dict[str, Any])
+def get_menu_item_detail(
+    restaurant_id: str,
+    item_id: str,
+    service: MenuService = Depends(get_menu_service)
+):
+    """Retrieve detailed information for a specific menu item (FR6)."""
+    return service.get_menu_item_details(restaurant_id=restaurant_id, item_id=item_id)
+
 
 @router.get("/")
 def browse_menus(
