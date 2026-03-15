@@ -51,5 +51,24 @@ class delivery_repository:
             ])
 
     
-    
+    def update_delivery_status(self, order_id, new_status):
+        """updates the delivery status for an order"""
+
+        deliveries = []
+
+        with open(self.file_path, mode="r", encoding="utf-8", newline="") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                if row["order_id"] == str(order_id):
+                    row["status"] = new_status
+
+                deliveries.append(row)
+
+        with open(self.file_path, mode="w", encoding="utf-8", newline="") as file:
+            fields = ["order_id", "restaurant_id", "user_id", "user_name", "status", "is_emergency"]
+            writer = csv.DictWriter(file, fields=fields)
+
+            writer.writeheader()
+            writer.writerows(deliveries)
                 
