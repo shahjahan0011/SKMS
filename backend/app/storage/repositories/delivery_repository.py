@@ -71,4 +71,19 @@ class delivery_repository:
 
             writer.writeheader()
             writer.writerows(deliveries)
-                
+
+    
+    def get_user_deliveries(self, user_id):
+        """returns all deliveries made by a user"""
+
+        user_deliveries = []
+
+        with open(self.file_path, mode="r", encoding="utf-8", newline="") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                if row["user_id"] == str(user_id):
+                    user_deliveries.append(row)
+
+        return user_deliveries    
+    
