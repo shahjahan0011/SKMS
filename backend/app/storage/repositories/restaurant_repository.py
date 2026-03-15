@@ -8,6 +8,7 @@ class RestaurantRepository:
     def __init__(self):
         self.file_path = "app/storage/data/restaurants.csv"
 
+
     def get_all_restaurants(self) -> List[Dict]:
         """Fetch all restaurant data from the CSV file."""
         return CSVStore.read_csv(self.file_path)
@@ -22,6 +23,20 @@ class RestaurantRepository:
                 return restaurant
 
         return None
+
+    def get_restaurants_by_search(self, search_name: str = None):
+        """ Search restaurants by name"""
+        all_res = self.get_all()
+
+        if search_name:
+            query = search_name.lower()
+            return [
+                res for res in all_res
+                if query in str(res.get("name", "")).lower()
+                or query in str(res.get("cuisine", "")).lower()
+            ]
+
+        return all_res
 
 
     def get_all(self) -> List[Dict]:

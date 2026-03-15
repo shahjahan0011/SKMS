@@ -28,3 +28,24 @@ def test_get_menus_filter_logic():
 
     assert response.status_code == 200
 
+
+def test_menu_search_multi_field_match(client):
+    """
+    Requirement: Search applies to name
+    """
+    response = client.get("/menus/16?search=Main")
+    assert response.status_code == 200
+    items = response.json()
+
+    assert len(items) > 0
+
+
+def test_menu_search_case_insensitivity_and_partial(client):
+    """
+    Requirement: Text-based search should be user-friendly.
+    """
+    response = client.get("/menus/13?search=BRIY")
+    assert response.status_code == 200
+    items = response.json()
+
+    assert any("Briyani" in item["item_name"] for item in items)

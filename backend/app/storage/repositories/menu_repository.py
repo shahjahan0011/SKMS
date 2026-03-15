@@ -30,10 +30,10 @@ class MenuRepository:
         ]
 
         if search:
-            search_lower = search.lower()
+            q = search.lower()
             filtered_menus = [
                 item for item in filtered_menus
-                if search_lower in str(item.get("item_name", "")).lower()
+                if q in str(item.get("item_name", "")).lower()
             ]
 
         start = (page - 1) * page_size

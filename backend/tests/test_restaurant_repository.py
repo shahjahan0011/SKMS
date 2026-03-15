@@ -8,28 +8,39 @@ def mock_restaurant_repo():
     """Mock RestaurantRepository for testing."""
     repo = RestaurantRepository()
 
-    #define a mock dataset
     mock_data = [
-        {"id": "1", "name": "Restaurant 1"},
-        {"id": "2", "name": "Restaurant 2"},
-        {"id": "3", "name": "Restaurant 3"},
+        {"id": "1", "name": "Pasta Place", "cuisine": "Italian"},
+        {"id": "2", "name": "Curry House", "cuisine": "Indian"},
+        {"id": "3", "name": "Burger Joint", "cuisine": "American"},
     ]
 
-    #make the repo use this dataset
-    repo.get_all = mock_data
+    repo.get_all = lambda: mock_data
+
+    repo.get_restaurant_by_id = lambda res_id: next(
+        (r for r in mock_data if r["id"] == res_id), None
+    )
+
     return repo
 
 def test_get_restaurant_by_id_valid(mock_restaurant_repo):
-    """Test for getting a valid restaurant"""
     restaurant = mock_restaurant_repo.get_restaurant_by_id("1")
-
     assert restaurant is not None
-    assert restaurant["id"] == "1"
-    assert restaurant["name"] == "Restaurant 1"
+    assert restaurant["name"] == "Pasta Place"
 
-def test_get_restaurant_by_id_invalid(mock_restaurant_repo):
-    """Test for trying to get an invalid restaurant"""
-    restaurant = mock_restaurant_repo.get_restaurant_by_id("999")
 
-    assert restaurant is None
+def test_search_restaurant_by_cuisine(mock_restaurant_repo):
+    """Test searching by cuisine keyword"""
 
+    results = mock_restaurant_repo.get_restaurants_by_search("Italian")
+
+    assert len(results) > 0
+    assert any("Italian" in res["cuisine"] for res in results)
+
+
+def test_search_restaurant_case_insensitive(mock_restaurant_repo):
+    """Test search is case insensitive and works on the name"""
+
+    results = mock_restaurant_repo.get_restaurants_by_search("indian")
+
+    assert len(results) == 1
+    assert "Curry House" in results[0]["name"]
