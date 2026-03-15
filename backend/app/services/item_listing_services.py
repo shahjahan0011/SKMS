@@ -2,6 +2,7 @@
 
 from app.storage.repositories.restaurant_repository import RestaurantRepository
 from app.storage.repositories.menu_repository import MenuRepository
+from typing import List, Dict
 
 
 class ItemListingService:
@@ -9,7 +10,7 @@ class ItemListingService:
     Service for Item Listing from Menu
     """
 
-    def __init__(self, restaurant_repo: RestaurantRepository, menu_repo: MenuRepository):
+    def __init__(self, restaurant_repo, menu_repo):
         self.restaurant_repo = restaurant_repo
         self.menu_repo = menu_repo
 
@@ -26,7 +27,7 @@ class ItemListingService:
         if not exists:
             raise ValueError("Restaurant not found")
 
-        menu_items = self.menu_repo.get_by_restaurant(restaurant_id)
+        menu_items = self.menu_repo.get_menu_by_restaurant(restaurant_id)
         restaurant_ids = {r["id"] for r in restaurants}
 
         for item in menu_items:
@@ -34,7 +35,7 @@ class ItemListingService:
                 raise ValueError("Menu item references invalid restaurant")
 
         return menu_items
-    
+
     def get_restaurant_by_id(self, restaurant_id: str):
         """Get a restaurant by its id"""
         restaurant = self.restaurant_repo.get_restaurant_by_id(restaurant_id)
@@ -43,7 +44,7 @@ class ItemListingService:
             raise ValueError("Restaurant not found")
 
         return restaurant
-    
+
     def get_menu_item_by_id(self, item_id: str):
         """Get a menu item by menu item id"""
         item = self.menu_repo.get_menu_item_by_id(item_id)
