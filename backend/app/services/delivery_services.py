@@ -27,5 +27,26 @@ class delivery_services:
             raise ValueError("delivery not found")
 
         return delivery
+    
 
+    def create_delivery(self, order_id, restaurant_id, user_id, user_name, status, is_emergency):
+        """creates a new delivery"""
+
+        existing = self.repo.get_delivery_by_order_id(order_id)
+
+        if existing:
+            raise ValueError("delivery already exists for this order")
+
+        delivery_data = {
+            "order_id": order_id,
+            "restaurant_id": restaurant_id,
+            "user_id": user_id,
+            "user_name": user_name,
+            "status": status,
+            "is_emergency": is_emergency
+        }
+
+        self.delivery_repo.create_delivery(delivery_data)
+
+        return delivery_data
     
