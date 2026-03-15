@@ -14,4 +14,4 @@ class delivery(BaseModel):
     user_name: str
     delivery_location: location
     status: str
-    is_Emergency: bool
+    is_emergency: bool

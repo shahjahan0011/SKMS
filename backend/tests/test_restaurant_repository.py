@@ -1,11 +1,11 @@
 """Tests for restaurant_repository"""
 
-from app.storage.repositories.restaurant_repository import RestaurantRepository
+from app.storage.repositories.restaurant_repository import restaurant_repository
 from app.storage.csv_store import CSVStore
 
 def test_get_restaurant_by_id_valid():
     """Test for get a valid restaurant"""
-    repo = RestaurantRepository()
+    repo = restaurant_repository()
 
     restaurant = repo.get_restaurant_by_id("16")
 
@@ -15,7 +15,7 @@ def test_get_restaurant_by_id_valid():
 
 def test_get_restaurant_by_id_invalid():
     """Test for get an invalid restaurant"""
-    repo = RestaurantRepository()
+    repo = restaurant_repository()
 
     restaurant = repo.get_restaurant_by_id("9999")
 
@@ -31,7 +31,7 @@ def test_invalid_restaurant_data():
 
     CSVStore.read_csv = fake_read_csv
 
-    repo = RestaurantRepository()
+    repo = restaurant_repository()
 
     try:
         repo.get_all_restaurants()

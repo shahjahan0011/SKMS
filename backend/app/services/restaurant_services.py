@@ -2,17 +2,16 @@
 from importlib import metadata
 from sympy import limit
 
-from sympy import limit
 
-from repositories.restaurant_repository import RestaurantRepository
+from repositories.restaurant_repository import restaurant_repository
 from typing import Dict, List
 
 
 
-class RestaurantService:
+class restaurant_service:
     """Restaurant service class."""
 
-    def _init__(self, repo: RestaurantRepository):
+    def _init__(self, repo: restaurant_repository):
         """Initialize the restaurant service."""
         self.repo = repo
 

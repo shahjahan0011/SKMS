@@ -1,11 +1,11 @@
 """Tests for MenuRepository."""
 
-from app.storage.repositories.menu_repository import MenuRepository
+from app.storage.repositories.menu_repository import menu_repository
 from app.storage.csv_store import CSVStore
 
 def test_get_menu_item_by_id_valid():
     """Test for getting a valid menu item"""
-    repo = MenuRepository()
+    repo = menu_repository()
 
     item = repo.get_menu_item_by_id("1")
 
@@ -15,7 +15,7 @@ def test_get_menu_item_by_id_valid():
 
 def test_get_menu_item_by_id_invalid():
     """Test for trying to get an invalid menu item"""
-    repo = MenuRepository()
+    repo = menu_repository()
 
     item = repo.get_menu_item_by_id("9999")
 
@@ -31,7 +31,7 @@ def test_invalid_menu_data():
 
     CSVStore.read_csv = fake_read_csv
 
-    repo = MenuRepository()
+    repo = menu_repository()
 
     try:
         repo.get_by_restaurant("1")

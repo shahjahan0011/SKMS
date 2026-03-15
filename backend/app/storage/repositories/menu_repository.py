@@ -3,7 +3,7 @@ from typing import List, Dict
 from app.storage.csv_store import CSVStore
 
 # pylint: disable=too-few-public-methods
-class MenuRepository:
+class menu_repository:
     """Repository for fetching menu data."""
     def __init__(self):
         self.file_path = "backend/app/storage/data/menus.csv"

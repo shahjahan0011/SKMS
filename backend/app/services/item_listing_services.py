@@ -1,15 +1,15 @@
 """Item listing Services"""
 
-from app.storage.repositories.restaurant_repository import RestaurantRepository
-from app.storage.repositories.menu_repository import MenuRepository
+from app.storage.repositories.restaurant_repository import restaurant_repository
+from app.storage.repositories.menu_repository import menu_repository
 
 
-class ItemListingService:
+class item_listing_service:
     """
     Service for Item Listing from Menu
     """
 
-    def __init__(self, restaurant_repo: RestaurantRepository, menu_repo: MenuRepository):
+    def __init__(self, restaurant_repo: restaurant_repository, menu_repo: menu_repository):
         self.restaurant_repo = restaurant_repo
         self.menu_repo = menu_repo
 
