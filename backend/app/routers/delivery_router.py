@@ -28,3 +28,25 @@ def get_delivery_by_order_id(order_id: int):
     except ValueError as error:
         raise HTTPException(status_code=404, detail=str(error))
     
+
+@router.post("/deliveries")
+def create_delivery(delivery: dict):
+    """create a new delivery"""
+
+    service = delivery_service()
+
+    try:
+        created_delivery = service.create_delivery(
+            delivery["order_id"],
+            delivery["restaurant_id"],
+            delivery["user_id"],
+            delivery["user_name"],
+            delivery["status"],
+            delivery["is_emergency"]
+        )
+
+        return created_delivery
+
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    
