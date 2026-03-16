@@ -1,4 +1,4 @@
-"""Menu services module.""""
+"""Menu services module."""
 
 from typing import Any, Dict, List, Optional
 from fastapi import HTTPException
