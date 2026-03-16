@@ -11,12 +11,12 @@ from app.routers.delivery_router import router as delivery_router
 
 app = FastAPI(title="SKMS Backend", redirect_slashes=True)
 
+app.include_router(delivery_router, tags=["Deliveries"])
+app.include_router(menu_router, tags=["Menus"])
 app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 app.include_router(order_router)
 app.include_router(item_listing_router)
-app.include_router(menu_router, tags=["Menus"])
 app.include_router(restaurants_router, prefix="/restaurants", tags=["Restaurants"])
-app.include_router(delivery_router, tags=["Deliveries"])
 app.include_router(delivery_router, prefix="/locations", tags=["Locations"])
 app.include_router(item_listing_router, tags=["Restaurants"])
 
