@@ -18,4 +18,4 @@ def browse_restaurants(
 ):
     result = service.browse_restaurants(keyword, page, limit)
     
-    return result.get("data", [])
+    return result
