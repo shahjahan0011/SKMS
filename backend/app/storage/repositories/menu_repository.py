@@ -1,12 +1,16 @@
 """Menu repository for fetching menu data."""
 from typing import Any, List, Dict, Optional
+import os
 from app.storage.csv_store import CSVStore
 
 # pylint: disable=too-few-public-methods
 class MenuRepository:
     """Repository for fetching menu data."""
     def __init__(self):
-        self.file_path = "app/storage/data/menus.csv"
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.file_path = os.path.join(current_dir, "..", "data", "menus.csv")
+        self.file_path = os.path.abspath(self.file_path)
+        # app/storage/repositories/../data/menus.csv
 
 
     def get_all(self) -> List[Dict]:
