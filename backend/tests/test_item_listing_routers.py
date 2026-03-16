@@ -12,7 +12,7 @@ def test_get_all_restaurants():
     response = client.get("/restaurants")
 
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    assert isinstance(response.json()["data"], list)
 
 def test_get_restaurant_by_id_valid():
     """Test for GET /restaurants/{restaurant_id} endpoint for valid id"""
