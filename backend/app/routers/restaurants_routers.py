@@ -1,21 +1,19 @@
 from typing import Any, Optional, List, Dict
 from fastapi import APIRouter, Depends, Query
-from app.services.restaurant_services import RestaurantService
+from app.services.restaurant_services import restaurant_service
 from app.storage.repositories.restaurant_repository import restaurant_repository
 
 router = APIRouter(tags=["Restaurants"])
 
 def get_restaurant_service():
-    """Dependency injection for RestaurantService."""
-    
-    return RestaurantService(restaurant_repository())
+    return restaurant_service(restaurant_repository())
 
 @router.get("/", response_model=List[Dict[str, Any]])
 def browse_restaurants(
     keyword: Optional[str] = Query(None),
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1),
-    service: RestaurantService = Depends(get_restaurant_service)
+    service: Any = Depends(get_restaurant_service)
 ):
     """
     Browse restaurants with pagination.
