@@ -32,6 +32,6 @@ def get_menu_by_restaurant(
     )
 
 if not result.get("items"):
-        raise HTTPException(status_code=404, detail="Restaurant or menu not found")
+    raise HTTPException(status_code=404, detail="Restaurant or menu not found")
         
-    return result
+return result
