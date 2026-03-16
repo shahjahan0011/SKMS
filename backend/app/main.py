@@ -17,3 +17,11 @@ app.include_router(menu_router, prefix="/menus", tags=["Menus"])
 app.include_router(restaurants_router, prefix="/restaurants", tags=["Restaurants"])
 app.include_router(delivery_router, prefix="/deliveries", tags=["Delivery"])
 app.include_router(delivery_router, prefix="/locations", tags=["Locations"])
+
+@app.on_event("startup")
+def log_routes():
+    print("\n=== REGISTERED ROUTES ===")
+    for route in app.routes:
+        if hasattr(route, 'path'):
+            print(f"Path: {route.path} | Methods: {route.methods}")
+    print("=========================\n")
