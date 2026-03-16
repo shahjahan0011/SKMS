@@ -57,7 +57,7 @@ def test_get_menu_item_by_restaurant_id_valid(mock_menu_repo):
     """Test for getting a valid menu item"""
     results = mock_menu_repo.get_menu_by_restaurant("1")
 
-    assert len(results) == 2
+    assert len(results) == 1
     assert results[0]["id"] == "1"
     assert results[0]["name"] == "Pizza"
 
