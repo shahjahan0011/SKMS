@@ -46,6 +46,12 @@ class delivery_repository:
                 delivery["restaurant_id"],
                 delivery["user_id"],
                 delivery["user_name"],
+                delivery["delivery_location"].unit,
+                delivery["delivery_location"].street,
+                delivery["delivery_location"].postal_code,
+                delivery["delivery_location"].province,
+                delivery["delivery_location"].city,
+                delivery["delivery_location"].country,
                 delivery["status"],
                 delivery["is_emergency"]
             ])
@@ -66,7 +72,7 @@ class delivery_repository:
                 deliveries.append(row)
 
         with open(self.file_path, mode="w", encoding="utf-8", newline="") as file:
-            fields = ["order_id", "restaurant_id", "user_id", "user_name", "status", "is_emergency"]
+            fields = ["order_id", "restaurant_id", "user_id", "user_name", "unit", "street", "postal_code", "province", "city", "country", "status", "is_emergency"]
             writer = csv.DictWriter(file, fieldnames=fields)
 
             writer.writeheader()
