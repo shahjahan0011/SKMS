@@ -15,15 +15,13 @@ def get_menu_service():
 
 @router.get("/", response_model=Dict[str, Any])
 def get_menu_by_restaurant(
-
     restaurant_id: str = Path(..., description="The ID of the restaurant"),
     search: Optional[str] = Query(None),
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1),
     service: MenuService = Depends(get_menu_service)
 ):
-    """Get menu for a specific restaurant with pagination and search."""
-    
+    """Get menu for a specific restaurant."""
     return service.get_active_menu_paginated_by_restaurant(
         restaurant_id=restaurant_id,
         search_query=search,
