@@ -22,7 +22,7 @@ def get_menu_by_restaurant(
     service: MenuService = Depends(get_menu_service)
 ):
     """Get menu for a specific restaurant."""
-    return service.get_active_menu_paginated_by_restaurant(
+    return service.browse_menu(
         restaurant_id=restaurant_id,
         search_query=search,
         page=page,
