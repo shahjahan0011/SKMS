@@ -2,9 +2,7 @@ from datetime import datetime
 from uuid import uuid4
 from fastapi import HTTPException
 
-from app.storage.repositories.order_repository import get_order_by_id, update_order
-from app.storage.repositories.order_repository import save_order
-from app.storage.repositories.order_repository import get_menu_item_by_id
+from app.storage.repositories.order_repository import get_order_by_id, update_order, save_order, get_menu_item_by_id, get_active_orders_by_restaurant
 from app.schemas.order_schema import OrderStatus
 
 
@@ -89,6 +87,28 @@ def update_order_status(order_id: str, new_status: str) -> dict:
 
     if new_status == "delivered":
         order["delivered_at"] = _now_iso()
+
+    updated_order = update_order(order)
+    assert updated_order is not None, "Failed to update order"
+    return updated_order
+
+def list_active_orders(restaurant_id: str) -> list[dict]:
+    return get_active_orders_by_restaurant(restaurant_id)
+
+def cancel_order(order_id: str) -> dict:
+    order = get_order_by_id(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    if order["status"] != OrderStatus.pending.value:
+        raise HTTPException(
+            status_code=400,
+            detail="Only pending orders can be cancelled",
+        )
+
+    order["status"] = OrderStatus.cancelled.value
+    order["updated_at"] = _now_iso()
+    order["cancelled_at"] = _now_iso()
 
     updated_order = update_order(order)
     assert updated_order is not None, "Failed to update order"

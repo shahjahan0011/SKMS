@@ -9,7 +9,7 @@ class item_listing_service:
     Service for Item Listing from Menu
     """
 
-    def __init__(self, restaurant_repo, menu_repo):
+    def __init__(self, restaurant_repo: restaurant_repository, menu_repo: menu_repository):
         self.restaurant_repo = restaurant_repo
         self.menu_repo = menu_repo
 
