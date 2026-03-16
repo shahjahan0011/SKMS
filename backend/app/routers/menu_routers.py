@@ -1,7 +1,7 @@
 """Menu routes module."""
 
 from typing import Any, Dict, Optional
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import menu_repository
@@ -23,14 +23,19 @@ def get_menu_by_restaurant(
     service: MenuService = Depends(get_menu_service)
 ):
     """Get menu for a specific restaurant with pagination and search."""
-    return service.get_active_menu_paginated_by_restaurant(
+    result = service.get_active_menu_paginated_by_restaurant(
         restaurant_id=restaurant_id,
         search_query=search,
         page=page,
         page_size=page_size
     )
+    
+    if not result.get("items"):
+        raise HTTPException(status_code=404, detail="Restaurant or menu not found")
+        
+    return result
 
-@router.get("/")
+@router.get("/menus")
 def browse_menus(
     target_res_id: Optional[str] = Query(None, alias="restaurant_id", description="Filter by restaurant ID"),
     item_name: Optional[str] = Query(None, description="Search by item name"),
@@ -43,7 +48,3 @@ def browse_menus(
         price=price,
         restaurant_id=target_res_id
     )
-if not result.get("items"):
-        raise HTTPException(status_code=404, detail="Restaurant or menu not found")
-        
-    return result
