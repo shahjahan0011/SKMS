@@ -1,9 +1,9 @@
 """Tests for item_listing_services"""
 
-from app.services.item_listing_services import ItemListingService
+from app.services.item_listing_services import item_listing_service
 
 # test repositories to test the service layer for item listing
-class TestRestaurantRepo:
+class test_restaurant_repo:
     """Test restaurant repository for testing purposes"""
 
     def get_all_restaurants(self):
@@ -17,7 +17,7 @@ class TestRestaurantRepo:
                 return r
         return None
 
-class TestMenuRepo:
+class test_menu_repo:
     """Test menu repository for testing purposes"""
 
     def get_menu_by_restaurant(self, restaurant_id):
@@ -38,7 +38,7 @@ class TestMenuRepo:
 # pytests for item listing services
 def test_get_all_restaurants():
     """Test for Get All Restaurants"""
-    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
     restaurants = service.get_all_restaurants()
 
@@ -46,7 +46,7 @@ def test_get_all_restaurants():
 
 def test_get_restaurant_menu_valid():
     """Test for Get Restaurant Menu - Valid Restaurant"""
-    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
     menu = service.get_restaurant_menu("1")
 
@@ -56,7 +56,7 @@ def test_get_restaurant_menu_valid():
 
 def test_get_restaurant_menu_invalid():
     """Test case for Get Restaurant Menu - Invalid Restaurant"""
-    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
     try:
         service.get_restaurant_menu("999")
@@ -66,7 +66,7 @@ def test_get_restaurant_menu_invalid():
 
 def test_get_restaurant_by_id_valid():
     """Test for Get a valid restaurant by id"""
-    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
     restaurant = service.get_restaurant_by_id("1")
 
@@ -75,7 +75,7 @@ def test_get_restaurant_by_id_valid():
 
 def test_get_restaurant_by_id_invalid():
     """Test for Get an invalid restaurant by id"""
-    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
     try:
         service.get_restaurant_by_id("999")
@@ -86,7 +86,7 @@ def test_get_restaurant_by_id_invalid():
 
 def test_get_menu_item_by_id_valid():
     """Test for Get a valid menu item by id"""
-    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
     item = service.get_menu_item_by_id("1")
 
@@ -95,7 +95,7 @@ def test_get_menu_item_by_id_valid():
 
 def test_get_menu_item_by_id_invalid():
     """Test for Get an invalid menu item by id"""
-    service = ItemListingService(TestRestaurantRepo(), TestMenuRepo())
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
     try:
         service.get_menu_item_by_id("999")

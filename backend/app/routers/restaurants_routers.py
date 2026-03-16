@@ -1,17 +1,17 @@
 '''Restaurants routes module'''
 
 from fastapi import APIRouter
-from app.services.restaurant_services import RestaurantService
-from app.storage.repositories.restaurant_repository import RestaurantRepository
+from app.services.restaurant_services import restaurant_service
+from app.storage.repositories.restaurant_repository import restaurant_repository
 
 router = APIRouter(prefix="/restaurants", tags=["browse restaurants"])
-# Repositories and services for restaurant routes
-def get_restaurant_service():
-    """Get restaurant service instance."""
-    repo = RestaurantRepository()
-    return RestaurantService(repo)
 
-# The browse_restaurants endpoint allows clients to retrieve a list of restaurants
+def get_restaurant_service():
+    """Get restaurant service instance using snake_case factory functions."""
+    repo = restaurant_repository()
+    return restaurant_service(repo)
+
+
 @router.get("/", response_model=dict)
 def browse_restaurants(keyword: str = None, page: int = 1, limit: int = 20):
     """Browse all restaurants."""
