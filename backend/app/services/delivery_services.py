@@ -10,7 +10,13 @@ class delivery_services:
     def __init__(self):
         self.repo = delivery_repository()
 
-    
+    status_set = [
+        "placed",
+        "preparing",
+        "picked up",
+        "on the way",
+        "delivered"
+    ]
 
     def get_all_deliveries(self):
         """returns all deliveries"""
