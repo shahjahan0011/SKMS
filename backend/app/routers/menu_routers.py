@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, Query
 
 
-ffrom app.services.menu_services import MenuService
+from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import menu_repository
 from app.storage.repositories.restaurant_repository import restaurant_repository
 
