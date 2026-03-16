@@ -11,7 +11,7 @@ def mock_menu_repo():
 
     mock_data = [
         {"id": "1", "restaurant_id": "1", "name": "Pizza", "price": "10"},
-        {"id": "1", "restaurant_id": "1", "name": "Pasta", "price": "12"},
+        {"id": "2", "restaurant_id": "1", "name": "Pasta", "price": "12"},
         {"id": "3", "restaurant_id": "2", "name": "Burger", "price": "8"},
     ]
 
@@ -26,7 +26,7 @@ def test_get_menu_item_by_id_valid():
 
     mock_data = [
         {"id": "1", "restaurant_id": "1", "name": "Pizza", "price": "10"},
-        {"id": "1", "restaurant_id": "1", "name": "Pasta", "price": "12"},
+        {"id": "2", "restaurant_id": "1", "name": "Pasta", "price": "12"},
         {"id": "3", "restaurant_id": "2", "name": "Burger", "price": "8"},
     ]
 
