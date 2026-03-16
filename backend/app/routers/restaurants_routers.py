@@ -6,7 +6,7 @@ from app.storage.repositories.restaurant_repository import restaurant_repository
 router = APIRouter(tags=["Restaurants"])
 
 def get_restaurant_service():
-    return restaurantService(restaurant_repository())
+    return restaurant_service(restaurant_repository())
 
 @router.get("/", response_model=List[Dict[str, Any]])
 def browse_restaurants(
