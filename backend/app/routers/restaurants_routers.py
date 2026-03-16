@@ -10,9 +10,11 @@ def get_restaurant_service():
     repo = restaurant_repository()
     return restaurant_service(repo)
 
-@router.get("/", response_model=list)
-def browse_restaurants(keyword: str = None, page: int = 1, limit: int = 20):
-    """Browse all restaurants."""
-    service = get_restaurant_service()
-    result service.browse_restaurants(keyword, page, limit)
-    return result["data"]
+@router.get("/", response_model=list)def browse_restaurants(
+    keyword: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1),
+    service: RestaurantService = Depends(get_restaurant_service)
+):
+    result = service.browse_restaurants(keyword, page, limit)
+    return result.get("data", [])
