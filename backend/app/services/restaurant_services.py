@@ -13,10 +13,8 @@ class RestaurantService:
 
     def browse_restaurants(self, keyword: str = None, page: int = 1, limit: int = 20) -> List[Dict]:
         """Browse all restaurants."""
-        #all_restaurants =  self.repo.get_menu_by_restaurant()
-        all_restaurants = self.repo.get_all_restaurants()
 
-         # Filter for active restaurants using True of 1 in the 'is_active' field
+        all_restaurants = self.repo.get_all_restaurants()
 
         result = [
             restaurant for restaurant in all_restaurants
@@ -27,15 +25,12 @@ class RestaurantService:
             keyword = keyword.lower().strip()
             result = [restaurant for restaurant in result if keyword.lower() in restaurant.get('name', '').lower()]
 
-         # handle empty list of result after filtering by keyword return graceful message
         if not result:
             return {"message": "No restaurants found matching the keyword."}
 
-        # Calculate total items and total pages for pagination
         total_items = len(result)
         total_pages = (total_items + limit - 1)
 
-        # Calculate pagination start and end indices
         start = (page - 1) * limit
         end = start + limit
         paginated_result = result[start:end]

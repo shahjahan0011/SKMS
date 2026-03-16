@@ -19,9 +19,9 @@ def mock_restaurant_repo():
     repo.get_restaurant_by_id = lambda res_id: next(
         (r for r in mock_data if r["id"] == res_id), None
     )
-
     return repo
 
+  
 def test_get_restaurant_by_id_valid(mock_restaurant_repo):
     restaurant = mock_restaurant_repo.get_restaurant_by_id("1")
     assert restaurant is not None

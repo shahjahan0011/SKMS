@@ -1,4 +1,6 @@
 """Menu repository for fetching menu data."""
+
+import os
 from typing import Any, List, Dict, Optional
 from app.storage.csv_store import CSVStore
 
@@ -6,8 +8,10 @@ from app.storage.csv_store import CSVStore
 class MenuRepository:
     """Repository for fetching menu data."""
     def __init__(self):
-        self.file_path = "app/storage/data/menus.csv"
-
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.file_path = os.path.join(current_dir, "..", "data", "menus.csv")
+        self.file_path = os.path.abspath(self.file_path)
+        # app/storage/repositories/../data/menus.csv
 
     def get_all(self) -> List[Dict]:
         """Fetch all menu data from the CSV file."""

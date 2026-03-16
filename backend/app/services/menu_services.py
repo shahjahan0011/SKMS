@@ -1,7 +1,6 @@
-"""Menu services module."""
+"""Menu services module.""""
 
 from typing import Any, Dict, List, Optional
-
 from fastapi import HTTPException
 from app.storage.repositories.menu_repository import MenuRepository
 from app.storage.repositories.restaurant_repository import RestaurantRepository
@@ -10,7 +9,7 @@ from app.storage.repositories.restaurant_repository import RestaurantRepository
 class MenuService:
     """Service class for menu-related operations."""
 
-    def __init__(self, menu_repo: MenuRepository, restaurant_repo:RestaurantRepository):
+    def __init__(self, menu_repo: MenuRepository, restaurant_repo: RestaurantRepository):
         self.menu_repo = menu_repo
         self.restaurant_repo = restaurant_repo
 
@@ -27,25 +26,25 @@ class MenuService:
     def get_active_menu_by_restaurant(self, restaurant_id: str) -> List[Dict]:
         """Get active menu items for a specific restaurant."""
         all_menus = self.menu_repo.get_menu_by_restaurant(restaurant_id)
-
-        active_menus = [menu for menu in all_menus if str(menu.get('status', '')).lower() in ['true', '1']]
-
+ 
+        active_menus = [
+            menu for menu in all_menus 
+            if str(menu.get('is_available', menu.get('status', ''))).lower() in ['true', '1', 'yes']
+        ]
         return active_menus
 
-
     def get_menu_item_details(self, restaurant_id: str, item_id: str):
-        """ Retrieve menu items details """
+        """ Retrieve menu items details (FR6) """
         item = self.menu_repo.get_menu_item_by_id(restaurant_id, item_id)
-
-        if item:
-            item["description"] = item.get("description", "No description available")
-            raw_val = str(item.get("is_available", "False")).lower()
-            item["is_available"] = raw_val == "true"
 
         if not item:
             raise HTTPException(status_code=404, detail="Menu item not found")
-        return item
 
+        item["description"] = item.get("description", "No description available")
+        raw_val = str(item.get("is_available", "False")).lower()
+        item["is_available"] = raw_val == "true"
+
+        return item
 
     def get_active_menu_paginated_by_restaurant(
         self,
@@ -60,11 +59,7 @@ class MenuService:
             search_query=search_query,
             page=page,
             page_size=page_size
-    )
-
-    def get_menu_item_by_id(self, item_id: str) -> Dict:
-        """Get menu item by id."""
-        return self.menu_repo.get_menu_item_by_id(item_id)
+        )
 
     def get_global_menus(
             self,
@@ -72,15 +67,14 @@ class MenuService:
             item_name: Optional[str] = None,
             price: Optional[float] = None
     ) -> List[Dict[str, Any]]:
-
-        """Search for menu globally then apply filter for restauratanst and price."""
+        """Search for menu globally then apply filter."""
         items = self.menu_repo.get_menu_by_filters(
             restaurant_id=restaurant_id,
             item_name=item_name,
             price=price)
 
         active_items = [item for item in items if str(item.get('is_available', '')).lower() == 'true']
-
+        
         all_restaurants = self.restaurant_repo.get_all()
         restaurants = {res['id']: res['name'] for res in all_restaurants}
 
