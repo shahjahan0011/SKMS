@@ -1,12 +1,12 @@
 """Menu services module."""
 
 from typing import Any
-from app.storage.repositories.menu_repository import MenuRepository
+from app.storage.repositories.menu_repository import menu_repository
 
 # pylint: disable=too-few-public-methods
 class MenuService:
     """Service class for menu-related operations."""
-    def __init__(self, repo: MenuRepository):
+    def __init__(self, repo: menu_repository):
         self.menu_repository = repo
 
     def get_all_menus_by_restaurant(self, restaurant_id: str) -> list[dict]:
