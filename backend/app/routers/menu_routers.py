@@ -11,15 +11,14 @@ router = APIRouter(tags=["Menus"])
 
 def get_menu_service():
     """Dependency injection for MenuService."""
-
     return MenuService(menu_repository(), restaurant_repository())
 
 @router.get("/", response_model=Dict[str, Any])
 def get_menu_by_restaurant(
     restaurant_id: str,
-    search: Optional[str] = Query(None, description="Search query for menu items"),
-    page: int = Query(1, ge=1, description="Page number for pagination"),
-    page_size: int = Query(10, ge=1, le=100, description="Items per page"),
+    search: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(10, ge=1),
     service: MenuService = Depends(get_menu_service)
 ):
     """Get menu for a specific restaurant with pagination and search."""
