@@ -1,6 +1,6 @@
 """Menu routes module."""
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import MenuRepository
 from typing import Any, Optional, List, Dict
