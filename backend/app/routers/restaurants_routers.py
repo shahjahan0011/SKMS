@@ -10,8 +10,9 @@ def get_restaurant_service():
     repo = restaurant_repository()
     return restaurant_service(repo)
 
-@router.get("/", response_model=dict)
+@router.get("/", response_model=list)
 def browse_restaurants(keyword: str = None, page: int = 1, limit: int = 20):
     """Browse all restaurants."""
     service = get_restaurant_service()
-    return service.browse_restaurants(keyword, page, limit)
+    result service.browse_restaurants(keyword, page, limit)
+    return result["data"]
