@@ -47,7 +47,7 @@ class MenuRepository:
 
         return {
             "items": paginated_items,
-            "total": total_count,
+            "total_items": total_count,
             "page": page,
             "page_size": page_size
         }
