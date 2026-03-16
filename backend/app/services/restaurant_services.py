@@ -11,7 +11,7 @@ class RestaurantService:
 
     def browse_restaurants(self, keyword: Optional[str] = None, page: int = 1, limit: int = 20) -> Dict[str, Any]:
         """Browse all restaurants with filtering and pagination."""
-        
+
         all_restaurants = self.repo.get_menu_by_restaurant()
 
         active_restaurants = [
