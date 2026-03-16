@@ -18,6 +18,7 @@ app.include_router(menu_router, tags=["Menus"])
 app.include_router(restaurants_router, prefix="/restaurants", tags=["Restaurants"])
 app.include_router(delivery_router, tags=["Deliveries"])
 app.include_router(delivery_router, prefix="/locations", tags=["Locations"])
+app.include_router(item_listing_router, tags=["Restaurants"])
 
 @app.on_event("startup")
 def log_routes():
