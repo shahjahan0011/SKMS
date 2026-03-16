@@ -3,7 +3,7 @@ from importlib import metadata
 from sympy import limit
 
 
-from repositories.restaurant_repository import restaurant_repository
+from app.storage.repositories.restaurant_repository import restaurant_repository
 from typing import Dict, List
 
 
