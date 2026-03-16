@@ -104,6 +104,7 @@ class delivery_repository:
             writer.writerow([
                 location["location_id"],
                 location["user_id"],
+                location["name"],
                 location["unit"],
                 location["street"],
                 location["postal_code"],
@@ -133,17 +134,30 @@ class delivery_repository:
 
         locations = []
 
-        with open(self.location_file, mode="r", encoding="utf-8", newline="") as file:
+        with open(self.location_file, mode = "r", encoding = "utf-8", newline = "") as file:
             reader = csv.DictReader(file)
 
             for row in reader:
                 if row["location_id"] != str(location_id):
                     locations.append(row)
 
-        with open(self.location_file, mode="w", encoding="utf-8", newline="") as file:
-            fields = ["location_id","user_id","unit","street","postal_code","province","city","country"]
+        with open(self.location_file, mode = "w", encoding = "utf-8", newline = "") as file:
+            fields = ["location_id","user_id","name","unit","street","postal_code","province","city","country"]
             writer = csv.DictWriter(file, fieldnames=fields)
 
             writer.writeheader()
             writer.writerows(locations)
     
+
+    def get_all_locations(self):
+        """returns all locations"""
+
+        locations = []
+
+        with open(self.location_file, mode = "r", encoding = "utf-8", newline = "") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                locations.append(row)
+
+        return locations

@@ -1,1 +1,1 @@
-location_id,user_id,unit,street,postal_code,province,city,country
+location_id,user_id,name,unit,street,postal_code,province,city,country
