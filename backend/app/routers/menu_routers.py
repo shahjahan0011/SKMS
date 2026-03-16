@@ -19,7 +19,7 @@ def get_menu_by_restaurant(
     restaurant_id: str,
     search: Optional[str] = None,
     page: int = 1,
-    page_size: int = Query(10, le=100),
+    page_size: int = Query(10, ge=1, le=100),
     service: MenuService = Depends(get_menu_service)
 ):
     """Get menu for a specific restaurant with pagination and search."""
