@@ -10,7 +10,13 @@ class delivery_services:
     def __init__(self):
         self.repo = delivery_repository()
 
-    
+    status_set = [
+        "placed",
+        "preparing",
+        "picked up",
+        "on the way",
+        "delivered"
+    ]
 
     def get_all_deliveries(self):
         """returns all deliveries"""
@@ -29,8 +35,14 @@ class delivery_services:
         return delivery
     
 
-    def create_delivery(self, order_id, restaurant_id, user_id, user_name, status, is_emergency):
+    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
         """creates a new delivery"""
+
+        if status not in self.status_set:
+            raise ValueError("invalid delivery status")
+        
+        if not order_id:
+            raise ValueError("order id required")
 
         existing = self.repo.get_delivery_by_order_id(order_id)
 
@@ -42,6 +54,7 @@ class delivery_services:
             "restaurant_id": restaurant_id,
             "user_id": user_id,
             "user_name": user_name,
+            "delivery_location": delivery_location,
             "status": status,
             "is_emergency": is_emergency
         }
@@ -56,6 +69,9 @@ class delivery_services:
 
         delivery = self.repo.get_delivery_by_order_id(order_id)
 
+        if new_status not in self.status_set:
+            raise ValueError("invalid delivery status")
+        
         if delivery is None:
             raise ValueError("delivery not found")
 
@@ -73,4 +89,66 @@ class delivery_services:
         deliveries = self.repo.get_user_deliveries(user_id)
 
         return deliveries
+    
+
+    def save_location(self, location):
+        """saves location for user"""
+
+        if not location["user_id"]:
+            raise ValueError("user id required")
+
+        if not location["name"]:
+            raise ValueError("location name required")
+
+        if not location["street"] or not location["postal_code"] or not location["city"] or not location["country"]:
+            raise ValueError("location fields cannot be empty")
+
+        if location["unit"] is None:
+            raise ValueError("unit is required")
+
+        all_locations = self.repo.get_all_locations()
+        location["location_id"] = len(all_locations) + 1
+
+        self.repo.save_location(location)
+
+        return location
+    
+
+    def get_user_locations(self, user_id):
+        """returns saved locations for a user"""
+        
+        if not user_id:
+            raise ValueError("user id required")
+        
+        locations = self.repo.get_user_locations(user_id)
+
+        return locations
+    
+
+    def delete_location(self, location_id):
+        """deletes a saved location"""
+        
+        if not location_id:
+            raise ValueError("location id required")
+
+        locations = self.repo.get_all_locations()
+        found = False
+        for loc in locations:
+            if loc["location_id"] == str(location_id):
+                found = True
+                break
+
+        if not found:
+            raise ValueError("location not found")
+        self.repo.delete_location(location_id)
+
+        return {"message": "location deleted"}
+    
+
+    def get_all_locations(self):
+        """returns all saved locations"""
+
+        locations = self.repo.get_all_locations()
+
+        return locations
     
