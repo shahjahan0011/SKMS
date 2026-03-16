@@ -10,7 +10,7 @@ from app.storage.repositories.restaurant_repository import restaurant_repository
 router = APIRouter()
 
 def get_menu_service():
-    """Dependency injection for MenuService."""
+    """Dependency injection for MenuService. """
     return MenuService(menu_repository(), restaurant_repository())
 
 @router.get("/menus/{restaurant_id}", response_model=Dict[str, Any])
