@@ -20,7 +20,7 @@ class test_restaurant_repo:
 class test_menu_repo:
     """Test menu repository for testing purposes"""
 
-    def get_by_restaurant(self, restaurant_id):
+    def get_menu_by_restaurant(self, restaurant_id):
         return [
             {
                 "id": "1",
@@ -29,7 +29,7 @@ class test_menu_repo:
                 "price": "10"
             }
         ]
-    
+
     def get_menu_item_by_id(self, item_id):
         if item_id == "1":
             return {"id": "1", "restaurant_id": "1", "item_name": "Burger", "price": "10"}
@@ -112,7 +112,7 @@ def get_restaurant_menu(self, restaurant_id: str) -> list:
     if not exists:
         raise ValueError("Restaurant not found")
 
-    menu_items = self.menu_repo.get_by_restaurant(restaurant_id)
+    menu_items = self.menu_repo.get_menu_by_restaurant(restaurant_id)
     restaurant_ids = {r["id"] for r in restaurants}
 
     for item in menu_items:
