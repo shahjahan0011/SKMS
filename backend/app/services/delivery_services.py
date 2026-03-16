@@ -38,6 +38,9 @@ class delivery_services:
     def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
         """creates a new delivery"""
 
+        if status not in self.status_set:
+            raise ValueError("invalid delivery status")
+        
         existing = self.repo.get_delivery_by_order_id(order_id)
 
         if existing:
@@ -63,6 +66,9 @@ class delivery_services:
 
         delivery = self.repo.get_delivery_by_order_id(order_id)
 
+        if new_status not in self.status_set:
+            raise ValueError("invalid delivery status")
+        
         if delivery is None:
             raise ValueError("delivery not found")
 
