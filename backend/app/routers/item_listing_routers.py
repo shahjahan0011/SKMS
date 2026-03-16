@@ -21,6 +21,7 @@ router.get("/restaurants")
 def get_all_restaurants():
     """Gets all restaurants"""
     restaurants_list = item_listing_service.get_all_restaurants()
+    
     return {"data": restaurants_list}
 
 @router.get("/restaurants/{restaurant_id}")
