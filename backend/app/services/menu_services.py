@@ -2,55 +2,77 @@
 
 from typing import Optional, List, Dict, Any
 from app.storage.repositories.menu_repository import menu_repository
+from app.storage.repositories.restaurant_repository import restaurant_repository
 
 # pylint: disable=too-few-public-methods
 class MenuService:
     """Service class for menu-related operations."""
-    def __init__(self, repo: menu_repository):
-        self.menu_repository = repo
 
-    def get_all_menus_by_restaurant(self, restaurant_id: str) -> list[dict]:
-        """Get all menu items for a specific restaurant."""
-        return self.menu_repository.get_menu_by_restaurant(restaurant_id)
+    def __init__(self, menu_repo: menu_repository, res_repo: restaurant_repository):
+        self.menu_repo = menu_repo
+        self.restaurant_repo = res_repo
 
-    def get_active_menu_by_restaurant(self, restaurant_id: str) -> list[dict]:
+    def get_all_menus_by_restaurant(self, restaurant_id: str) -> List[Dict]:
+        """Get all menus for a specific restaurant."""
+        return self.menu_repo.get_menu_by_restaurant(restaurant_id)
+
+    def get_active_menu_by_restaurant(self, restaurant_id: str) -> List[Dict]:
         """Get active menu items for a specific restaurant."""
-        all_menus = self.menu_repository.get_menu_by_restaurant(restaurant_id)
-
+        all_menus = self.menu_repo.get_menu_by_restaurant(restaurant_id)
+        # Handles various ways 'active' might be stored
         active_menus = [
-            menu for menu in all_menus
-            if str(menu.get('is_available', '')).strip().lower() in ('true', '1', 'yes')
+            menu for menu in all_menus 
+            if str(menu.get('is_available', menu.get('status', ''))).lower() in ['true', '1', 'yes']
         ]
         return active_menus
 
-    def get_paginated_menu_by_restaurant(self, restaurant_id: str, page: int, page_size: int, search: str = "") -> dict[str, Any]:
-        """Get paginated menu items for a specific restaurant."""
-        active_menus = self.get_active_menu_by_restaurant(restaurant_id)
+    def get_active_menu_paginated_by_restaurant(
+        self,
+        restaurant_id: str,
+        search_query: Optional[str],
+        page: int,
+        page_size: int
+    ) -> Dict[str, Any]:
+        """Bridge between router and repository for paginated menus."""
 
-        if search:
-            search_lower = search.lower()
-            active_menus = [
-                menu for menu in active_menus
-                if search_lower in menu.get("name", "").lower()
-                or search_lower in menu.get("description", "").lower()
-            ]
+        return self.menu_repo.get_active_menu_paginated_by_restaurant(
+            restaurant_id=restaurant_id,
+            search_query=search_query,
+            page=page,
+            page_size=page_size
+        )
 
-        total_items = len(active_menus)
-        start_index = (page - 1) * page_size
-        end_index = start_index + page_size
-        paginated_items = active_menus[start_index:end_index]
-
-        return {
-            "items": paginated_items,
-            "total_items": total_items,
-            "page": page,
-            "page_size": page_size,
-            "total_pages": (total_items + page_size - 1) // page_size
-        }
-
-    def get_menu_item_by_id(self, item_id: str) -> dict:
+    def get_menu_item_by_id(self, item_id: str) -> Dict:
         """Get menu item by id."""
-        return self.menu_repository.get_menu_item_by_id(item_id)
+        return self.menu_repo.get_menu_item_by_id(item_id)
+
+    def get_global_menus(
+        self,
+        restaurant_id: Optional[str] = None,
+        item_name: Optional[str] = None,
+        price: Optional[float] = None
+    ) -> List[Dict[str, Any]]:
+        """Search globally then apply filters and attach restaurant names."""
+        items = self.menu_repo.get_menu_by_filters(
+            restaurant_id=restaurant_id,
+            item_name=item_name,
+            price=price
+        )
+
+        active_items = [item for item in items if str(item.get('is_available', '')).lower() == 'true']
+
+        all_restaurants = self.restaurant_repo.get_all()
+        restaurants = {res['id']: res['name'] for res in all_restaurants}
+
+        for item in active_items:
+            res_id = item.get('restaurant_id')
+            item["restaurant_name"] = restaurants.get(res_id, "Unknown Kitchen")
+   
+            if "description" not in item:
+                item["description"] = "No description available"
+
+        return active_items
+      
 
     def browse_menu(self, restaurant_id: str, search_query: Optional[str] = None, page: int = 1, page_size: int = 10):
         """Wrapper to match the 'browse' naming convention."""
