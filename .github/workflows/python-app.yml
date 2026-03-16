@@ -24,22 +24,19 @@ jobs:
       with:
         python-version: "3.10"
     - name: Install dependencies
+      working-directory: ./backend
       run: |
         python -m pip install --upgrade pip
-        if [ -f backend/requirements.txt ]; then
-          pip install -r backend/requirements.txt
-        elif [ -f requirements.txt ]; then
-          pip install -r requirements.txt
-        else
-          echo "No requirements file found."
-        fi
+        python -m pip install -r requirements.txt
+
     - name: Install pytest
       run: |
         pip install pytest
-    - name: Test with pytest
+        pip install httpx
+    - name: Run tests
       run: |
         if ls backend/tests/test_*.py 1> /dev/null 2>&1; then
-          pytest backend/tests
+          python -m pytest backend/tests
         else
           echo "No tests yet"
         fi
