@@ -2,7 +2,6 @@
 from typing import Dict, List, Any, Optional
 from app.storage.repositories.restaurant_repository import restaurant_repository
 
-# FIX: Rename to PascalCase to match the Router's import and PEP 8 standards
 class RestaurantService:
     """Restaurant service class."""
 
