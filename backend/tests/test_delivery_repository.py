@@ -32,13 +32,21 @@ def test_create_delivery(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
 
     repo.create_delivery({
         "order_id": 10,
         "restaurant_id": 3,
         "user_id": 1,
         "user_name": "test_user",
+        "delivery_location": type("Location", (), {
+            "unit": 123,
+            "street": "University Way",
+            "postal_code": "V1V1V7",
+            "province": "British Columbia",
+            "city": "Kelowna",
+            "country": "Canada"
+        })(),
         "status": "preparing",
         "is_emergency": False
     })
@@ -56,13 +64,21 @@ def test_update_delivery_status(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
 
     repo.create_delivery({
         "order_id": 10,
         "restaurant_id": 3,
         "user_id": 1,
         "user_name": "test_user",
+        "delivery_location": type("Location", (), {
+            "unit": 123,
+            "street": "University Way",
+            "postal_code": "V1V1V7",
+            "province": "British Columbia",
+            "city": "Kelowna",
+            "country": "Canada"
+        })(),
         "status": "preparing",
         "is_emergency": False
     })
@@ -80,13 +96,21 @@ def test_get_user_deliveries(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
 
     repo.create_delivery({
         "order_id": 1,
         "restaurant_id": 5,
         "user_id": 2,
         "user_name": "khushi01",
+        "delivery_location": type("Location", (), {
+            "unit": 123,
+            "street": "University Way",
+            "postal_code": "V1V1V7",
+            "province": "British Columbia",
+            "city": "Kelowna",
+            "country": "Canada"
+        })(),
         "status": "preparing",
         "is_emergency": False
     })
@@ -96,6 +120,14 @@ def test_get_user_deliveries(tmp_path):
         "restaurant_id": 3,
         "user_id": 1,
         "user_name": "khushi02",
+        "delivery_location": type("Location", (), {
+            "unit": 123,
+            "street": "University Way",
+            "postal_code": "V1V1V7",
+            "province": "British Columbia",
+            "city": "Kelowna",
+            "country": "Canada"
+        })(),
         "status": "preparing",
         "is_emergency": False
     })

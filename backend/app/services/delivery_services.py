@@ -29,7 +29,7 @@ class delivery_services:
         return delivery
     
 
-    def create_delivery(self, order_id, restaurant_id, user_id, user_name, status, is_emergency):
+    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
         """creates a new delivery"""
 
         existing = self.repo.get_delivery_by_order_id(order_id)
@@ -42,6 +42,7 @@ class delivery_services:
             "restaurant_id": restaurant_id,
             "user_id": user_id,
             "user_name": user_name,
+            "delivery_location": delivery_location,
             "status": status,
             "is_emergency": is_emergency
         }
