@@ -1,6 +1,6 @@
 """Menu services module."""
 
-from typing import Any
+from typing import Optional, List, Dict, Any
 from app.storage.repositories.menu_repository import menu_repository
 
 # pylint: disable=too-few-public-methods
