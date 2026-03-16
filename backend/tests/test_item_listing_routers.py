@@ -32,7 +32,7 @@ def test_get_restaurant_menu_valid():
     response = client.get("/restaurants/1/menu")
 
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    assert isinstance(response.json().get("items", []), list)
 
 def test_get_restaurant_menu_invalid():
     """Test for GET /restaurants/{restaurant_id}/menu endpoint with invalid id"""

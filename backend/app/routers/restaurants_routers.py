@@ -17,5 +17,5 @@ def browse_restaurants(
     service: RestaurantService = Depends(get_restaurant_service)
 ):
     result = service.browse_restaurants(keyword, page, limit)
-    return result.get("data", [])
-  
+    
+    return result
