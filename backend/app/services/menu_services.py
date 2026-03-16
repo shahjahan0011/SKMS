@@ -1,7 +1,6 @@
 """Menu services module."""
 
-from typing import Any, Dict, List, Optional
-# Using snake_case imports as requested
+from typing import Optional, List, Dict, Any
 from app.storage.repositories.menu_repository import menu_repository
 from app.storage.repositories.restaurant_repository import restaurant_repository
 
@@ -35,7 +34,7 @@ class MenuService:
         page_size: int
     ) -> Dict[str, Any]:
         """Bridge between router and repository for paginated menus."""
-        # This calls the repository method we refined earlier
+
         return self.menu_repo.get_active_menu_paginated_by_restaurant(
             restaurant_id=restaurant_id,
             search_query=search_query,
@@ -68,7 +67,7 @@ class MenuService:
         for item in active_items:
             res_id = item.get('restaurant_id')
             item["restaurant_name"] = restaurants.get(res_id, "Unknown Kitchen")
-            # Ensure description field exists for tests
+   
             if "description" not in item:
                 item["description"] = "No description available"
 

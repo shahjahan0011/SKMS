@@ -9,7 +9,7 @@ client = TestClient(app)
 
 def test_get_all_restaurants():
     """Test for GET /restaurants endpoint"""
-   response = client.get("/restaurants")
+    response = client.get("/restaurants")
     print(f"DEBUG RESPONSE: {response.json()}")
     assert response.status_code == 200
     assert isinstance(response.json()["data"], list)
