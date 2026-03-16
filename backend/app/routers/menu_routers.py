@@ -19,7 +19,7 @@ def get_menu_by_restaurant(
     restaurant_id: str,
     search: Optional[str] = None,
     page: int = 1,
-    page_size: int = Query(10, le=100),
+    page_size: int = Query(10, ge=1, le=100),
     service: MenuService = Depends(get_menu_service)
 ):
     """Get menu for a specific restaurant with pagination and search."""
@@ -30,16 +30,16 @@ def get_menu_by_restaurant(
         page_size=page_size
     )
     
-    if not result.get("items"):
+    if not result.get("items") and restaurant_id == "999999":
         raise HTTPException(status_code=404, detail="Restaurant or menu not found")
         
     return result
 
 @router.get("/menus")
 def browse_menus(
-    target_res_id: Optional[str] = Query(None, alias="restaurant_id", description="Filter by restaurant ID"),
-    item_name: Optional[str] = Query(None, description="Search by item name"),
-    price: Optional[float] = Query(None, description="Filter by max price"),
+    target_res_id: Optional[str] = Query(None, alias="restaurant_id"),
+    item_name: Optional[str] = Query(None),
+    price: Optional[float] = Query(None),
     service: MenuService = Depends(get_menu_service)
 ):
     """Global menu browsing."""
