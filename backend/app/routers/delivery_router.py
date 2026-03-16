@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.services.delivery_services import delivery_services
 from app.schemas.delivery_schema import delivery
+from app.schemas.location_schema import location
 
 router = APIRouter()
 """Repo and services for delivery management"""
@@ -73,3 +74,54 @@ def get_user_deliveries(user_id: int):
     deliveries = delivery_service.get_user_deliveries(user_id)
 
     return deliveries
+
+
+@router.post("/locations")
+def save_location(user_id: int, name: str, location: location):
+    """save a new location"""
+
+    location_data = {
+        "user_id": user_id,
+        "name": name,
+        "unit": location.unit,
+        "street": location.street,
+        "postal_code": location.postal_code,
+        "province": location.province,
+        "city": location.city,
+        "country": location.country
+    }
+
+    try:
+        return delivery_service.save_location(location_data)
+
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    
+
+@router.get("/locations/user/{user_id}")
+def get_user_locations(user_id: int):
+    """get saved locations for a user"""
+
+    try:
+        return delivery_service.get_user_locations(user_id)
+
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    
+
+@router.delete("/locations/{location_id}")
+def delete_location(location_id: int):
+    """delete a saved location"""
+
+    try:
+        return delivery_service.delete_location(location_id)
+
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router.get("/locations")
+def get_all_locations():
+    """get all saved locations"""
+
+    return delivery_service.get_all_locations()

@@ -135,3 +135,139 @@ def test_get_user_deliveries(tmp_path):
     deliveries = repo.get_user_deliveries(2)
     assert deliveries[0]["order_id"] == "1"
     assert deliveries[0]["user_id"] == "2"
+
+
+def test_save_location(tmp_path):
+    """test to see saving a location"""
+
+    repo = delivery_repository()
+
+    repo.location_file = tmp_path / "locations.csv"
+
+    with open(repo.location_file, "w") as file:
+        file.write("location_id,user_id,name,unit,street,postal_code,province,city,country\n")
+
+    repo.save_location({
+        "location_id": 1,
+        "user_id": 5,
+        "name": "home",
+        "unit": 123,
+        "street": "University Way",
+        "postal_code": "V1V1V7",
+        "province": "British Columbia",
+        "city": "Kelowna",
+        "country": "Canada"
+    })
+
+    locations = repo.get_all_locations()
+
+    assert locations[0]["location_id"] == "1"
+    assert locations[0]["user_id"] == "5"
+
+
+def test_get_user_locations(tmp_path):
+    """test for getting locations for a user"""
+
+    repo = delivery_repository()
+
+    repo.location_file = tmp_path / "locations.csv"
+
+    with open(repo.location_file, "w") as file:
+        file.write("location_id,user_id,name,unit,street,postal_code,province,city,country\n")
+
+    repo.save_location({
+        "location_id": 1,
+        "user_id": 2,
+        "name": "home",
+        "unit": 123,
+        "street": "University Way",
+        "postal_code": "V1V1V7",
+        "province": "British Columbia",
+        "city": "Kelowna",
+        "country": "Canada"
+    })
+
+    repo.save_location({
+        "location_id": 2,
+        "user_id": 1,
+        "name": "work",
+        "unit": 456,
+        "street": "Academy Way",
+        "postal_code": "V1V1V7",
+        "province": "British Columbia",
+        "city": "Kelowna",
+        "country": "Canada"
+    })
+
+    locations = repo.get_user_locations(2)
+
+    assert locations[0]["user_id"] == "2"
+    assert locations[0]["location_id"] == "1"
+
+
+def test_delete_location(tmp_path):
+    """test for deleting a location"""
+
+    repo = delivery_repository()
+
+    repo.location_file = tmp_path / "locations.csv"
+
+    with open(repo.location_file, "w") as file:
+        file.write("location_id,user_id,name,unit,street,postal_code,province,city,country\n")
+
+    repo.save_location({
+        "location_id": 1,
+        "user_id": 2,
+        "name": "home",
+        "unit": 123,
+        "street": "University Way",
+        "postal_code": "V1V1V7",
+        "province": "British Columbia",
+        "city": "Kelowna",
+        "country": "Canada"
+    })
+
+    repo.delete_location(1)
+
+    locations = repo.get_all_locations()
+
+    assert locations == []
+
+
+def test_get_all_locations(tmp_path):
+    """test for getting all locations"""
+
+    repo = delivery_repository()
+
+    repo.location_file = tmp_path / "locations.csv"
+
+    with open(repo.location_file, "w") as file:
+        file.write("location_id,user_id,name,unit,street,postal_code,province,city,country\n")
+
+    repo.save_location({
+        "location_id": 1,
+        "user_id": 2,
+        "name": "home",
+        "unit": 123,
+        "street": "University Way",
+        "postal_code": "V1V1V7",
+        "province": "British Columbia",
+        "city": "Kelowna",
+        "country": "Canada"
+    })
+
+    repo.save_location({
+        "location_id": 2,
+        "user_id": 3,
+        "name": "work",
+        "unit": 456,
+        "street": "Lakeshore",
+        "postal_code": "V1V1V7",
+        "province": "British Columbia",
+        "city": "Kelowna",
+        "country": "Canada"
+    })
+
+    locations = repo.get_all_locations()
+
+    assert len(locations) == 2
