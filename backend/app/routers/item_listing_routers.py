@@ -2,17 +2,17 @@
 
 from fastapi import APIRouter, HTTPException
 
-from app.services.item_listing_services import ItemListingService
-from app.storage.repositories.restaurant_repository import RestaurantRepository
-from app.storage.repositories.menu_repository import MenuRepository
+from app.services.item_listing_services import item_listing_service
+from app.storage.repositories.restaurant_repository import restaurant_repository
+from app.storage.repositories.menu_repository import menu_repository
 
 
 router = APIRouter()
 """Repos and services for item listing"""
-restaurant_repository = RestaurantRepository()
-menu_repository = MenuRepository()
+restaurant_repository = restaurant_repository()
+menu_repository = menu_repository()
 
-item_listing_service = ItemListingService(
+item_listing_service = item_listing_service(
     restaurant_repository,
     menu_repository
 )

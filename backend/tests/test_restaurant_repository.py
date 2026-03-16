@@ -1,12 +1,11 @@
 """Tests for restaurant_repository"""
 
-import pytest
-from app.storage.repositories.restaurant_repository import RestaurantRepository
+from app.storage.repositories.restaurant_repository import restaurant_repository
+from app.storage.csv_store import CSVStore
 
-@pytest.fixture
-def mock_restaurant_repo():
-    """Mock RestaurantRepository for testing."""
-    repo = RestaurantRepository()
+def test_get_restaurant_by_id_valid():
+    """Test for get a valid restaurant"""
+    repo = restaurant_repository()
 
     #define a mock dataset
     mock_data = [
