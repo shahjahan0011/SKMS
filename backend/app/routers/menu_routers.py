@@ -3,16 +3,17 @@
 from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, Query
 
-from app.services.menu_services import MenuService
-from app.storage.repositories.menu_repository import MenuRepository
-from app.storage.repositories.restaurant_repository import RestaurantRepository
 
-# We keep the prefix here if it's not already in main.py
+ffrom app.services.menu_services import MenuService
+from app.storage.repositories.menu_repository import menu_repository
+from app.storage.repositories.restaurant_repository import restaurant_repository
+
 router = APIRouter(prefix="/menus", tags=["Menus"])
 
 def get_menu_service():
     """Dependency injection for MenuService."""
-    return MenuService(MenuRepository(), RestaurantRepository())
+    
+    return MenuService(menu_repository(), restaurant_repository())
 
 @router.get("/{restaurant_id}", response_model=Dict[str, Any])
 def get_menu_by_restaurant(
