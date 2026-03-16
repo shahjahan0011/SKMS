@@ -13,7 +13,7 @@ def browse_restaurants(
     keyword: Optional[str] = Query(None),
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1),
-    service: RestaurantService = Depends(get_restaurant_service)
+    service: Any = Depends(get_restaurant_service)
 ):
     """Browse restaurants with pagination, returning a list for legacy test support."""
     result = service.browse_restaurants(keyword, page, limit)
