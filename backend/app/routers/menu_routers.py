@@ -14,7 +14,7 @@ def get_menu_service():
 
     return MenuService(menu_repository(), restaurant_repository())
 
-@router.get("/{restaurant_id}", response_model=Dict[str, Any])
+@router.get("/", response_model=Dict[str, Any])
 def get_menu_by_restaurant(
     restaurant_id: str,
     search: Optional[str] = Query(None, description="Search query for menu items"),
