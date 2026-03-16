@@ -1,6 +1,6 @@
 from typing import Any, Optional, List, Dict
 from fastapi import APIRouter, Depends, Query
-from app.services.restaurant_services import RestaurantService
+from app.services.restaurant_services import restaurant_service
 from app.storage.repositories.restaurant_repository import restaurant_repository
 
 router = APIRouter(tags=["Restaurants"])
