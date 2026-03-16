@@ -3,16 +3,15 @@
 from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, Query
 
-
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import menu_repository
 from app.storage.repositories.restaurant_repository import restaurant_repository
 
-router = APIRouter(prefix="/menus", tags=["Menus"])
+# Use the 'main' version: No prefix here to avoid /menus/menus/404 errors
+router = APIRouter(tags=["Menus"])
 
 def get_menu_service():
     """Dependency injection for MenuService."""
-    
     return MenuService(menu_repository(), restaurant_repository())
 
 @router.get("/{restaurant_id}", response_model=Dict[str, Any])
