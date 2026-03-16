@@ -30,3 +30,8 @@ def get_menu_by_restaurant(
         page=page,
         page_size=page_size
     )
+
+if not result.get("items"):
+        raise HTTPException(status_code=404, detail="Restaurant or menu not found")
+        
+    return result
