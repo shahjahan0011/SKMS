@@ -1,12 +1,12 @@
 from typing import Any, Optional, List, Dict
 from fastapi import APIRouter, Depends, Query
-from app.services.restaurant_services import restaurant_service
+from app.services.restaurant_services import RestaurantService
 from app.storage.repositories.restaurant_repository import restaurant_repository
 
 router = APIRouter(tags=["Restaurants"])
 
 def get_restaurant_service():
-    return restaurant_service(restaurant_repository())
+    return RestaurantService(restaurant_repository())
 
 @router.get("/", response_model=List[Dict[str, Any]])
 def browse_restaurants(
