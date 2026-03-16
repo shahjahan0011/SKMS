@@ -5,8 +5,7 @@ from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import menu_repository
 from typing import Any
 
-router = APIRouter(prefix="/menus", tags=["Menus"])
-# Repositories and services for menu routes
+router = APIRouter(tags=["Menus"])
 def get_menu_service():
     """Get menu service instance."""
     repo = menu_repository()
