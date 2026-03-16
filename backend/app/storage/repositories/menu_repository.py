@@ -4,7 +4,7 @@ import os
 from app.storage.csv_store import CSVStore
 
 # pylint: disable=too-few-public-methods
-class MenuRepository:
+class menu_repository:
     """Repository for fetching menu data."""
     def __init__(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))

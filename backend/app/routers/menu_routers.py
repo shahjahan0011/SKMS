@@ -2,18 +2,13 @@
 
 from fastapi import APIRouter, Query, Depends
 from app.services.menu_services import MenuService
-from app.storage.repositories.menu_repository import MenuRepository
-from typing import Any, Optional, List, Dict
-from app.storage.repositories.restaurant_repository import RestaurantRepository
-
-router = APIRouter(tags=["Menus"])
+from app.storage.repositories.menu_repository import menu_repository
+from typing import Any
 
 def get_menu_service():
     """Get menu service instance."""
-    menu_repo = MenuRepository()
-    res_repo = RestaurantRepository()
-
-    return MenuService(menu_repo, res_repo)
+    repo = menu_repository()
+    return MenuService(repo)
 
 @router.get("/{restaurant_id}", response_model=Dict[str, Any])
 def get_menu_by_restaurant(
