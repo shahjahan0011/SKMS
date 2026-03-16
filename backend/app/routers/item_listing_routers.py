@@ -17,10 +17,11 @@ item_listing_service = item_listing_service(
     menu_repository
 )
 
-@router.get("/restaurants")
+router.get("/restaurants")
 def get_all_restaurants():
     """Gets all restaurants"""
-    return item_listing_service.get_all_restaurants()
+    restaurants_list = item_listing_service.get_all_restaurants()
+    return {"data": restaurants_list}
 
 @router.get("/restaurants/{restaurant_id}")
 def get_restaurant_by_id(restaurant_id: str):
