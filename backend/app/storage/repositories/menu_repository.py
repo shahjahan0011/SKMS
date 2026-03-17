@@ -1,7 +1,7 @@
 """Menu repository for fetching menu data."""
-
+import csv
+from typing import List, Dict, Optional, Any
 import os
-from typing import Any, List, Dict, Optional
 from app.storage.csv_store import CSVStore
 
 # pylint: disable=too-few-public-methods
@@ -61,16 +61,16 @@ class menu_repository:
         all_menus = self.get_all()
         return [
             item for item in all_menus
-            if str(item.get("restaurant_id")) == str(restaurant_id)
-        ]
-
-    def get_menu_item_by_id(self, menu_item_id: str):
-      
-        """Fetch a menu item by its ID."""
-        all_menus = self.get_all()
-        for item in all_menus:
-            if str(item.get("id")) == str(menu_item_id):
-                return item
+            if str(item.get("id")) == str(restaurant_id)
+            ]
+    
+    def get_menu_item_by_id(self, id: str) -> Optional[dict]:
+        with open(self.file_path, "r", newline="", encoding="utf-8") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                row_id = row.get("id")
+                if row_id == id:
+                    return row
         return None
 
     def get_menu_by_filters(
