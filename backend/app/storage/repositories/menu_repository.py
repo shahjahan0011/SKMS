@@ -17,7 +17,7 @@ class menu_repository:
         """Fetch all menu data from the CSV file."""
         return CSVStore.read_csv(self.file_path)
 
-   def get_active_menu_paginated_by_restaurant(
+    def get_active_menu_paginated_by_restaurant(
         self,
         restaurant_id: str,
         search_query: Optional[str] = None,
@@ -32,6 +32,7 @@ class menu_repository:
             item for item in all_menus
             if str(item.get("restaurant_id")) == str(restaurant_id)
         ]
+
 
         if search_query:
             q = search_query.lower()
