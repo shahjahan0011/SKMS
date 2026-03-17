@@ -55,4 +55,48 @@ class menu_repository:
             "total_pages": total_pages
         }
 
-    def get_menu_by_restaurant(self, restaurant_id: str)
+    def get_menu_by_restaurant(self, restaurant_id: str) -> List[Dict]:
+        """Fetch menu items for a specific restaurant."""
+        all_menus = self.get_all()
+        return [
+            item for item in all_menus
+            if str(item.get("restaurant_id")) == str(restaurant_id)
+        ]
+    
+    def get_menu_item_by_id(self, item_id: str) -> Optional[dict]:
+        """Fetch a menu item by its ID."""
+        all_menus = self.get_all()
+        for item in all_menus:
+            if str(item.get("id")) == str(item_id):
+                return item
+        return None
+
+    def get_menu_by_filters(
+        self,
+        restaurant_id: Optional[str] = None,
+        item_name: Optional[str] = None,
+        price: Optional[float] = None
+    ) -> List[Dict[str, Any]]:
+        """Fetch menu items with optional global filters."""
+        filtered_menus = self.get_all()
+
+        if restaurant_id:
+            filtered_menus = [
+                item for item in filtered_menus
+                if str(item.get("restaurant_id")) == str(restaurant_id)
+            ]
+
+        if item_name:
+            item_name_lower = item_name.lower()
+            filtered_menus = [
+                item for item in filtered_menus
+                if item_name_lower in str(item.get("item_name", "")).lower()
+            ]
+
+        if price is not None:
+            filtered_menus = [
+                item for item in filtered_menus
+                if float(item.get("price", 0)) <= price
+            ]
+
+        return filtered_menus
