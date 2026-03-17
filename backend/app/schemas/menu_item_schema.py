@@ -2,7 +2,7 @@
 from pydantic import BaseModel
 
 
-class MenuItem(BaseModel):
+class menu_item(BaseModel):
     """
     Menu Item Entity
     """

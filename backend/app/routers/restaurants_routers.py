@@ -1,19 +1,21 @@
-'''Restaurants routes module'''
+from typing import Any, Optional, List, Dict
+from fastapi import APIRouter, Depends, Query
 
-from fastapi import APIRouter
-from app.services.restaurant_services import RestaurantService
-from app.storage.repositories.restaurant_repository import RestaurantRepository
+from app.services.restaurant_services import RestaurantService 
+from app.storage.repositories.restaurant_repository import restaurant_repository
 
-router = APIRouter(prefix="/restaurants", tags=["browse restaurants"])
-# Repositories and services for restaurant routes
+router = APIRouter(tags=["Restaurants"])
+
 def get_restaurant_service():
-    """Get restaurant service instance."""
-    repo = RestaurantRepository()
-    return RestaurantService(repo)
+    return RestaurantService(restaurant_repository())
 
-# The browse_restaurants endpoint allows clients to retrieve a list of restaurants
-@router.get("/", response_model=dict)
-def browse_restaurants(keyword: str = None, page: int = 1, limit: int = 20):
-    """Browse all restaurants."""
-    service = get_restaurant_service()
-    return service.browse_restaurants(keyword, page, limit)
+@router.get("/", response_model=List[Dict[str, Any]])
+def browse_restaurants(
+    keyword: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1),
+    service: RestaurantService = Depends(get_restaurant_service)
+):
+    result = service.browse_restaurants(keyword, page, limit)
+    
+    return result

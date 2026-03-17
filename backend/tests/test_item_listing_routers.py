@@ -10,9 +10,9 @@ client = TestClient(app)
 def test_get_all_restaurants():
     """Test for GET /restaurants endpoint"""
     response = client.get("/restaurants")
-
+    print(f"DEBUG RESPONSE: {response.json()}")
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    assert isinstance(response.json()["data"], list)
 
 def test_get_restaurant_by_id_valid():
     """Test for GET /restaurants/{restaurant_id} endpoint for valid id"""
@@ -32,7 +32,7 @@ def test_get_restaurant_menu_valid():
     response = client.get("/restaurants/1/menu")
 
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    assert isinstance(response.json().get("items", []), list)
 
 def test_get_restaurant_menu_invalid():
     """Test for GET /restaurants/{restaurant_id}/menu endpoint with invalid id"""
