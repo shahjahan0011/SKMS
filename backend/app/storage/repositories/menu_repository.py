@@ -37,7 +37,7 @@ class menu_repository:
             q = search_query.lower()
             filtered_menus = [
                 item for item in filtered_menus
-                if q in str(item.get("item_name", "")).lower()
+                if any(q in str(value).lower() for value in item.values())
             ]
 
         total_count = len(filtered_menus)
