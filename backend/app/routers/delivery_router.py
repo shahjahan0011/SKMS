@@ -30,18 +30,18 @@ def get_delivery_by_order_id(order_id: int):
     
 
 @router.post("/deliveries")
-def create_delivery(delivery: delivery):
+def create_delivery(payload: delivery):
     """create a new delivery"""
 
     try:
         created_delivery = delivery_service.create_delivery(
-            delivery.order_id,
-            delivery.restaurant_id,
-            delivery.user_id,
-            delivery.user_name,
-            delivery.delivery_location,
-            delivery.status,
-            delivery.is_emergency
+            payload.order_id,
+            payload.restaurant_id,
+            payload.user_id,
+            payload.user_name,
+            payload.delivery_location,
+            payload.status,
+            payload.is_emergency
         )
 
         return created_delivery
@@ -77,18 +77,18 @@ def get_user_deliveries(user_id: int):
 
 
 @router.post("/locations")
-def save_location(user_id: int, name: str, location: location):
+def save_location(user_id: int, name: str, payload: location):
     """save a new location"""
 
     location_data = {
         "user_id": user_id,
         "name": name,
-        "unit": location.unit,
-        "street": location.street,
-        "postal_code": location.postal_code,
-        "province": location.province,
-        "city": location.city,
-        "country": location.country
+        "unit": payload.unit,
+        "street": payload.street,
+        "postal_code": payload.postal_code,
+        "province": payload.province,
+        "city": payload.city,
+        "country": payload.country
     }
 
     try:
