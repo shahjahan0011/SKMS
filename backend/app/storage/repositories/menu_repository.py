@@ -33,7 +33,8 @@ class menu_repository:
             if str(item.get("restaurant_id")) == str(restaurant_id)
         ]
 
-      if search_query:
+        # FIX: Multi-field search (Name, Description, and Category)
+        if search_query:
             q = search_query.lower()
             filtered_menus = [
                 item for item in filtered_menus
