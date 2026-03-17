@@ -33,11 +33,13 @@ class menu_repository:
             if str(item.get("restaurant_id")) == str(restaurant_id)
         ]
 
-        if search_query:
+      if search_query:
             q = search_query.lower()
             filtered_menus = [
                 item for item in filtered_menus
                 if q in str(item.get("item_name", "")).lower()
+                or q in str(item.get("description", "")).lower()
+                or q in str(item.get("category", "")).lower()
             ]
 
         total_count = len(filtered_menus)
