@@ -76,4 +76,8 @@ class MenuService:
     def browse_menu(self, restaurant_id: str, search_query: Optional[str] = None, page: int = 1, page_size: int = 10):
         """Wrapper to match the 'browse' naming convention."""
         return self.get_active_menu_paginated_by_restaurant(
-            restaurant_id
+            restaurant_id=restaurant_id,
+            search_query=search_query,
+            page=page,
+            page_size=page_size
+        )
