@@ -11,11 +11,13 @@ def mock_menu_repo():
     """Fixture for menu_repository with mock data."""
     repo = menu_repository()
     mock_data = [
-        {"id": "1", "restaurant_id": "1", "name": "Pizza", "price": "10"},
-        {"id": "2", "restaurant_id": "1", "name": "Pasta", "price": "12"},
-        {"id": "3", "restaurant_id": "2", "name": "Burger", "price": "8"},
+        {"id": "1", "restaurant_id": "1", "item_name": "Pizza", "price": "10", "is_available": "True"},
+        {"id": "2", "restaurant_id": "1", "item_name": "Pasta", "price": "12", "is_available": "True"},
+        {"id": "3", "restaurant_id": "2", "item_name": "Burger", "price": "8", "is_available": "True"},
     ]
     repo.get_all = MagicMock(return_value=mock_data)
+    # Mock the method to return None for invalid IDs
+    repo.get_menu_item_by_id = MagicMock(side_effect=lambda id: next((item for item in mock_data if item["id"] == id), None))
     return repo
 
 def test_get_menu_item_by_id_valid(mock_menu_repo):
@@ -23,7 +25,7 @@ def test_get_menu_item_by_id_valid(mock_menu_repo):
     item = mock_menu_repo.get_menu_item_by_id("1")
     assert item is not None
     assert item["id"] == "1"
-    assert item["name"] == "Pizza"
+    assert item["item_name"] == "Pizza"
 
 def test_get_menu_item_by_id_invalid(mock_menu_repo):
     """Test for trying to get an invalid menu item by ID."""
