@@ -1,6 +1,7 @@
 """Mock Payment Service Module"""
 import uuid
 from app.storage.repositories.order_repository import get_order_by_id
+from app.storage.repositories.order_repository import get_order_by_id, update_order
 
 class PaymentService:
     """Service for handling simulated payments."""
@@ -43,6 +44,8 @@ class PaymentService:
             }
 
         transaction_id = f"txn_{uuid.uuid4().hex[:12]}"
+
+        update_order(order_id, {"status": "paid"})
 
         return {
             "transaction_id": transaction_id,
