@@ -16,6 +16,10 @@ class PaymentService:
             raise ValueError("Order not found")
 
         current_status = str(order.get("status", "")).lower()
+        already_paid_statuses = ["paid", "preparing", "in-transit", "delivered"]
+        if current_status in already_paid_statuses:
+            raise ValueError(f"Payment rejected: Order has already been paid (Status: {current_status}).")
+
         if current_status != "pending":
             raise ValueError(
                 f"Payment rejected: Order is currently '{current_status}'. "
