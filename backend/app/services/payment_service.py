@@ -28,14 +28,26 @@ class PaymentService:
 
         if amount is not None:
             expected_total = float(order.get("total", 0.0))
-            if float(amount) != expected_total:
+            if amount is not None and float(amount) != expected_total:
                 raise ValueError(f"Payment rejected: Amount {amount} does not match order total {expected_total}")
+
+        payment_amount = float(amount) if amount is not None else expected_total
+
+        if payment_amount >= 1000.00:
+            return {
+                "transaction_id": None,
+                "order_id": order_id,
+                "amount_processed": payment_amount,
+                "payment_status": "failed",
+                "message": "Payment simulation failed: Transaction declined by bank (limit exceeded)."
+            }
 
         transaction_id = f"txn_{uuid.uuid4().hex[:12]}"
 
         return {
             "transaction_id": transaction_id,
             "order_id": order_id,
-            "payment_status": "initiated",
-            "message": "Payment attempt successfully initiated and acknowledged."
+            "amount_processed": payment_amount,
+            "payment_status": "success",
+            "message": "Payment simulation successful."
         }

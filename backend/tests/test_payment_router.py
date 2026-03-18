@@ -22,6 +22,13 @@ MOCK_ALREADY_PAID_ORDER = {
     "total": "25.00"
 }
 
+MOCK_HIGH_VALUE_ORDER = {
+    "order_id": "ord_999",
+    "status": "pending",
+    "total": "1500.00"
+}
+
+
 
 
 @patch("app.services.payment_service.get_order_by_id")
@@ -37,7 +44,7 @@ def test_initiate_payment_success_for_pending_order(mock_get_order):
     assert response.status_code == 200
     data = response.json().get("data", {})
 
-    assert data["payment_status"] == "initiated"
+    assert data["payment_status"] == "success"
     assert "transaction_id" in data
     assert data["order_id"] == "ord_123"
 
@@ -99,10 +106,28 @@ def test_initiate_payment_amount_mismatch_rejected(mock_get_order):
 
 
 def test_initiate_payment_negative_amount_blocked():
-    """Test that our 'gt=0' Pydantic rule instantly blocks negative numbers."""
+    """Test that our 'gt=0' rule instantly blocks negative numbers."""
     response = client.post(
         "/payments/initiate",
         json={"order_id": "ord_123", "amount": -5.00}
     )
 
     assert response.status_code == 422
+
+
+@patch("app.services.payment_service.get_order_by_id")
+def test_simulate_payment_failure_rule(mock_get_order):
+    """Test that a order breaking failure rule is unsuccesful."""
+    mock_get_order.return_value = MOCK_HIGH_VALUE_ORDER
+
+    response = client.post(
+        "/payments/initiate",
+        json={"order_id": "ord_999", "amount": 1500}
+    )
+
+    assert response.status_code == 200
+    data = response.json().get("data", {})
+
+    assert data["payment_status"] == "failed"
+    assert "declined" in data["message"].lower()
+    assert data["transaction_id"] is None
