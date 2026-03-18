@@ -16,6 +16,13 @@ MOCK_DELIVERED_ORDER = {
     "total": "30.00"
 }
 
+MOCK_ALREADY_PAID_ORDER = {
+    "order_id": "ord_789",
+    "status": "preparing",
+    "total": "25.00"
+}
+
+
 
 @patch("app.services.payment_service.get_order_by_id")
 def test_initiate_payment_success_for_pending_order(mock_get_order):
@@ -37,7 +44,7 @@ def test_initiate_payment_success_for_pending_order(mock_get_order):
 
 @patch("app.services.payment_service.get_order_by_id")
 def test_initiate_payment_rejects_non_pending_order(mock_get_order):
-    """Test that a non-pending order (e.g., delivered) returns a 400 Bad Request."""
+    """Test that a non-pending order (e.g., delivered) returns a generic 400."""
     mock_get_order.return_value = MOCK_DELIVERED_ORDER
 
     response = client.post(
@@ -47,7 +54,20 @@ def test_initiate_payment_rejects_non_pending_order(mock_get_order):
 
     assert response.status_code == 400
     assert "Payment rejected" in response.json()["detail"]
-    assert "delivered" in response.json()["detail"]
+
+
+@patch("app.services.payment_service.get_order_by_id")
+def test_initiate_payment_fails_if_already_paid(mock_get_order):
+    """Test that an order marked with an 'already paid' status returns a specific 400."""
+    mock_get_order.return_value = MOCK_ALREADY_PAID_ORDER
+
+    response = client.post(
+        "/payments/initiate",
+        json={"order_id": "ord_789", "amount": 25.00}
+    )
+
+    assert response.status_code == 400
+    assert "already been paid" in response.json()["detail"]
 
 
 @patch("app.services.payment_service.get_order_by_id")
@@ -78,9 +98,8 @@ def test_initiate_payment_amount_mismatch_rejected(mock_get_order):
     assert "does not match order total" in response.json()["detail"]
 
 
-def test_initiate_payment_negative_amount_blocked_by_pydantic():
+def test_initiate_payment_negative_amount_blocked():
     """Test that our 'gt=0' Pydantic rule instantly blocks negative numbers."""
-
     response = client.post(
         "/payments/initiate",
         json={"order_id": "ord_123", "amount": -5.00}
