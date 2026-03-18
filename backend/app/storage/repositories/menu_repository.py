@@ -1,7 +1,7 @@
 """Menu repository for fetching menu data."""
+import os
 import csv
 from typing import List, Dict, Optional, Any
-import os
 from app.storage.csv_store import CSVStore
 
 # pylint: disable=too-few-public-methods
@@ -33,6 +33,7 @@ class menu_repository:
             if str(item.get("restaurant_id")) == str(restaurant_id)
         ]
 
+
         if search_query:
             q = search_query.lower()
             filtered_menus = [
@@ -56,21 +57,19 @@ class menu_repository:
         }
 
     def get_menu_by_restaurant(self, restaurant_id: str) -> List[Dict]:
-      
         """Fetch menu items for a specific restaurant."""
         all_menus = self.get_all()
         return [
             item for item in all_menus
-            if str(item.get("id")) == str(restaurant_id)
-            ]
+            if str(item.get("restaurant_id")) == str(restaurant_id)
+        ]
     
-    def get_menu_item_by_id(self, id: str) -> Optional[dict]:
-        with open(self.file_path, "r", newline="", encoding="utf-8") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                row_id = row.get("id")
-                if row_id == id:
-                    return row
+    def get_menu_item_by_id(self, item_id: str) -> Optional[dict]:
+        """Fetch a menu item by its ID."""
+        all_menus = self.get_all()
+        for item in all_menus:
+            if str(item.get("id")) == str(item_id):
+                return item
         return None
 
     def get_menu_by_filters(
@@ -79,7 +78,6 @@ class menu_repository:
         item_name: Optional[str] = None,
         price: Optional[float] = None
     ) -> List[Dict[str, Any]]:
-      
         """Fetch menu items with optional global filters."""
         filtered_menus = self.get_all()
 

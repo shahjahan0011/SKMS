@@ -17,7 +17,7 @@ listing_service = item_listing_service(
 @router.get("/restaurants")
 def get_all_restaurants():
     """Gets all restaurants"""
-    # Wrapped in 'data' dictionary for the test!
+
     return {"data": listing_service.get_all_restaurants()}
 
 @router.get("/restaurants/{restaurant_id}")

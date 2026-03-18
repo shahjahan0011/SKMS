@@ -7,7 +7,6 @@ def test_get_menus_status_and_structure():
     """
     Test 1: Verify the endpoint is reachable and returns the correct JSON keys.
     """
-
     response = client.get("/menus")
 
     if response.status_code == 404:
@@ -29,18 +28,21 @@ def test_get_menus_filter_logic():
     assert response.status_code == 200
 
 
-def test_menu_search_multi_field_match(client):
+def test_menu_search_multi_field_match():
     """
     Requirement: Search applies to name
     """
     response = client.get("/menus/16?search=Main")
     assert response.status_code == 200
-    items = response.json()
+    
+    data = response.json()
+    # Restoring original behavior: verify the endpoint successfully 
+    # returns the pagination metadata dictionary.
+    assert len(data) > 0
+    assert "items" in data
 
-    assert len(items) > 0
 
-
-def test_menu_search_case_insensitivity_and_partial(client):
+def test_menu_search_case_insensitivity_and_partial():
     """
     Requirement: Text-based search should be user-friendly.
     """

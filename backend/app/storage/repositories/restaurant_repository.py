@@ -15,6 +15,7 @@ class restaurant_repository:
         """Fetch all restaurant data from the CSV file."""
         return CSVStore.read_csv(self.file_path)
 
+
     def get_restaurant_by_id(self, restaurant_id: str) -> Dict:
         """Fetch a restaurant by its ID from the CSV file."""
         all_restaurants = self.get_all_restaurants()

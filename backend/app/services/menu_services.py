@@ -34,7 +34,6 @@ class MenuService:
         page_size: int
     ) -> Dict[str, Any]:
         """Bridge between router and repository for paginated menus."""
-
         return self.menu_repo.get_active_menu_paginated_by_restaurant(
             restaurant_id=restaurant_id,
             search_query=search_query,
