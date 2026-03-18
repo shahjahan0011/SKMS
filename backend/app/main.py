@@ -6,6 +6,7 @@ from app.routers.order_router import router as order_router
 from app.routers.item_listing_routers import router as item_listing_router
 from app.routers.menu_routers import router as menu_router
 from app.routers.delivery_router import router as delivery_router
+from app.routers.payment_router import router as payment_router
 
 app = FastAPI(title="SKMS Backend", redirect_slashes=True)
 
@@ -15,6 +16,7 @@ app.include_router(menu_router, tags=["Menus"])
 app.include_router(order_router, tags=["Orders"])
 
 app.include_router(item_listing_router, tags=["Item Listings"])
+app.include_router(payment_router, tags=["Payments"])
 
 @app.on_event("startup")
 def log_routes():
