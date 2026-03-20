@@ -31,9 +31,10 @@ MOCK_HIGH_VALUE_ORDER = {
 
 
 
+@patch("app.services.payment_service.update_order")
 @patch("app.services.payment_service.get_order_by_id")
-def test_initiate_payment_success_for_pending_order(mock_get_order):
-    """Test that a pending order successfully generates a transaction ID."""
+def test_initiate_payment_success_for_pending_order(mock_get_order, mock_update_order):
+    """Test that a pending order successfully generates a transaction ID and updates the DB to 'paid'."""
     mock_get_order.return_value = MOCK_PENDING_ORDER
 
     response = client.post(
@@ -47,6 +48,8 @@ def test_initiate_payment_success_for_pending_order(mock_get_order):
     assert data["payment_status"] == "success"
     assert "transaction_id" in data
     assert data["order_id"] == "ord_123"
+
+    mock_update_order.assert_called_once_with("ord_123", {"status": "paid"})
 
 
 @patch("app.services.payment_service.get_order_by_id")
