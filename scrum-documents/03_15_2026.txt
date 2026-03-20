@@ -1,0 +1,18 @@
+SCRUM MEETING #7 - 03/15/2026
+
+AGENDA:
+Assigning PR Reviews, resolving conflicts.
+Updates on features and resolving any issues we have been facing
+Planning for the coming week and demo.
+
+ATTENDEES:
+Bheema Marabai, Gabriel Sofekun, Khushi Lakshmi Kishan, Jahan Shah.
+
+COMPLETED TASKS:
+Bheema: going through all the existing PRs before they start on their last feature. Finshing up Feature 8.
+Gabi: working on F3, its done now but there are conflicts yet to be resolved. already started on F7 hoping to get as much as possible done today altest by tomorrow.
+Khushi: finished F5 over this and last week. 
+Jahan: feature F4 is conflicted and then other things that are necessary
+
+- Worked on our own featuresEveryone has 1 feature 100% completed.
+- All team members are working on their last features.
