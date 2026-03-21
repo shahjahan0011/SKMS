@@ -27,6 +27,7 @@ MOCK_HIGH_VALUE_ORDER = {
 
 MOCK_HIGH_VALUE_ORDER = {
     "order_id": "ord_999",
+    "username": "jahan",
     "status": "pending",
     "total": "1500.00"
 }
