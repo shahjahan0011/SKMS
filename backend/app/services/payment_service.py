@@ -2,6 +2,7 @@
 import uuid
 from app.storage.repositories.order_repository import get_order_by_id
 from app.storage.repositories.order_repository import get_order_by_id, update_order
+from app.services.notification_service import notification_service
 
 class PaymentService:
     """Service for handling simulated payments."""
@@ -27,15 +28,16 @@ class PaymentService:
                 "Payments can only be initiated for 'pending' orders."
             )
 
+        expected_total = float(order.get("total", 0.0))
+
         if amount is not None:
-            expected_total = float(order.get("total", 0.0))
-            if amount is not None and float(amount) != expected_total:
+            if float(amount) != expected_total:
                 raise ValueError(f"Payment rejected: Amount {amount} does not match order total {expected_total}")
 
         payment_amount = float(amount) if amount is not None else expected_total
 
         if payment_amount >= 1000.00:
-            return {
+            result = {
                 "transaction_id": None,
                 "order_id": order_id,
                 "amount_processed": payment_amount,
@@ -43,14 +45,32 @@ class PaymentService:
                 "message": "Payment simulation failed: Transaction declined by bank (limit exceeded)."
             }
 
+            try:
+                notification_service().notify_payment_result(order["username"], order_id, False)
+            except Exception:
+                pass
+
+            return result
+
         transaction_id = f"txn_{uuid.uuid4().hex[:12]}"
 
-        update_order(order_id, {"status": "paid"})
+        update_order({
+            **order,
+            "status": "paid"
+        })
 
-        return {
+        result = {
             "transaction_id": transaction_id,
             "order_id": order_id,
             "amount_processed": payment_amount,
             "payment_status": "success",
             "message": "Payment simulation successful."
         }
+
+        try:
+            notification_service().notify_payment_result(order["username"], order_id, True)
+        except Exception:
+            pass
+
+        return result
+    
