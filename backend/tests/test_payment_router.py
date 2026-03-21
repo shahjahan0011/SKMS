@@ -31,6 +31,13 @@ MOCK_HIGH_VALUE_ORDER = {
     "total": "1500.00"
 }
 
+MOCK_ALREADY_PAID_ORDER = {
+    "order_id": "ord_789",
+    "username": "jahan",
+    "status": "preparing",
+    "total": "25.00"
+}
+
 @patch("app.services.payment_service.update_order")
 @patch("app.services.payment_service.get_order_by_id")
 def test_initiate_payment_success_for_pending_order(mock_get_order, mock_update_order):
