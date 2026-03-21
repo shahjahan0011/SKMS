@@ -54,8 +54,11 @@ class PaymentService:
 
         transaction_id = f"txn_{uuid.uuid4().hex[:12]}"
 
-        update_order(order_id, {"status": "paid"})
-        
+        update_order({
+            **order,
+            "status": "paid"
+        })
+
         result = {
             "transaction_id": transaction_id,
             "order_id": order_id,
