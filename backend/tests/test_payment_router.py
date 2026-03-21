@@ -6,20 +6,23 @@ client = TestClient(app)
 
 MOCK_PENDING_ORDER = {
     "order_id": "ord_123",
+    "username": "jahan",
     "status": "pending",
     "total": "45.50"
 }
 
 MOCK_DELIVERED_ORDER = {
     "order_id": "ord_456",
+    "username": "jahan",
     "status": "delivered",
     "total": "30.00"
 }
 
-MOCK_ALREADY_PAID_ORDER = {
-    "order_id": "ord_789",
-    "status": "preparing",
-    "total": "25.00"
+MOCK_HIGH_VALUE_ORDER = {
+    "order_id": "ord_999",
+    "username": "jahan",
+    "status": "pending",
+    "total": "1500.00"
 }
 
 MOCK_HIGH_VALUE_ORDER = {
@@ -27,9 +30,6 @@ MOCK_HIGH_VALUE_ORDER = {
     "status": "pending",
     "total": "1500.00"
 }
-
-
-
 
 @patch("app.services.payment_service.update_order")
 @patch("app.services.payment_service.get_order_by_id")
@@ -49,8 +49,10 @@ def test_initiate_payment_success_for_pending_order(mock_get_order, mock_update_
     assert "transaction_id" in data
     assert data["order_id"] == "ord_123"
 
-    mock_update_order.assert_called_once_with("ord_123", {"status": "paid"})
-
+    mock_update_order.assert_called_once()
+    updated_order_arg = mock_update_order.call_args[0][0]
+    assert updated_order_arg["order_id"] == "ord_123"
+    assert updated_order_arg["status"] == "paid"
 
 @patch("app.services.payment_service.get_order_by_id")
 def test_initiate_payment_rejects_non_pending_order(mock_get_order):
@@ -134,3 +136,54 @@ def test_simulate_payment_failure_rule(mock_get_order):
     assert data["payment_status"] == "failed"
     assert "declined" in data["message"].lower()
     assert data["transaction_id"] is None
+
+@patch("app.services.payment_service.notification_service")
+@patch("app.services.payment_service.update_order")
+@patch("app.services.payment_service.get_order_by_id")
+def test_initiate_payment_success_triggers_notification(
+    mock_get_order,
+    mock_update_order,
+    mock_notification_service
+):
+    """test successful payment triggers customer notification"""
+
+    mock_get_order.return_value = MOCK_PENDING_ORDER
+    mock_notification_instance = mock_notification_service.return_value
+
+    response = client.post(
+        "/payments/initiate",
+        json={"order_id": "ord_123", "amount": 45.50}
+    )
+
+    assert response.status_code == 200
+    mock_notification_instance.notify_payment_result.assert_called_once_with(
+    "jahan",
+    "ord_123",
+    True
+    )   
+
+@patch("app.services.payment_service.notification_service")
+@patch("app.services.payment_service.get_order_by_id")
+def test_simulate_payment_failure_triggers_notification(
+    mock_get_order,
+    mock_notification_service
+):
+    """test failed payment triggers failure notification"""
+
+    mock_get_order.return_value = MOCK_HIGH_VALUE_ORDER
+    mock_notification_instance = mock_notification_service.return_value
+
+    response = client.post(
+        "/payments/initiate",
+        json={"order_id": "ord_999", "amount": 1500}
+    )
+
+    assert response.status_code == 200
+    data = response.json().get("data", {})
+
+    assert data["payment_status"] == "failed"
+    mock_notification_instance.notify_payment_result.assert_called_once_with(
+        "jahan",
+        "ord_999",
+        False
+    )
