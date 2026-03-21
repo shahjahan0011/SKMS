@@ -4,7 +4,7 @@ from fastapi import HTTPException
 
 from app.storage.repositories.order_repository import get_order_by_id, update_order, save_order, get_menu_item_by_id, get_active_orders_by_restaurant
 from app.schemas.order_schema import OrderStatus
-
+from app.services.notification_service import notification_service
 
 TAX_RATE = 0.05
 DELIVERY_FEE = 4.99
@@ -53,7 +53,14 @@ def create_order(username: str, id: str, quantity: int) -> dict:
         "delivered_at": "",
     }
 
-    return save_order(order)
+    saved_order = save_order(order)
+
+    try:
+        notification_service().notify_order_created(username, saved_order["order_id"])
+    except Exception:
+        pass
+
+    return saved_order
 
 def get_order_status(order_id: str) -> dict:
     order = get_order_by_id(order_id)
@@ -91,6 +98,16 @@ def update_order_status(order_id: str, new_status: str) -> dict:
 
     updated_order = update_order(order)
     assert updated_order is not None, "Failed to update order"
+    
+    try:
+        notification_service().notify_order_status_changed(
+            updated_order["username"],
+            updated_order["order_id"],
+            new_status
+        )
+    except Exception:
+        pass
+
     return updated_order
 
 def list_active_orders(restaurant_id: str) -> list[dict]:
