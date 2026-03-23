@@ -165,3 +165,88 @@ def test_list_active_orders(monkeypatch):
 
     assert result == mock_orders
     assert len(result) == 2
+
+def test_create_order_triggers_notification(monkeypatch):
+    """test create order sends notification after successful save"""
+
+    notifications = []
+
+    class mock_notification_service:
+        def notify_order_created(self, user_id, order_id):
+            notifications.append((user_id, order_id))
+
+    def mock_get_menu_item_by_id(item_id):
+        return {
+            "id": item_id,
+            "restaurant_id": "rest_1",
+            "price": "10.00",
+        }
+
+    def mock_save_order(order_data):
+        return order_data
+
+    monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
+    monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "notification_service", lambda: mock_notification_service())
+
+    result = order_service.create_order("jahan", "item_1", 2)
+
+    assert result["username"] == "jahan"
+    assert len(notifications) == 1
+    assert notifications[0][0] == "jahan"
+    assert notifications[0][1] == result["order_id"]
+
+
+def test_update_order_status_triggers_notification(monkeypatch):
+    """test status change sends notification after successful update"""
+
+    notifications = []
+
+    class mock_notification_service:
+        def notify_order_status_changed(self, user_id, order_id, new_status):
+            notifications.append((user_id, order_id, new_status))
+
+    order = {
+        "order_id": "o1",
+        "username": "jahan",
+        "status": "pending",
+        "updated_at": "",
+        "delivered_at": "",
+    }
+
+    monkeypatch.setattr(order_service, "get_order_by_id", lambda order_id: order)
+    monkeypatch.setattr(order_service, "update_order", lambda updated_order: updated_order)
+    monkeypatch.setattr(order_service, "notification_service", lambda: mock_notification_service())
+
+    result = order_service.update_order_status("o1", "preparing")
+
+    assert result["status"] == "preparing"
+    assert len(notifications) == 1
+    assert notifications[0] == ("jahan", "o1", "preparing")
+
+
+def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
+    """test notification failure does not break order creation"""
+
+    class mock_notification_service:
+        def notify_order_created(self, user_id, order_id):
+            raise Exception("notification failed")
+
+    def mock_get_menu_item_by_id(item_id):
+        return {
+            "id": item_id,
+            "restaurant_id": "rest_1",
+            "price": "10.00",
+        }
+
+    def mock_save_order(order_data):
+        return order_data
+
+    monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
+    monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "notification_service", lambda: mock_notification_service())
+
+    result = order_service.create_order("jahan", "item_1", 2)
+
+    assert result["username"] == "jahan"
+    assert result["status"] == "pending"
