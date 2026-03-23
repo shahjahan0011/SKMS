@@ -27,8 +27,7 @@ class notification_repository(BaseCSVRepository):
 
     def get_notifications_by_role(self, role):
         """returns all notifications for a given role"""
-
-        return self._find_rows_by_field(NotificationCSVFields.USER_ID, str(user_id))
+        return self._find_rows_by_field(NotificationCSVFields.ROLE, str(role))
 
     def notification_exists(self, event_key):
         """checks if a notification with the same event key already exists"""
