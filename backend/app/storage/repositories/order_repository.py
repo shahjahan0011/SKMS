@@ -5,15 +5,13 @@ from typing import List, Optional
 
 DATA_FILE = Path(__file__).resolve().parents[1] / "storage" / "data" / "orders.csv"
 MENU_DATA_FILE = Path(__file__).resolve().parents[1] / "storage" / "data" / "menus.csv"
+ORDER_ITEMS_FILE = Path(__file__).resolve().parents[1] / "storage" / "data" / "order_items.csv"
 
 FIELDNAMES = [
     "order_id",
     "username",
     "restaurant_id",
-    "id",
-    "quantity",
-    "price",
-    "subtotal",
+    "base_cost",
     "tax",
     "delivery_fee",
     "total",
@@ -24,12 +22,28 @@ FIELDNAMES = [
     "delivered_at",
 ]
 
+ORDER_ITEM_FIELDNAMES = [
+    "order_id",
+    "item_id",
+    "quantity",
+    "unit_price",
+    "line_total",
+]
+
 
 def _ensure_file_exists() -> None:
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     if not DATA_FILE.exists():
         with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
+            writer.writeheader()
+
+
+def _ensure_order_items_file_exists() -> None:
+    ORDER_ITEMS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    if not ORDER_ITEMS_FILE.exists():
+        with open(ORDER_ITEMS_FILE, "w", newline="", encoding="utf-8") as file:
+            writer = csv.DictWriter(file, fieldnames=ORDER_ITEM_FIELDNAMES)
             writer.writeheader()
 
 
@@ -54,6 +68,7 @@ def save_order(order_data: dict) -> dict:
         writer.writerow(order_data)
     return order_data
 
+
 def get_menu_item_by_id(id: str) -> Optional[dict]:
     with open(MENU_DATA_FILE, "r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
@@ -62,6 +77,7 @@ def get_menu_item_by_id(id: str) -> Optional[dict]:
             if row_id == id:
                 return row
     return None
+
 
 def update_order(updated_order: dict) -> Optional[dict]:
     orders = get_all_orders()
@@ -83,6 +99,7 @@ def update_order(updated_order: dict) -> Optional[dict]:
 
     return updated
 
+
 def get_active_orders_by_restaurant(restaurant_id: str) -> list[dict]:
     active_statuses = {"pending", "preparing", "in-transit"}
 
@@ -93,3 +110,22 @@ def get_active_orders_by_restaurant(restaurant_id: str) -> list[dict]:
 
     orders.sort(key=lambda order: order["created_at"])
     return orders
+
+
+def save_order_item(order_item: dict) -> dict:
+    _ensure_order_items_file_exists()
+    with open(ORDER_ITEMS_FILE, "a", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=ORDER_ITEM_FIELDNAMES)
+        writer.writerow(order_item)
+    return order_item
+
+
+def get_order_items(order_id: str) -> list[dict]:
+    _ensure_order_items_file_exists()
+    with open(ORDER_ITEMS_FILE, "r", newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        return [row for row in reader if row["order_id"] == order_id]
+
+
+def get_orders_by_username(username: str) -> list[dict]:
+    return [order for order in get_all_orders() if order["username"] == username]
