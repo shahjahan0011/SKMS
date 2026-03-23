@@ -1,6 +1,7 @@
 """user reposotory that handles the user data (reading and writing from the user.csv)"""
 import csv
 from pathlib import Path
+from app.constants import UserCSVFields
 
 
 class user_repository:
@@ -31,7 +32,7 @@ class user_repository:
             reader = csv.DictReader(file)
 
             for row in reader:
-                if row["username"] == username:
+                if row[UserCSVFields.USERNAME] == username:
                     return row
 
         return None
@@ -42,4 +43,3 @@ class user_repository:
         with open(self.file_path, mode="a", encoding="utf-8", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([username, password, role])
-            

@@ -3,6 +3,7 @@ import csv
 from pathlib import Path
 
 from app.services.auth_service import auth_service
+from app.constants import UserRole, ErrorMessages
 
 
 def setup_test_csv(file_path):
@@ -11,7 +12,7 @@ def setup_test_csv(file_path):
     with open(file_path, "w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["username", "password", "role"])
-        writer.writerow(["bheema", "password123", "user"])
+        writer.writerow(["bheema", "password123", UserRole.USER.value])
 
 
 def get_test_file_path():
@@ -30,7 +31,7 @@ def test_register_user():
     result = service.register_user("new_user", "pass123")
 
     assert result["username"] == "new_user"
-    assert result["role"] == "user"
+    assert result["role"] == UserRole.USER.value
 
     test_file.unlink()
 
@@ -47,7 +48,8 @@ def test_register_duplicate_user():
     try:
         service.register_user("bheema", "pass123")
         assert False
-    except ValueError:
+    except ValueError as error:
+        assert str(error) == ErrorMessages.USERNAME_EXISTS
         assert True
 
     test_file.unlink()
@@ -65,7 +67,7 @@ def test_login_user_success():
     result = service.login_user("bheema", "password123")
 
     assert result["username"] == "bheema"
-    assert result["role"] == "user"
+    assert result["role"] == UserRole.USER.value
 
     test_file.unlink()
 
@@ -82,8 +84,10 @@ def test_login_user_invalid_password():
     try:
         service.login_user("bheema", "wrongpass")
         assert False
-    except ValueError:
+    except ValueError as error:
+        assert str(error) == ErrorMessages.INVALID_CREDENTIALS  
         assert True
+
 
     test_file.unlink()
 
@@ -93,10 +97,12 @@ def test_register_empty_username():
     service = auth_service()
 
     try:
-        service.register_user("", "pass213", "user")
+        service.register_user("", "pass213", UserRole.USER.value)
         assert False
     except ValueError as error:
-        assert str(error) == "Please enter a username"
+        assert str(error) == ErrorMessages.USERNAME_REQUIRED  
+        assert True 
+
 
 def test_register_empty_password():
     """tests registration fail for empty username"""
@@ -104,7 +110,8 @@ def test_register_empty_password():
     service = auth_service()
 
     try:
-        service.register_user("username", "", "user")
+        service.register_user("username", "", UserRole.USER.value)
         assert False
     except ValueError as error:
-        assert str(error) == "Please enter password"
+        assert str(error) == ErrorMessages.PASSWORD_REQUIRED  
+        assert True

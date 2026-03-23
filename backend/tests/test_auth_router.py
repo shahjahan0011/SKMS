@@ -6,6 +6,8 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.storage.repositories.user_repository import user_repository
+from app.constants import HTTPStatusCode, UserRole  
+
 
 client = TestClient(app)
 
@@ -55,13 +57,13 @@ def test_register_endpoint():
         json={
             "username": "new_router_user",
             "password": "password123",
-            "role": "user"
+            "role": UserRole.USER.value
         }
     )
 
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatusCode.OK 
     assert response.json()["username"] == "new_router_user"
-    assert response.json()["role"] == "user"
+    assert response.json()["role"] == UserRole.USER.value
 
     restore_repository_init(original_init)
     test_file.unlink()
@@ -80,7 +82,7 @@ def test_login_endpoint():
         json={
             "username": "login_user",
             "password": "password123",
-            "role": "user"
+            "role": UserRole.USER.value
         }
     )
 
@@ -92,9 +94,9 @@ def test_login_endpoint():
         }
     )
 
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatusCode.OK 
     assert response.json()["username"] == "login_user"
-    assert response.json()["role"] == "user"
+    assert response.json()["role"] == UserRole.USER.value
 
     restore_repository_init(original_init)
     test_file.unlink()
@@ -116,7 +118,7 @@ def test_login_endpoint_invalid_credentials():
         }
     )
 
-    assert response.status_code == 401
+    assert response.status_code == HTTPStatusCode.UNAUTHORIZED
     assert "detail" in response.json()
 
     restore_repository_init(original_init)
@@ -128,5 +130,5 @@ def test_logout_endpoint():
 
     response = client.post("/auth/logout")
 
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatusCode.OK  
     assert response.json()["message"] == "logout successful"
