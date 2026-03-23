@@ -1,18 +1,20 @@
 """endpooints for the fastapi"""
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
 
 from app.schemas.user_schema import user_login, user_register
 from app.services.auth_service import auth_service
 from app.constants import HTTPStatusCode, UserRole
+from app.dependencies import get_auth_service
 
 router = APIRouter()
 
 
 @router.post("/register")
-def register(user: user_register):
+def register(
+    user: user_register,
+    service: auth_service = Depends(get_auth_service) 
+):
     """register a new user"""
-
-    service = auth_service()
 
     try:
         created_user = service.register_user(
@@ -29,10 +31,11 @@ def register(user: user_register):
 
 
 @router.post("/login")
-def login(user: user_login):
+def login(
+    user: user_login,
+    service: auth_service = Depends(get_auth_service)  
+):
     """log in an existing user"""
-
-    service = auth_service()
 
     try:
         logged_in_user = service.login_user(
@@ -54,11 +57,12 @@ def logout():
     return {"message": "logout successful"}
 
 @router.get("/admin")
-def admin_access(username: str = Query(...)):
+def admin_access(
+    username: str = Query(...),
+    service: auth_service = Depends(get_auth_service)  # DEPENDENCY INJECTION
+):
     """allow access only to admin users"""
- 
-    service = auth_service()
- 
+  
     try:
         service.check_role(username, UserRole.ADMIN.value)
         return {"message": "admin access granted"}
