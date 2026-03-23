@@ -6,8 +6,9 @@ from app.constants import UserRole, UserCSVFields, ErrorMessages
 class auth_service:
     """service responsible for authentication logic"""
 
-    def __init__(self):
-        self.user_repo = user_repository()
+    def __init__(self, user_repo: user_repository = None):
+        """Initialize auth service with optional repository injection"""
+        self.user_repo = user_repo if user_repo else user_repository()
 
     def register_user(self, username, password, role=UserRole.USER.value):
         """register a new user"""
