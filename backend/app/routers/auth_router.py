@@ -42,7 +42,7 @@ def login(user: user_login):
         return logged_in_user
     except ValueError as error:
         raise HTTPException(
-            status_code=HTTPException.UNAUTHORIZED, 
+            status_code=HTTPStatusCode.UNAUTHORIZED, 
             detail=str(error)
         ) from error
 
