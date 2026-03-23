@@ -1,0 +1,179 @@
+"""endpoint testing for notification router"""
+import csv
+from pathlib import Path
+
+from fastapi.testclient import TestClient
+
+from app.main import app
+from app.storage.repositories.user_repository import user_repository
+from app.storage.repositories.notification_repository import notification_repository
+from app.services.auth_service import auth_service
+
+client = TestClient(app)
+
+
+def setup_test_user_csv(file_path):
+    """create temporary user csv for notification router tests"""
+
+    with open(file_path, mode="w", encoding="utf-8", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["username", "password", "role"])
+        writer.writerow(["jahan", "password123", "user"])
+        writer.writerow(["admin_user", "password123", "admin"])
+
+
+def setup_test_notification_csv(file_path):
+    """create temporary notification csv for router tests"""
+
+    with open(file_path, mode="w", encoding="utf-8", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["id", "user_id", "role", "event_type", "event_key", "message", "order_id", "created_at"])
+        writer.writerow([
+            "n1",
+            "jahan",
+            "customer",
+            "order_created",
+            "order_created:101:jahan",
+            "Your order 101 was created successfully.",
+            "101",
+            "2026-03-21T12:00:00+00:00"
+        ])
+        writer.writerow([
+            "n2",
+            "manager_1",
+            "manager",
+            "new_paid_order",
+            "new_paid_order:101:manager_1",
+            "A new paid order 101 is ready for preparation.",
+            "101",
+            "2026-03-21T12:05:00+00:00"
+        ])
+
+
+def get_test_user_file_path():
+    """return temporary user csv path"""
+
+    return Path(__file__).resolve().parent / "test_notification_router_users.csv"
+
+
+def get_test_notification_file_path():
+    """return temporary notification csv path"""
+
+    return Path(__file__).resolve().parent / "test_notification_router_notifications.csv"
+
+
+def patch_user_repository_file(test_file):
+    """patch user repository file path"""
+
+    original_init = user_repository.__init__
+
+    def patched_init(self):
+        self.file_path = test_file
+
+    user_repository.__init__ = patched_init
+    return original_init
+
+
+def patch_notification_repository_file(test_file):
+    """patch notification repository file path"""
+
+    original_init = notification_repository.__init__
+
+    def patched_init(self):
+        self.file_path = test_file
+
+    notification_repository.__init__ = patched_init
+    return original_init
+
+
+def restore_repository_init(original_init, repository_class):
+    """restore original repository init"""
+
+    repository_class.__init__ = original_init
+
+
+def test_get_user_notifications():
+    """test user notification retrieval endpoint"""
+
+    user_file = get_test_user_file_path()
+    notification_file = get_test_notification_file_path()
+
+    setup_test_user_csv(user_file)
+    setup_test_notification_csv(notification_file)
+
+    original_user_init = patch_user_repository_file(user_file)
+    original_notification_init = patch_notification_repository_file(notification_file)
+
+    response = client.get("/notifications/?username=jahan")
+
+    assert response.status_code == 200
+    assert response.json()["username"] == "jahan"
+    assert len(response.json()["notifications"]) == 1
+    assert response.json()["notifications"][0]["user_id"] == "jahan"
+
+    restore_repository_init(original_user_init, user_repository)
+    restore_repository_init(original_notification_init, notification_repository)
+    user_file.unlink()
+    notification_file.unlink()
+
+
+def test_get_user_notifications_user_not_found():
+    """test unknown user returns not found"""
+
+    user_file = get_test_user_file_path()
+    notification_file = get_test_notification_file_path()
+
+    setup_test_user_csv(user_file)
+    setup_test_notification_csv(notification_file)
+
+    original_user_init = patch_user_repository_file(user_file)
+    original_notification_init = patch_notification_repository_file(notification_file)
+
+    response = client.get("/notifications/?username=missing_user")
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "user does not exist"
+
+    restore_repository_init(original_user_init, user_repository)
+    restore_repository_init(original_notification_init, notification_repository)
+    user_file.unlink()
+    notification_file.unlink()
+
+
+def test_get_role_notifications_admin_allowed(monkeypatch):
+    """test admin can retrieve role notifications"""
+
+    notification_file = get_test_notification_file_path()
+    setup_test_notification_csv(notification_file)
+
+    original_notification_init = patch_notification_repository_file(notification_file)
+
+    def mock_check_role(self, username, required_role):
+        return True
+
+    monkeypatch.setattr(auth_service, "check_role", mock_check_role)
+
+    response = client.get("/notifications/role?role=manager&username=admin_user")
+
+    assert response.status_code == 200
+    assert response.json()["role"] == "manager"
+    assert len(response.json()["notifications"]) == 1
+    assert response.json()["notifications"][0]["role"] == "manager"
+
+    restore_repository_init(original_notification_init, notification_repository)
+    notification_file.unlink()
+
+
+def test_get_role_notifications_admin_denied(monkeypatch):
+    """test non-admin user cannot retrieve role notifications"""
+
+    def mock_check_role(self, username, required_role):
+        raise PermissionError("user does not have required role")
+
+    monkeypatch.setattr(auth_service, "check_role", mock_check_role)
+
+    response = client.get("/notifications/role?role=manager&username=regular_user")
+
+    assert response.status_code == 403
+    assert response.json()["detail"] == "user does not have required role"
+    
