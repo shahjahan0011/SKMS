@@ -2,50 +2,55 @@ from datetime import datetime
 from uuid import uuid4
 from fastapi import HTTPException
 
-from app.storage.repositories.order_repository import get_order_by_id, update_order, save_order, get_menu_item_by_id, get_active_orders_by_restaurant
+from app.storage.repositories.order_repository import (
+    get_order_by_id,
+    update_order,
+    save_order,
+    get_menu_item_by_id,
+    get_active_orders_by_restaurant,
+    save_order_item,
+)
 from app.schemas.order_schema import OrderStatus
-from app.services.notification_service import notification_service
-
-TAX_RATE = 0.05
-DELIVERY_FEE = 4.99
+from app.services.cost_service import calculate_total_breakdown, _safe_float
 
 
 def _now_iso() -> str:
     return datetime.utcnow().isoformat()
 
 
-def _safe_float(value) -> float:
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return 0.0
+def create_order(username: str, items: list[dict], is_premium: bool = False) -> dict:
+    if not items:
+        raise HTTPException(status_code=400, detail="Order must contain at least one item")
 
+    first_item = get_menu_item_by_id(items[0]["id"])
+    if first_item is None:
+        raise HTTPException(status_code=404, detail=f"Menu item not found: {items[0]['id']}")
 
-def create_order(username: str, id: str, quantity: int) -> dict:
-    
-    menu_item = get_menu_item_by_id(id)
-    if menu_item is None:
-        raise HTTPException(status_code=404, detail=f"Menu item not found: {id}")
+    restaurant_id = first_item.get("restaurant_id")
 
-    restaurant_id = menu_item.get("restaurant_id")
-    price = _safe_float(menu_item.get("price"))
+    for item in items:
+        menu_item = get_menu_item_by_id(item["id"])
+        if menu_item is None:
+            raise HTTPException(status_code=404, detail=f"Menu item not found: {item['id']}")
+        if menu_item.get("restaurant_id") != restaurant_id:
+            raise HTTPException(
+                status_code=400,
+                detail="All items in one order must belong to the same restaurant",
+            )
 
-    subtotal = round(price * quantity, 2)
-    tax = round(subtotal * TAX_RATE, 2)
-    total = round(subtotal + tax + DELIVERY_FEE, 2)
+    breakdown = calculate_total_breakdown(items, is_premium=is_premium)
+
+    order_id = str(uuid4())
     now = _now_iso()
 
     order = {
-        "order_id": str(uuid4()),
+        "order_id": order_id,
         "username": username,
         "restaurant_id": restaurant_id,
-        "id": id,
-        "quantity": str(quantity),
-        "price": f"{price:.2f}",
-        "subtotal": f"{subtotal:.2f}",
-        "tax": f"{tax:.2f}",
-        "delivery_fee": f"{DELIVERY_FEE:.2f}",
-        "total": f"{total:.2f}",
+        "base_cost": f"{breakdown['base_cost']:.2f}",
+        "tax": f"{breakdown['tax']:.2f}",
+        "delivery_fee": f"{breakdown['delivery_fee']:.2f}",
+        "total": f"{breakdown['total']:.2f}",
         "status": OrderStatus.pending.value,
         "created_at": now,
         "updated_at": now,
@@ -53,14 +58,26 @@ def create_order(username: str, id: str, quantity: int) -> dict:
         "delivered_at": "",
     }
 
-    saved_order = save_order(order)
+    save_order(order)
 
-    try:
-        notification_service().notify_order_created(username, saved_order["order_id"])
-    except Exception:
-        pass
+    for item in items:
+        menu_item = get_menu_item_by_id(item["id"])
+        if menu_item is None:
+            raise HTTPException(status_code=404, detail=f"Menu item not found: {item['id']}")
+        unit_price = _safe_float(menu_item.get("price"))
+        quantity = item["quantity"]
+        line_total = round(unit_price * quantity, 2)
 
-    return saved_order
+        save_order_item({
+            "order_id": order_id,
+            "item_id": item["id"],
+            "quantity": str(quantity),
+            "unit_price": f"{unit_price:.2f}",
+            "line_total": f"{line_total:.2f}",
+        })
+
+    return order
+
 
 def get_order_status(order_id: str) -> dict:
     order = get_order_by_id(order_id)
@@ -98,20 +115,12 @@ def update_order_status(order_id: str, new_status: str) -> dict:
 
     updated_order = update_order(order)
     assert updated_order is not None, "Failed to update order"
-    
-    try:
-        notification_service().notify_order_status_changed(
-            updated_order["username"],
-            updated_order["order_id"],
-            new_status
-        )
-    except Exception:
-        pass
-
     return updated_order
+
 
 def list_active_orders(restaurant_id: str) -> list[dict]:
     return get_active_orders_by_restaurant(restaurant_id)
+
 
 def cancel_order(order_id: str) -> dict:
     order = get_order_by_id(order_id)
