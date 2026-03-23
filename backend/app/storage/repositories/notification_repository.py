@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
+from app.constants import NotificationCSVFields
 
 class notification_repository:
     """Stores and retrieves notification data"""
@@ -34,7 +35,7 @@ class notification_repository:
             reader = csv.DictReader(file)
 
             for row in reader:
-                if row["user_id"] == str(user_id):
+                if row[NotificationCSVFields.USER_ID] == str(user_id):
                     notifications.append(row)
 
         return notifications
@@ -48,7 +49,7 @@ class notification_repository:
             reader = csv.DictReader(file)
 
             for row in reader:
-                if row["role"] == str(role):
+                if row[NotificationCSVFields.ROLE] == str(role):
                     notifications.append(row)
 
         return notifications
@@ -60,7 +61,7 @@ class notification_repository:
             reader = csv.DictReader(file)
 
             for row in reader:
-                if row["event_key"] == event_key:
+                if row[NotificationCSVFields.EVENT_KEY] == event_key:
                     return True
 
         return False
@@ -68,7 +69,7 @@ class notification_repository:
     def create_notification(self, notification):
         """writes a new notification into csv data"""
 
-        if self.notification_exists(notification["event_key"]):
+        if self.notification_exists(notification[NotificationCSVFields.EVENT_KEY]):
             return None
 
         created_at = datetime.now(timezone.utc).isoformat()
@@ -79,22 +80,23 @@ class notification_repository:
 
             writer.writerow([
                 notification_id,
-                notification["user_id"],
-                notification["role"],
-                notification["event_type"],
-                notification["event_key"],
-                notification["message"],
-                notification["order_id"],
+                notification[NotificationCSVFields.USER_ID],
+                notification[NotificationCSVFields.ROLE],
+                notification[NotificationCSVFields.EVENT_TYPE],
+                notification[NotificationCSVFields.EVENT_KEY],
+                notification[NotificationCSVFields.MESSAGE],
+                notification[NotificationCSVFields.ORDER_ID],
                 created_at
             ])
 
+
         return {
-            "id": notification_id,
-            "user_id": notification["user_id"],
-            "role": notification["role"],
-            "event_type": notification["event_type"],
-            "event_key": notification["event_key"],
-            "message": notification["message"],
-            "order_id": notification["order_id"],
-            "created_at": created_at
+            NotificationCSVFields.ID: notification_id,
+            NotificationCSVFields.USER_ID: notification[NotificationCSVFields.USER_ID],
+            NotificationCSVFields.ROLE: notification[NotificationCSVFields.ROLE],
+            NotificationCSVFields.EVENT_TYPE: notification[NotificationCSVFields.EVENT_TYPE],
+            NotificationCSVFields.EVENT_KEY: notification[NotificationCSVFields.EVENT_KEY],
+            NotificationCSVFields.MESSAGE: notification[NotificationCSVFields.MESSAGE],
+            NotificationCSVFields.ORDER_ID: notification[NotificationCSVFields.ORDER_ID],
+            NotificationCSVFields.CREATED_AT: created_at
         }
