@@ -30,11 +30,3 @@ class user_repository(BaseCSVRepository):
         """add a new user to csv storage"""
 
         self._write_row([username, password, role])
-
-    def get_users_by_role(self, role: str):
-        """return all users with a specific role"""
-        return self._find_rows_by_field(UserCSVFields.ROLE, role)
- 
-    def user_exists(self, username: str) -> bool:
-        """check if a user exists"""
-        return self._row_exists_by_field(UserCSVFields.USERNAME, username)
