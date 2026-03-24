@@ -8,6 +8,7 @@ class delivery_repository:
     def __init__(self):
         self.file_path = "backend/app/storage/data/deliveries.csv"
         self.location_file = "backend/app/storage/data/locations.csv"
+        self.agent_file = "backend/app/storage/data/delivery_agents.csv"
 
     def get_all_deliveries(self):
         """returns all deliveries from csv """

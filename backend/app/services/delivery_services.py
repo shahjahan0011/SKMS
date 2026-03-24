@@ -86,10 +86,11 @@ class delivery_services:
 
         self.repo.update_delivery_status(order_id, new_status)
 
-        if new_status == "delivered":
-            if delivery.get("agent_id"):
-                self.repo.set_agent_available(delivery["agent_id"])
+        updated_delivery = self.repo.get_delivery_by_order_id(order_id)
 
+        if new_status == "delivered":
+            if updated_delivery.get("agent_id"):
+                self.repo.set_agent_available(updated_delivery["agent_id"])
         return {
             "order_id": order_id,
             "new_status": new_status
