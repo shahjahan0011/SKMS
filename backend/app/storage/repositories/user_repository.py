@@ -11,7 +11,12 @@ class UserRepository(BaseCSVRepository):
     """repository responsible for reading and writing user data"""
 
     def __init__(self):
-        super().__init__("users.csv")
+        headers = [
+            UserCSVFields.USERNAME, 
+            UserCSVFields.PASSWORD, 
+            UserCSVFields.ROLE
+        ]
+        super().__init__("users.csv", headers=headers)
 
 
     def get_all_users(self):
