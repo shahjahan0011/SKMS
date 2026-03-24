@@ -93,7 +93,7 @@ def test_get_restaurant_by_id_invalid():
 
     error_raised = False
     try:
-        service.get_restaurant_menu("999")
+        service.get_restaurant_by_id("999")
     except ValueError:
         error_raised = True
     
@@ -117,7 +117,7 @@ def test_get_menu_item_by_id_invalid():
 
     error_raised = False
     try:
-        service.get_restaurant_menu("999")
+        service.get_menu_item_by_id("999")
     except ValueError:
         error_raised = True
     
