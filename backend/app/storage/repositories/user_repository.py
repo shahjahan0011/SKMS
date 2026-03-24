@@ -1,45 +1,32 @@
 """user reposotory that handles the user data (reading and writing from the user.csv)"""
 import csv
 from pathlib import Path
+from typing import Optional, Dict
+
+from app.storage.repositories.base_csv_repository import BaseCSVRepository
 from app.constants import UserCSVFields
 
 
-class user_repository:
+class user_repository(BaseCSVRepository):
     """repository responsible for reading and writing user data"""
 
     def __init__(self):
-        self.file_path = (
-            Path(__file__).resolve().parents[1] / "data" / "users.csv"
-        )
+        super().__init__("users.csv")
+
 
     def get_all_users(self):
         """return all users from csv storage"""
 
-        users = []
+        return self._read_all_rows()
 
-        with open(self.file_path, mode="r", encoding="utf-8", newline="") as file:
-            reader = csv.DictReader(file)
 
-            for row in reader:
-                users.append(row)
-
-        return users
-
-    def get_user_by_username(self, username):
+    def get_user_by_username(self, username: str) -> Optional[Dict[str, str]]:
         """return a user if the username exists"""
 
-        with open(self.file_path, mode="r", encoding="utf-8", newline="") as file:
-            reader = csv.DictReader(file)
+        return self._find_row_by_field(UserCSVFields.USERNAME, username)
 
-            for row in reader:
-                if row[UserCSVFields.USERNAME] == username:
-                    return row
 
-        return None
-
-    def create_user(self, username, password, role):
+    def create_user(self, username: str, password: str, role: str) -> None:
         """add a new user to csv storage"""
 
-        with open(self.file_path, mode="a", encoding="utf-8", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([username, password, role])
+        self._write_row([username, password, role])
