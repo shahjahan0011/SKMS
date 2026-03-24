@@ -42,7 +42,7 @@ def test_get_menu_by_restaurant_success():
 
     data = response.json()
     assert "items" in data
-    assert data["items"][0]["item_name"] == "Chicken Briyani"
+    assert data["items"][0]["item_name"] == "Briyani rice"
 
 
 

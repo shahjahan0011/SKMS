@@ -10,7 +10,7 @@ def test_get_menu_by_restaurant_id_from_csv():
     """
     repo = menu_repository()
 
-    result = repo.get_active_menu_by_restaurant("13")
+    result = repo.get_menu_by_restaurant("13")
 
     assert isinstance(result, list)
     assert len(result) > 0
@@ -26,7 +26,7 @@ def test_get_menu_item_by_invalid_id():
     """
     repo = menu_repository()
 
-    result = repo.get_active_menu_by_restaurant("non_existent_id")
+    result = repo.get_menu_by_restaurant("non_existent_id")
 
     assert result == []
 
@@ -37,7 +37,7 @@ def test_get_menu_item_structure():
     all the required keys for the front-end.
     """
     repo = menu_repository()
-    result = repo.get_active_menu_by_restaurant("13")
+    result = repo.get_menu_by_restaurant("13")
 
     if len(result) > 0:
         first_item = result[0]
