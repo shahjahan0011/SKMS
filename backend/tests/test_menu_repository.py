@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import MagicMock
 from app.main import app
 from app.storage.repositories.menu_repository import menu_repository
-from app.routers.menu_routers import get_menu_service
+from backend.app.routers.menu_router import get_menu_service
 
 @pytest.fixture
 def mock_menu_repo():
@@ -16,7 +16,7 @@ def mock_menu_repo():
         {"id": "3", "restaurant_id": "2", "item_name": "Burger", "price": "8", "is_available": "True"},
     ]
     repo.get_all = MagicMock(return_value=mock_data)
-    # Mock the method to return None for invalid IDs
+
     repo.get_menu_item_by_id = MagicMock(side_effect=lambda id: next((item for item in mock_data if item["id"] == id), None))
     return repo
 
@@ -37,11 +37,11 @@ def test_search_endpoint(client):
     mock_service = MagicMock()
     mock_service.get_active_menu_paginated_by_restaurant.return_value = {
         "items": [{"name": "Fried Rice", "price": 10.0}],
-        "total_items": 1, 
-        "page": 1, 
+        "total_items": 1,
+        "page": 1,
         "page_size": 10
     }
-    
+
     app.dependency_overrides[get_menu_service] = lambda: mock_service
     try:
         response = client.get("/menus/1?search=rice")

@@ -2,9 +2,18 @@ from datetime import datetime
 from uuid import uuid4
 from fastapi import HTTPException
 
-from app.storage.repositories.order_repository import get_order_by_id, update_order, save_order, get_menu_item_by_id, get_active_orders_by_restaurant
+from app.storage.repositories.order_repository import (
+    get_order_by_id,
+    update_order,
+    save_order,
+    get_menu_item_by_id,
+    get_active_orders_by_restaurant,
+    get_all_orders,
+)
+from app.storage.repositories.order_items_repository import save_order_item
 from app.schemas.order_schema import OrderStatus
 from app.services.notification_service import NotificationService
+from app.services.cost_service import calculate_total_breakdown
 
 TAX_RATE = 0.05
 DELIVERY_FEE = 4.99
@@ -21,7 +30,19 @@ def _safe_float(value) -> float:
         return 0.0
 
 
-def create_order(username: str, id: str, quantity: int) -> dict:
+def create_order(username: str, id: str, quantity: int, is_premium: bool = False) -> dict:
+    """
+    Create an order (compatibility layer for single-item orders).
+    
+    Args:
+        username: Customer username
+        id: Menu item ID (for single-item orders)
+        quantity: Item quantity
+        is_premium: Whether user is premium (affects delivery fee)
+    
+    Returns:
+        Order dictionary with all fields
+    """
     
     menu_item = get_menu_item_by_id(id)
     if menu_item is None:
@@ -30,22 +51,24 @@ def create_order(username: str, id: str, quantity: int) -> dict:
     restaurant_id = menu_item.get("restaurant_id")
     price = _safe_float(menu_item.get("price"))
 
-    subtotal = round(price * quantity, 2)
-    tax = round(subtotal * TAX_RATE, 2)
-    total = round(subtotal + tax + DELIVERY_FEE, 2)
+    # Use cost_service for consistent calculations (same as preview)
+    items = [{"id": id, "quantity": quantity}]
+    cost_breakdown = calculate_total_breakdown(items, is_premium=is_premium)
+    
     now = _now_iso()
 
     order = {
         "order_id": str(uuid4()),
         "username": username,
         "restaurant_id": restaurant_id,
+        "is_premium": "true" if is_premium else "false",
         "id": id,
         "quantity": str(quantity),
         "price": f"{price:.2f}",
-        "subtotal": f"{subtotal:.2f}",
-        "tax": f"{tax:.2f}",
-        "delivery_fee": f"{DELIVERY_FEE:.2f}",
-        "total": f"{total:.2f}",
+        "base_cost": f"{cost_breakdown['base_cost']:.2f}",
+        "tax": f"{cost_breakdown['tax']:.2f}",
+        "delivery_fee": f"{cost_breakdown['delivery_fee']:.2f}",
+        "total": f"{cost_breakdown['total']:.2f}",
         "status": OrderStatus.pending.value,
         "created_at": now,
         "updated_at": now,
@@ -54,6 +77,18 @@ def create_order(username: str, id: str, quantity: int) -> dict:
     }
 
     saved_order = save_order(order)
+    
+    # Save item to order_items.csv
+    try:
+        save_order_item(
+            order_id=saved_order["order_id"],
+            item_id=id,
+            quantity=quantity,
+            item_price=price,
+        )
+    except Exception as e:
+        # Log but don't fail if item save fails
+        print(f"Warning: Failed to save order item: {e}")
 
     try:
         NotificationService().notify_order_created(username, saved_order["order_id"])
@@ -131,3 +166,54 @@ def cancel_order(order_id: str) -> dict:
     updated_order = update_order(order)
     assert updated_order is not None, "Failed to update order"
     return updated_order
+
+
+def get_order_history(username: str) -> list[dict]:
+    """
+    Get complete order history for a user with items breakdown.
+    
+    Retrieves all orders for a user and enriches each with:
+    - Order items (from order_items.csv)
+    - Cost breakdown (already in orders.csv)
+    
+    Args:
+        username: The customer username
+        
+    Returns:
+        List of orders (newest first) with items nested
+        
+    Example response:
+        [
+            {
+                "order_id": "o1",
+                "username": "jahan",
+                "restaurant_id": "rest_1",
+                "is_premium": "true",
+                "base_cost": "35.00",
+                "tax": "1.75",
+                "delivery_fee": "0.00",
+                "total": "36.75",
+                "status": "delivered",
+                "created_at": "2026-03-24T...",
+                "items": [
+                    {"order_item_id": "oi1", "order_id": "o1", "item_id": "item_1", "quantity": "2", "item_price": "10.00"},
+                    {"order_item_id": "oi2", "order_id": "o1", "item_id": "item_3", "quantity": "1", "item_price": "15.00"}
+                ]
+            }
+        ]
+    """
+    from app.storage.repositories.order_items_repository import get_order_items
+    
+    # Get all orders and filter by username
+    all_orders = get_all_orders()
+    user_orders = [order for order in all_orders if order["username"] == username]
+    
+    # Enrich each order with its items
+    for order in user_orders:
+        order_items = get_order_items(order["order_id"])
+        order["items"] = order_items
+    
+    # Sort by created_at descending (newest first)
+    user_orders.sort(key=lambda o: o["created_at"], reverse=True)
+    
+    return user_orders

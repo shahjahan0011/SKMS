@@ -14,6 +14,7 @@ class CreateOrderRequest(BaseModel):
     username: str = Field(..., min_length=1)
     id: str = Field(..., min_length=1)
     quantity: int = Field(default=1, ge=1)
+    is_premium: bool = Field(default=False)
 
 class UpdateOrderStatusRequest(BaseModel):
     status: OrderStatus

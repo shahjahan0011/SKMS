@@ -10,10 +10,11 @@ FIELDNAMES = [
     "order_id",
     "username",
     "restaurant_id",
+    "is_premium",
     "id",
     "quantity",
     "price",
-    "subtotal",
+    "base_cost",
     "tax",
     "delivery_fee",
     "total",
@@ -23,6 +24,33 @@ FIELDNAMES = [
     "cancelled_at",
     "delivered_at",
 ]
+
+
+def _normalize_order(order_dict: dict) -> dict:
+    """
+    Normalize order dict for CSV compatibility.
+    
+    Handles backward compatibility:
+    - Converts old 'subtotal' field to 'base_cost'
+    - Ensures 'is_premium' field exists (defaults to 'false')
+    
+    Args:
+        order_dict: Raw order dictionary
+        
+    Returns:
+        Normalized order dictionary with correct field names
+    """
+    normalized = order_dict.copy()
+    
+    # Convert old field names to new ones
+    if "subtotal" in normalized and "base_cost" not in normalized:
+        normalized["base_cost"] = normalized.pop("subtotal")
+    
+    # Ensure is_premium exists (for old records)
+    if "is_premium" not in normalized:
+        normalized["is_premium"] = "false"
+    
+    return normalized
 
 
 def _ensure_file_exists() -> None:
@@ -37,7 +65,8 @@ def get_all_orders() -> List[dict]:
     _ensure_file_exists()
     with open(DATA_FILE, "r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
-        return list(reader)
+        # Normalize each order as it's read (backward compatibility)
+        return [_normalize_order(order) for order in reader]
 
 
 def get_order_by_id(order_id: str) -> Optional[dict]:
@@ -54,10 +83,13 @@ def get_order_by_id(order_id: str) -> Optional[dict]:
 
 def save_order(order_data: dict) -> dict:
     _ensure_file_exists()
+    # Normalize before saving (backward compatibility)
+    normalized_order = _normalize_order(order_data)
+    
     with open(DATA_FILE, "a", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
-        writer.writerow(order_data)
-    return order_data
+        writer.writerow(normalized_order)
+    return normalized_order
 
 def get_menu_item_by_id(id: str) -> Optional[dict]:
     if not MENU_DATA_FILE.exists():
@@ -77,8 +109,10 @@ def update_order(updated_order: dict) -> Optional[dict]:
 
     for index, order in enumerate(orders):
         if order["order_id"] == updated_order["order_id"]:
-            orders[index] = updated_order
-            updated = updated_order
+            # Normalize before storing
+            normalized_order = _normalize_order(updated_order)
+            orders[index] = normalized_order
+            updated = normalized_order
             break
 
     if updated is None:
@@ -87,7 +121,9 @@ def update_order(updated_order: dict) -> Optional[dict]:
     with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
         writer.writeheader()
-        writer.writerows(orders)
+        # Normalize all orders before writing
+        normalized_orders = [_normalize_order(order) for order in orders]
+        writer.writerows(normalized_orders)
 
     return updated
 
