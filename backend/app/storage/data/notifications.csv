@@ -1,5 +1,1 @@
-id,user_id,role,event_type,event_key,message,order_id,created_atd203b1ae-91b1-4279-bdcb-70e8f8163499,jahan,customer,order_created,order_created:400485de-96a3-45db-b958-4cefd1702ff7:jahan,Your order 400485de-96a3-45db-b958-4cefd1702ff7 was created successfully.,400485de-96a3-45db-b958-4cefd1702ff7,2026-03-24T01:07:23.519413+00:00
-86ff8847-6203-4fcd-9544-286402337ad9,jahan,customer,order_created,order_created:ce6f9b23-841e-40d5-9207-f29b2db39fe7:jahan,Your order ce6f9b23-841e-40d5-9207-f29b2db39fe7 was created successfully.,ce6f9b23-841e-40d5-9207-f29b2db39fe7,2026-03-24T12:18:57.405981+00:00
-8ccbcf1b-a9e2-405e-be06-36aac093d465,jahan,customer,payment_success,payment_success:ord_123:jahan,Payment for order ord_123 was successful.,ord_123,2026-03-24T12:18:57.471800+00:00
-50525b62-868d-4ecd-80d6-00fababee666,jahan,customer,payment_failed,payment_failed:ord_999:jahan,Payment for order ord_999 failed.,ord_999,2026-03-24T12:18:57.556536+00:00
-f3957169-d27c-4aee-89e1-7c70a48bdcc8,jahan,customer,order_created,order_created:abada92f-b743-4ef5-b70a-6aee3fa2c7fe:jahan,Your order abada92f-b743-4ef5-b70a-6aee3fa2c7fe was created successfully.,abada92f-b743-4ef5-b70a-6aee3fa2c7fe,2026-03-24T12:35:14.160977+00:00
+id,user_id,role,event_type,event_key,message,order_id,created_at.
