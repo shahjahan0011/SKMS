@@ -6,12 +6,17 @@ client = TestClient(app)
 
 
 def test_create_order_route(monkeypatch):
-    def mock_create_order(username, id, quantity, is_premium):
+    def mock_create_order(username, id, quantity, is_premium=False):
         return {
             "order_id": "o1",
             "username": username,
             "id": id,
             "quantity": str(quantity),
+            "is_premium": "true" if is_premium else "false",
+            "base_cost": "20.00",
+            "tax": "1.00",
+            "delivery_fee": "4.99",
+            "total": "25.99",
             "status": "pending",
         }
 
@@ -23,6 +28,7 @@ def test_create_order_route(monkeypatch):
             "username": "jahan",
             "id": "item_1",
             "quantity": 2,
+            "is_premium": False,
         },
     )
 
@@ -31,6 +37,7 @@ def test_create_order_route(monkeypatch):
     assert data["username"] == "jahan"
     assert data["id"] == "item_1"
     assert data["status"] == "pending"
+    assert data["is_premium"] == "false"
 
 
 def test_get_order_route(monkeypatch):
