@@ -18,7 +18,7 @@ def test_create_order_success(monkeypatch):
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
 
-    result = order_service.create_order("jahan", "item_1", 2)
+    result = order_service.create_order("jahan", [{"id": 1, "quantity": 2}], False)
 
     assert result["username"] == "jahan"
     assert result["id"] == "item_1"
@@ -39,7 +39,7 @@ def test_create_order_invalid_menu_item(monkeypatch):
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
 
     with pytest.raises(HTTPException) as exc:
-        order_service.create_order("jahan", "bad_item", 1)
+        order_service.create_order("jahan", [{"id": 999, "quantity": 1}], False)
 
     assert exc.value.status_code == 404
 
@@ -189,7 +189,7 @@ def test_create_order_triggers_notification(monkeypatch):
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
     monkeypatch.setattr(order_service, "notification_service", lambda: mock_notification_service())
 
-    result = order_service.create_order("jahan", "item_1", 2)
+    result = order_service.create_order("jahan", [{"id": 1, "quantity": 2}], False)
 
     assert result["username"] == "jahan"
     assert len(notifications) == 1
@@ -246,7 +246,7 @@ def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
     monkeypatch.setattr(order_service, "notification_service", lambda: mock_notification_service())
 
-    result = order_service.create_order("jahan", "item_1", 2)
+    result = order_service.create_order("jahan", [{"id": 1, "quantity": 2}], False)
 
     assert result["username"] == "jahan"
     assert result["status"] == "pending"
