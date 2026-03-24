@@ -132,3 +132,67 @@ def test_get_role_notifications():
 
     assert len(result) == 1
     assert result[0]["role"] == UserRole.MANAGER.value  
+
+def test_create_notification_template():
+    """test template method creates notification correctly"""
+    
+    service = notification_service()
+    service.notification_repo = stub_notification_repository()
+    
+    result = service._create_notification_template(
+        user_id="123",
+        order_id="456",
+        role=UserRole.CUSTOMER.value,
+        event_type=NotificationEventType.ORDER_CREATED.value,
+        message="Test message"
+    )
+    
+    assert result is not None
+    assert result["user_id"] == "123"
+    assert result["order_id"] == "456"
+    assert result["role"] == UserRole.CUSTOMER.value
+    assert result["event_type"] == NotificationEventType.ORDER_CREATED.value
+    assert result["message"] == "Test message"
+    assert NotificationEventType.ORDER_CREATED.value in result["event_key"]
+
+
+def test_template_method_generates_correct_event_key():
+    """test template method creates properly formatted event key"""
+    
+    service = notification_service()
+    service.notification_repo = stub_notification_repository()
+    
+    result = service._create_notification_template(
+        user_id="u1",
+        order_id="o1",
+        role=UserRole.MANAGER.value,
+        event_type=NotificationEventType.NEW_PAID_ORDER.value,
+        message="Test"
+    )
+    
+    expected_key = f"{NotificationEventType.NEW_PAID_ORDER.value}:o1:u1"
+    assert result["event_key"] == expected_key
+
+
+def test_all_notify_methods_use_consistent_structure():
+    """test that all notification methods produce consistent output structure"""
+    
+    service = notification_service()
+    service.notification_repo = stub_notification_repository()
+    
+    # Test multiple notification types
+    results = [
+        service.notify_order_created("u1", "o1"),
+        service.notify_payment_result("u2", "o2", True),
+        service.notify_order_status_changed("u3", "o3", "delivered"),
+        service.notify_manager_new_paid_order("m1", "o4")
+    ]
+    
+    # All should have same structure
+    for result in results:
+        assert "user_id" in result
+        assert "order_id" in result
+        assert "role" in result
+        assert "event_type" in result
+        assert "event_key" in result
+        assert "message" in result
