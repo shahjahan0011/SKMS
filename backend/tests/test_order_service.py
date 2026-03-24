@@ -15,8 +15,17 @@ def test_create_order_success(monkeypatch):
     def mock_save_order(order_data):
         return order_data
 
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        return {
+            "base_cost": 20.00,
+            "tax": 1.00,
+            "delivery_fee": 4.99,
+            "total": 25.99,
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
 
     result = order_service.create_order("jahan", "item_1", 2)
 
@@ -30,6 +39,44 @@ def test_create_order_success(monkeypatch):
     assert result["delivery_fee"] == "4.99"
     assert result["total"] == "25.99"
     assert result["status"] == "pending"
+
+
+def test_create_order_premium_user(monkeypatch):
+    """Test that premium users get free delivery"""
+    def mock_get_menu_item_by_id(item_id):
+        return {
+            "id": item_id,
+            "restaurant_id": "rest_1",
+            "price": "10.00",
+        }
+
+    def mock_save_order(order_data):
+        return order_data
+
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        if is_premium:
+            return {
+                "base_cost": 20.00,
+                "tax": 1.00,
+                "delivery_fee": 0.0,
+                "total": 21.00,
+            }
+        else:
+            return {
+                "base_cost": 20.00,
+                "tax": 1.00,
+                "delivery_fee": 4.99,
+                "total": 25.99,
+            }
+
+    monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
+    monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+
+    result = order_service.create_order("jahan", "item_1", 2, is_premium=True)
+
+    assert result["delivery_fee"] == "0.00"
+    assert result["total"] == "21.00"
 
 
 def test_create_order_invalid_menu_item(monkeypatch):
@@ -185,8 +232,17 @@ def test_create_order_triggers_notification(monkeypatch):
     def mock_save_order(order_data):
         return order_data
 
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        return {
+            "base_cost": 20.00,
+            "tax": 1.00,
+            "delivery_fee": 4.99,
+            "total": 25.99,
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.create_order("jahan", "item_1", 2)
@@ -242,8 +298,17 @@ def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
     def mock_save_order(order_data):
         return order_data
 
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        return {
+            "base_cost": 20.00,
+            "tax": 1.00,
+            "delivery_fee": 4.99,
+            "total": 25.99,
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.create_order("jahan", "item_1", 2)
