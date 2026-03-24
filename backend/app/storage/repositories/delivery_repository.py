@@ -191,8 +191,7 @@ class delivery_repository:
 
         with open(self.agent_file, mode = "w", encoding = "utf-8", newline = "") as file:
             fields = ["agent_id", "name", "is_available"]
-            writer = csv.DictWriter(file, fieldnames=fields)
+            writer = csv.DictWriter(file, fieldnames = fields)
 
             writer.writeheader()
             writer.writerows(agents)
-            
