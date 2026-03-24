@@ -19,6 +19,7 @@ class test_restaurant_repo:
                 return r
         return None
 
+
 class test_menu_repo:
     """temporary menu repository for testing purposes"""
 
@@ -32,14 +33,19 @@ class test_menu_repo:
                 "price": "10"
             }
         ]
-
-
+    
     def get_menu_item_by_id(self, item_id):
         """test for getting menu item by id"""
         if item_id == "1":
             return {"id": "1", "restaurant_id": "1", "item_name": "Burger", "price": "10"}
         return None
 
+
+class faulty_restaurant_repo:
+    """test for wrong restaurant"""
+    def get_all_restaurants(self):
+        raise Exception("Database Failure")
+    
 
 
 def test_get_all_restaurants():
@@ -49,6 +55,7 @@ def test_get_all_restaurants():
     restaurants = service.get_all_restaurants()
 
     assert len(restaurants) == 2
+    assert restaurants[0]["id"] == "1"
 
 
 
@@ -68,12 +75,16 @@ def test_get_restaurant_menu_invalid():
     service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
     error_raised = False
+    error_message = ""
+
     try:
         service.get_restaurant_menu("999")
-    except ValueError:
+    except ValueError as e:
         error_raised = True
-    
+        error_message = str(e)
+
     assert error_raised
+    assert error_message == "Invalid Restaurant"
 
 
 
@@ -125,20 +136,45 @@ def test_get_menu_item_by_id_invalid():
 
 
 
-def get_restaurant_menu(self, restaurant_id: str) -> list:
-    """test for getting menu items for a given restaurant"""
-    restaurants = self.restaurant_repo.get_all_restaurants()
+def test_get_restaurant_menu_empty_id():
+    """test for empty restaurant id"""
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
 
-    exists = any(r["id"] == restaurant_id for r in restaurants)
+    error_raised = False
 
-    if not exists:
-        raise ValueError("Restaurant not found")
+    try:
+        service.get_restaurant_menu("")
+    except ValueError:
+        error_raised = True
 
-    menu_items = self.menu_repo.get_menu_by_restaurant(restaurant_id)
-    restaurant_ids = {r["id"] for r in restaurants}
+    assert error_raised
 
-    for item in menu_items:
-        if item["restaurant_id"] not in restaurant_ids:
-            raise ValueError("Menu item references invalid restaurant")
 
-    return menu_items
+
+def test_get_menu_item_by_id_empty():
+    """test for empty menu item id"""
+    service = item_listing_service(test_restaurant_repo(), test_menu_repo())
+
+    error_raised = False
+
+    try:
+        service.get_menu_item_by_id("")
+    except ValueError:
+        error_raised = True
+
+    assert error_raised
+
+
+
+def test_get_restaurant_menu_repo_failure():
+    """test when repository fails"""
+    service = item_listing_service(faulty_restaurant_repo(), test_menu_repo())
+
+    error_raised = False
+
+    try:
+        service.get_restaurant_menu("1")
+    except Exception:
+        error_raised = True
+
+    assert error_raised
