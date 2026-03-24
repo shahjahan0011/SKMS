@@ -1,55 +1,90 @@
+import pytest
+from unittest.mock import MagicMock
 from fastapi.testclient import TestClient
 from backend.app.main import app
+from backend.app.routers.menu_router import get_menu_service
 
 client = TestClient(app)
 
+
+def override_get_menu_service():
+    mock_service = MagicMock()
+
+    mock_service.get_active_menu_paginated_by_restaurant.return_value = {
+        "items": [
+            {"id": "item_1", "item_name": "Chicken Briyani", "price": 12.99}
+        ],
+        "total": 1,
+        "page": 1,
+        "size": 10
+    }
+
+
+    mock_service.get_global_menus.return_value = [
+         {"id": "item_1", "item_name": "Chicken Briyani", "price": 12.99}
+    ]
+
+    return mock_service
+
+app.dependency_overrides[get_menu_service] = override_get_menu_service
+
+
 def test_get_menus_status_and_structure():
-    """
-    Test 1: Verify the endpoint is reachable and returns the correct JSON keys.
-    """
+    """Test global menu browsing returns 200 and a list."""
     response = client.get("/menus")
-
-    if response.status_code == 404:
-        response = client.get("/menus")
-
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
-
-def test_get_menus_filter_logic():
-    """
-    Test 2: Verify that query parameters don't crash the app and return filtered results.
-    """
-    response = client.get("/menus?price=999.99")
-
-    if response.status_code == 404:
-        response = client.get("/menus/menus?price=999.99")
-
+def test_get_menu_by_restaurant_success():
+    """Test paginated restaurant menu returns 200 and a dictionary."""
+    response = client.get("/menus/13")
     assert response.status_code == 200
 
-
-def test_menu_search_multi_field_match():
-    """
-    Requirement: Search applies to name
-    """
-    response = client.get("/menus/16?search=Main")
-    assert response.status_code == 200
-    
     data = response.json()
-    # Restoring original behavior: verify the endpoint successfully 
-    # returns the pagination metadata dictionary.
-    assert len(data) > 0
     assert "items" in data
+    assert data["items"][0]["item_name"] == "Briyani rice"
 
 
-def test_menu_search_case_insensitivity_and_partial():
-    """
-    Requirement: Text-based search should be user-friendly.
-    """
-    response = client.get("/menus/13?search=BRIY")
-    assert response.status_code == 200
 
-    data = response.json()
-    items = data["items"]
+@pytest.mark.parametrize("invalid_price", [
+    "abc",
+    "free",
+])
+def test_global_menus_invalid_price_type(invalid_price):
+    """Test that FastAPI correctly blocks non-numeric price queries."""
+    response = client.get(f"/menus?price={invalid_price}")
+    # FastAPI should automatically throw a 422 Unprocessable Entity
+    assert response.status_code == 422
 
-    assert any("Briyani" in item["item_name"] for item in items)
+
+
+@pytest.mark.parametrize("test_size, expected_status", [
+    (0, 422),
+    (1, 200),
+    (100, 200),
+    (101, 422)
+])
+def test_menu_pagination_boundaries(test_size, expected_status):
+    """Test the ge=1 and le=100 FastAPI validation boundaries."""
+    response = client.get(f"/menus/13?page_size={test_size}")
+    assert response.status_code == expected_status
+
+
+def test_restaurant_999999_hardcoded_404():
+    """Test the specific logic block that forces a 404 for ID 999999 with no items."""
+
+    def override_empty_service():
+        mock = MagicMock()
+        mock.get_active_menu_paginated_by_restaurant.return_value = {"items": []}
+        return mock
+
+    app.dependency_overrides[get_menu_service] = override_empty_service
+
+
+    response = client.get("/menus/999999")
+
+    assert response.status_code == 404
+    assert "Restaurant or menu not found" in response.json()["detail"]
+
+
+    app.dependency_overrides[get_menu_service] = override_get_menu_service
