@@ -13,6 +13,27 @@ class item_listing_service:
         self.restaurant_repo = restaurant_repo
         self.menu_repo = menu_repo
 
+
+    def _validate_restaurant_exists(self, restaurant_id: str):
+        """this method checks if a restaurant is valid"""
+        restaurants = self.restaurant_repo.get_all_restaurants()
+
+        for r in restaurants:
+            if r["id"] == restaurant_id:
+                return restaurants
+
+        raise ValueError("Restaurant does not exist")
+    
+
+    def _validate_menu_items(self, menu_items, restaurants):
+        """checks if menu items belong to a valid restaurant"""
+        restaurant_ids = [r["id"] for r in restaurants]
+
+        for item in menu_items:
+            if item["restaurant_id"] not in restaurant_ids:
+                raise ValueError("Menu Item references an invalid restaurant")
+        
+
     def get_all_restaurants(self) -> list:
         """Returns all restaurants"""
         return self.restaurant_repo.get_all_restaurants()
