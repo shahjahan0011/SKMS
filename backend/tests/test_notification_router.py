@@ -8,6 +8,8 @@ from app.main import app
 from app.storage.repositories.user_repository import user_repository
 from app.storage.repositories.notification_repository import notification_repository
 from app.services.auth_service import auth_service
+from app.constants import HTTPStatusCode, UserRole, NotificationEventType, ErrorMessages 
+
 
 client = TestClient(app)
 
@@ -18,8 +20,8 @@ def setup_test_user_csv(file_path):
     with open(file_path, mode="w", encoding="utf-8", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["username", "password", "role"])
-        writer.writerow(["jahan", "password123", "user"])
-        writer.writerow(["admin_user", "password123", "admin"])
+        writer.writerow(["jahan", "password123", UserRole.USER.value])  
+        writer.writerow(["admin_user", "password123", UserRole.ADMIN.value])  
 
 
 def setup_test_notification_csv(file_path):
@@ -31,9 +33,9 @@ def setup_test_notification_csv(file_path):
         writer.writerow([
             "n1",
             "jahan",
-            "customer",
-            "order_created",
-            "order_created:101:jahan",
+            UserRole.CUSTOMER.value, 
+            NotificationEventType.ORDER_CREATED.value,  
+            f"{NotificationEventType.ORDER_CREATED.value}:101:jahan", 
             "Your order 101 was created successfully.",
             "101",
             "2026-03-21T12:00:00+00:00"
@@ -41,13 +43,14 @@ def setup_test_notification_csv(file_path):
         writer.writerow([
             "n2",
             "manager_1",
-            "manager",
-            "new_paid_order",
-            "new_paid_order:101:manager_1",
+            UserRole.MANAGER.value,  # ✅ CHANGED from "manager"
+            NotificationEventType.NEW_PAID_ORDER.value,  # ✅ CHANGED
+            f"{NotificationEventType.NEW_PAID_ORDER.value}:101:manager_1",  # ✅ CHANGED
             "A new paid order 101 is ready for preparation.",
             "101",
             "2026-03-21T12:05:00+00:00"
         ])
+
 
 
 def get_test_user_file_path():
@@ -106,7 +109,7 @@ def test_get_user_notifications():
 
     response = client.get("/notifications/?username=jahan")
 
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatusCode.OK  
     assert response.json()["username"] == "jahan"
     assert len(response.json()["notifications"]) == 1
     assert response.json()["notifications"][0]["user_id"] == "jahan"
@@ -131,8 +134,8 @@ def test_get_user_notifications_user_not_found():
 
     response = client.get("/notifications/?username=missing_user")
 
-    assert response.status_code == 404
-    assert response.json()["detail"] == "user does not exist"
+    assert response.status_code == HTTPStatusCode.NOT_FOUND  
+    assert response.json()["detail"] == ErrorMessages.USER_NOT_FOUND  
 
     restore_repository_init(original_user_init, user_repository)
     restore_repository_init(original_notification_init, notification_repository)
@@ -153,12 +156,12 @@ def test_get_role_notifications_admin_allowed(monkeypatch):
 
     monkeypatch.setattr(auth_service, "check_role", mock_check_role)
 
-    response = client.get("/notifications/role?role=manager&username=admin_user")
+    response = client.get(f"/notifications/role?role={UserRole.MANAGER.value}&username=admin_user")  
 
-    assert response.status_code == 200
-    assert response.json()["role"] == "manager"
+    assert response.status_code == HTTPStatusCode.OK  
+    assert response.json()["role"] == UserRole.MANAGER.value  
     assert len(response.json()["notifications"]) == 1
-    assert response.json()["notifications"][0]["role"] == "manager"
+    assert response.json()["notifications"][0]["role"] == UserRole.MANAGER.value  
 
     restore_repository_init(original_notification_init, notification_repository)
     notification_file.unlink()
@@ -168,12 +171,12 @@ def test_get_role_notifications_admin_denied(monkeypatch):
     """test non-admin user cannot retrieve role notifications"""
 
     def mock_check_role(self, username, required_role):
-        raise PermissionError("user does not have required role")
+        raise PermissionError(ErrorMessages.INSUFFICIENT_PERMISSIONS)  
 
     monkeypatch.setattr(auth_service, "check_role", mock_check_role)
 
-    response = client.get("/notifications/role?role=manager&username=regular_user")
+    response = client.get(f"/notifications/role?role={UserRole.MANAGER.value}&username=regular_user")  
 
-    assert response.status_code == 403
-    assert response.json()["detail"] == "user does not have required role"
+    assert response.status_code == HTTPStatusCode.FORBIDDEN 
+    assert response.json()["detail"] == ErrorMessages.INSUFFICIENT_PERMISSIONS  
     

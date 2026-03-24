@@ -2,6 +2,8 @@
 
 from app.storage.repositories.notification_repository import notification_repository
 from app.schemas.notification_schema import notification_create
+from app.constants import NotificationEventType, UserRole
+
 
 
 class notification_service:
@@ -15,9 +17,9 @@ class notification_service:
 
         notification = notification_create(
             user_id=str(user_id),
-            role="customer",
-            event_type="order_created",
-            event_key=f"order_created:{order_id}:{user_id}",
+            role=UserRole.CUSTOMER.value,
+            event_type=NotificationEventType.ORDER_CREATED.value,
+            event_key=f"{NotificationEventType.ORDER_CREATED.value}:{order_id}:{user_id}",
             message=f"Your order {order_id} was created successfully.",
             order_id=str(order_id)
         )
@@ -27,7 +29,7 @@ class notification_service:
     def notify_payment_result(self, user_id, order_id, success):
         """create notification for payment success or failure"""
 
-        event_type = "payment_success" if success else "payment_failed"
+        event_type = NotificationEventType.PAYMENT_SUCCESS.value if success else NotificationEventType.PAYMENT_FAILED.value
         message = (
             f"Payment for order {order_id} was successful."
             if success
@@ -36,7 +38,7 @@ class notification_service:
 
         notification = notification_create(
             user_id=str(user_id),
-            role="customer",
+            role=UserRole.CUSTOMER.value,
             event_type=event_type,
             event_key=f"{event_type}:{order_id}:{user_id}",
             message=message,
@@ -50,9 +52,9 @@ class notification_service:
 
         notification = notification_create(
             user_id=str(user_id),
-            role="customer",
-            event_type="order_status_changed",
-            event_key=f"order_status_changed:{order_id}:{new_status}:{user_id}",
+            role=UserRole.CUSTOMER.value,
+            event_type=NotificationEventType.ORDER_STATUS_CHANGED.value,
+            event_key=f"{NotificationEventType.ORDER_STATUS_CHANGED.value}:{order_id}:{new_status}:{user_id}",
             message=f"Your order {order_id} status changed to {new_status}.",
             order_id=str(order_id)
         )
@@ -64,9 +66,9 @@ class notification_service:
 
         notification = notification_create(
             user_id=str(manager_id),
-            role="manager",
-            event_type="new_paid_order",
-            event_key=f"new_paid_order:{order_id}:{manager_id}",
+            role=UserRole.MANAGER.value,
+            event_type=NotificationEventType.NEW_PAID_ORDER.value,
+            event_key=f"{NotificationEventType.NEW_PAID_ORDER.value}:{order_id}:{manager_id}",
             message=f"A new paid order {order_id} is ready for preparation.",
             order_id=str(order_id)
         )

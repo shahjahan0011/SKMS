@@ -55,10 +55,15 @@ def get_all_orders() -> List[dict]:
 
 
 def get_order_by_id(order_id: str) -> Optional[dict]:
-    for order in get_all_orders():
-        if order["order_id"] == order_id:
-            return order
-    return None
+    order_id = str(order_id).strip()
+
+    orders = get_all_orders()
+    order_map = {
+        str(order.get("order_id", "")).strip(): order
+        for order in orders
+    }
+
+    return order_map.get(order_id)
 
 
 def save_order(order_data: dict) -> dict:

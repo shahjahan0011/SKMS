@@ -3,6 +3,8 @@ import csv
 from pathlib import Path
 
 from app.storage.repositories.user_repository import user_repository
+from app.constants import UserCSVFields, UserRole 
+
 
 
 def setup_test_csv(file_path):
@@ -11,7 +13,7 @@ def setup_test_csv(file_path):
     with open(file_path, mode="w", encoding="utf-8", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["username", "password", "role"])
-        writer.writerow(["bheema", "password123", "user"])
+        writer.writerow(["bheema", "password123", UserRole.USER.value])
         writer.writerow(["owner1", "ownerpass", "owner"])
 
 
@@ -33,8 +35,8 @@ def test_get_all_users():
     users = repo.get_all_users()
 
     assert len(users) == 2
-    assert users[0]["username"] == "bheema"
-    assert users[1]["username"] == "owner1"
+    assert users[0][UserCSVFields.USERNAME] == "bheema"
+    assert users[1][UserCSVFields.USERNAME] == "owner1"
 
     test_file.unlink()
 
@@ -51,7 +53,7 @@ def test_get_user_by_username_valid():
     user = repo.get_user_by_username("bheema")
 
     assert user is not None
-    assert user["username"] == "bheema"
+    assert user[UserCSVFields.USERNAME] == "bheema"
 
     test_file.unlink()
 
@@ -81,12 +83,12 @@ def test_create_user():
     repo = user_repository()
     repo.file_path = test_file
 
-    repo.create_user("new_user", "pass123", "user")
+    repo.create_user("new_user", "pass123", UserRole.USER.value)
 
     users = repo.get_all_users()
 
     assert len(users) == 3
-    assert users[2]["username"] == "new_user"
+    assert users[2][UserCSVFields.USERNAME] == "new_user"
 
     test_file.unlink()
     
