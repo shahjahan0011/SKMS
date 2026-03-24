@@ -1,14 +1,14 @@
 """Business logic for user authentication"""
-from app.storage.repositories.user_repository import user_repository
+from app.storage.repositories.user_repository import UserRepository 
 from app.constants import UserRole, UserCSVFields, ErrorMessages
 
 
-class auth_service:
+class AuthService:
     """service responsible for authentication logic"""
 
-    def __init__(self, user_repo: user_repository = None):
+    def __init__(self, user_repo: UserRepository = None):
         """Initialize auth service with optional repository injection"""
-        self.user_repo = user_repo if user_repo else user_repository()
+        self.user_repo = user_repo if user_repo else UserRepository()
 
     def register_user(self, username, password, role=UserRole.USER.value):
         """register a new user"""

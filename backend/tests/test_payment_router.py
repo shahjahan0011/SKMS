@@ -145,7 +145,7 @@ def test_simulate_payment_failure_rule(mock_get_order):
     assert "declined" in data["message"].lower()
     assert data["transaction_id"] is None
 
-@patch("app.services.payment_service.notification_service")
+@patch("app.services.payment_service.NotificationService")
 @patch("app.services.payment_service.update_order")
 @patch("app.services.payment_service.get_order_by_id")
 def test_initiate_payment_success_triggers_notification(
@@ -170,7 +170,7 @@ def test_initiate_payment_success_triggers_notification(
     True
     )   
 
-@patch("app.services.payment_service.notification_service")
+@patch("app.services.payment_service.NotificationService")
 @patch("app.services.payment_service.get_order_by_id")
 def test_simulate_payment_failure_triggers_notification(
     mock_get_order,

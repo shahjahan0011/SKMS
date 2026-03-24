@@ -1,9 +1,9 @@
 """endpoints for notifications"""
 from fastapi import APIRouter, HTTPException, Query, Depends
 
-from app.services.notification_service import notification_service
-from app.services.auth_service import auth_service
-from app.storage.repositories.user_repository import user_repository
+from app.services.notification_service import NotificationService
+from app.services.auth_service import AuthService
+from app.storage.repositories.user_repository import UserRepository
 from app.dependencies import (
     get_notification_service,
     get_auth_service,
@@ -17,8 +17,8 @@ router = APIRouter(prefix="/notifications", tags=["notifications"])
 @router.get("/")
 def get_user_notifications(
     username: str = Query(...),
-    user_repo: user_repository = Depends(get_user_repository),  
-    service: notification_service = Depends(get_notification_service)  
+    user_repo: UserRepository = Depends(get_user_repository),  
+    service: NotificationService = Depends(get_notification_service)  
 ):
     """return notifications for a specific user"""
     
@@ -42,8 +42,8 @@ def get_user_notifications(
 def get_role_notifications(
     role: str = Query(...),
     username: str = Query(...),
-    auth: auth_service = Depends(get_auth_service), 
-    service: notification_service = Depends(get_notification_service)  
+    auth: AuthService = Depends(get_auth_service), 
+    service: NotificationService = Depends(get_notification_service)  
 ):
     """allow admin users to view notifications by role"""
 

@@ -7,7 +7,7 @@ from app.storage.repositories.base_csv_repository import BaseCSVRepository
 from app.constants import UserCSVFields
 
 
-class user_repository(BaseCSVRepository):
+class UserRepository(BaseCSVRepository):
     """repository responsible for reading and writing user data"""
 
     def __init__(self):

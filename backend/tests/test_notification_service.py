@@ -1,6 +1,6 @@
 """Unit test for notification service"""
 
-from app.services.notification_service import notification_service
+from app.services.notification_service import NotificationService
 from app.constants import NotificationEventType, UserRole
 
 class stub_notification_repository:
@@ -41,7 +41,7 @@ class stub_notification_repository:
 def test_notify_order_created():
     """test order creation notification"""
 
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
 
     result = service.notify_order_created("1", "101")
@@ -56,7 +56,7 @@ def test_notify_order_created():
 def test_notify_payment_success():
     """test payment success notification"""
 
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
 
     result = service.notify_payment_result("1", "101", True)
@@ -68,7 +68,7 @@ def test_notify_payment_success():
 def test_notify_payment_failure():
     """test payment failure notification"""
 
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
 
     result = service.notify_payment_result("1", "101", False)
@@ -80,7 +80,7 @@ def test_notify_payment_failure():
 def test_notify_order_status_changed():
     """test order status change notification"""
 
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
 
     result = service.notify_order_status_changed("1", "101", "preparing")
@@ -93,7 +93,7 @@ def test_notify_order_status_changed():
 def test_notify_manager_new_paid_order():
     """test manager gets notification for new paid order"""
 
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
 
     result = service.notify_manager_new_paid_order("20", "101")
@@ -107,7 +107,7 @@ def test_notify_manager_new_paid_order():
 def test_get_user_notifications():
     """test retrieving notifications for one user"""
 
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
 
     service.notify_order_created("1", "101")
@@ -122,7 +122,7 @@ def test_get_user_notifications():
 def test_get_role_notifications():
     """test retrieving notifications for one role"""
 
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
 
     service.notify_order_created("1", "101")
@@ -136,7 +136,7 @@ def test_get_role_notifications():
 def test_create_notification_template():
     """test template method creates notification correctly"""
     
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
     
     result = service._create_notification_template(
@@ -159,7 +159,7 @@ def test_create_notification_template():
 def test_template_method_generates_correct_event_key():
     """test template method creates properly formatted event key"""
     
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
     
     result = service._create_notification_template(
@@ -177,7 +177,7 @@ def test_template_method_generates_correct_event_key():
 def test_all_notify_methods_use_consistent_structure():
     """test that all notification methods produce consistent output structure"""
     
-    service = notification_service()
+    service = NotificationService()
     service.notification_repo = stub_notification_repository()
     
     # Test multiple notification types
