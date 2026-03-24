@@ -14,8 +14,9 @@ class RestaurantService:
 
         all_restaurants = self.repo.get_all_restaurants()
 
+        #defensive programming to ensure the code does not crash if heading changes between status and is_active
         active_restaurants = [
-            r for r in all_restaurants 
+            r for r in all_restaurants
             if str(r.get('status', r.get('is_active', ''))).lower() in ['true', '1', 'yes']
         ]
 
@@ -23,7 +24,7 @@ class RestaurantService:
         if keyword:
             keyword_clean = keyword.lower().strip()
             result = [
-                r for r in active_restaurants 
+                r for r in active_restaurants
                 if keyword_clean in r.get('name', '').lower()
             ]
 
