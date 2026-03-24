@@ -1,7 +1,7 @@
 """Tests for Notification Repository"""
 
 from pathlib import Path
-from app.storage.repositories.notification_repository import notification_repository
+from app.storage.repositories.notification_repository import NotificationRepository
 from app.constants import UserRole, NotificationEventType, NotificationCSVFields 
 
 
@@ -18,7 +18,7 @@ def test_create_notification(tmp_path):
     file_path = tmp_path / "notifications.csv"
     write_notification_header(file_path)
 
-    repo = notification_repository()
+    repo = NotificationRepository()
     repo.file_path = file_path
 
     notification = {
@@ -46,7 +46,7 @@ def test_create_notification_prevents_duplicates(tmp_path):
     file_path = tmp_path / "notifications.csv"
     write_notification_header(file_path)
 
-    repo = notification_repository()
+    repo = NotificationRepository()
     repo.file_path = file_path
 
     notification = {
@@ -74,7 +74,7 @@ def test_get_notifications_by_user_id(tmp_path):
     file_path = tmp_path / "notifications.csv"
     write_notification_header(file_path)
 
-    repo = notification_repository()
+    repo = NotificationRepository()
     repo.file_path = file_path
 
     repo.create_notification({
@@ -108,7 +108,7 @@ def test_get_notifications_by_role(tmp_path):
     file_path = tmp_path / "notifications.csv"
     write_notification_header(file_path)
 
-    repo = notification_repository()
+    repo = NotificationRepository()
     repo.file_path = file_path
 
     repo.create_notification({

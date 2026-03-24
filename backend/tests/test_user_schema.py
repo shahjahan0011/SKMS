@@ -1,11 +1,11 @@
 """Test for schema"""
-from app.schemas.user_schema import user_login, user_register, user_response
+from app.schemas.user_schema import UserLogin, UserRegister, UserResponse
 
 
-def test_user_register_accepts_valid_input():
+def test_UserRegister_accepts_valid_input():
     """test register schema accepts valid input"""
 
-    user = user_register(
+    user = UserRegister(
         username="bheema",
         password="password123",
         role="user"
@@ -16,10 +16,10 @@ def test_user_register_accepts_valid_input():
     assert user.role == "user"
 
 
-def test_user_register_uses_default_role():
+def test_UserRegister_uses_default_role():
     """test register schema uses default role when omitted"""
 
-    user = user_register(
+    user = UserRegister(
         username="bheema",
         password="password123"
     )
@@ -27,10 +27,10 @@ def test_user_register_uses_default_role():
     assert user.role == "user"
 
 
-def test_user_login_accepts_valid_input():
+def test_UserLogin_accepts_valid_input():
     """test login schema accepts valid input"""
 
-    user = user_login(
+    user = UserLogin(
         username="bheema",
         password="password123"
     )
@@ -39,10 +39,10 @@ def test_user_login_accepts_valid_input():
     assert user.password == "password123"
 
 
-def test_user_response_contains_only_safe_fields():
+def test_UserResponse_contains_only_safe_fields():
     """test response schema contains only safe fields"""
 
-    user = user_response(
+    user = UserResponse(
         username="bheema",
         role="user"
     )
@@ -51,10 +51,10 @@ def test_user_response_contains_only_safe_fields():
     assert user.role == "user"
 
 
-def test_user_response_has_no_password_field():
+def test_UserResponse_has_no_password_field():
     """test response schema does not expose password"""
 
-    user = user_response(
+    user = UserResponse(
         username="bheema",
         role="user"
     )

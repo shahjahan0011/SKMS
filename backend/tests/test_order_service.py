@@ -187,7 +187,7 @@ def test_create_order_triggers_notification(monkeypatch):
 
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
-    monkeypatch.setattr(order_service, "notification_service", lambda: mock_notification_service())
+    monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.create_order("jahan", "item_1", 2)
 
@@ -216,7 +216,7 @@ def test_update_order_status_triggers_notification(monkeypatch):
 
     monkeypatch.setattr(order_service, "get_order_by_id", lambda order_id: order)
     monkeypatch.setattr(order_service, "update_order", lambda updated_order: updated_order)
-    monkeypatch.setattr(order_service, "notification_service", lambda: mock_notification_service())
+    monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.update_order_status("o1", "preparing")
 
@@ -244,7 +244,7 @@ def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
 
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
-    monkeypatch.setattr(order_service, "notification_service", lambda: mock_notification_service())
+    monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.create_order("jahan", "item_1", 2)
 

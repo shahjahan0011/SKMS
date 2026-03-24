@@ -5,9 +5,8 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.storage.repositories.user_repository import user_repository
+from app.storage.repositories.user_repository import UserRepository
 from app.constants import HTTPStatusCode, UserRole  
-from app.dependencies import get_auth_service
 from unittest.mock import Mock
 
 
@@ -31,19 +30,19 @@ def get_test_file_path():
 def patch_repository_file(test_file):
     """patch repository file path so tests do not use real storage"""
 
-    original_init = user_repository.__init__
+    original_init = UserRepository.__init__
 
     def patched_init(self):
         self.file_path = test_file
 
-    user_repository.__init__ = patched_init
+    UserRepository.__init__ = patched_init
     return original_init
 
 
 def restore_repository_init(original_init):
     """restore original repository init"""
 
-    user_repository.__init__ = original_init
+    UserRepository.__init__ = original_init
 
 
 def test_register_endpoint():

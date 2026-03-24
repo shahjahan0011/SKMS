@@ -2,7 +2,7 @@
 import csv
 from pathlib import Path
 
-from app.services.auth_service import auth_service
+from app.services.auth_service import AuthService
 from app.constants import UserRole, ErrorMessages
 
 
@@ -25,7 +25,7 @@ def test_register_user():
     test_file = get_test_file_path()
     setup_test_csv(test_file)
 
-    service = auth_service()
+    service = AuthService()
     service.user_repo.file_path = test_file
 
     result = service.register_user("new_user", "pass123")
@@ -42,7 +42,7 @@ def test_register_duplicate_user():
     test_file = get_test_file_path()
     setup_test_csv(test_file)
 
-    service = auth_service()
+    service = AuthService()
     service.user_repo.file_path = test_file
 
     try:
@@ -61,7 +61,7 @@ def test_login_user_success():
     test_file = get_test_file_path()
     setup_test_csv(test_file)
 
-    service = auth_service()
+    service = AuthService()
     service.user_repo.file_path = test_file
 
     result = service.login_user("bheema", "password123")
@@ -78,7 +78,7 @@ def test_login_user_invalid_password():
     test_file = get_test_file_path()
     setup_test_csv(test_file)
 
-    service = auth_service()
+    service = AuthService()
     service.user_repo.file_path = test_file
 
     try:
@@ -94,7 +94,7 @@ def test_login_user_invalid_password():
 def test_register_empty_username():
     """tests registration fail for empty username"""
 
-    service = auth_service()
+    service = AuthService()
 
     try:
         service.register_user("", "pass213", UserRole.USER.value)
@@ -107,7 +107,7 @@ def test_register_empty_username():
 def test_register_empty_password():
     """tests registration fail for empty username"""
 
-    service = auth_service()
+    service = AuthService()
 
     try:
         service.register_user("username", "", UserRole.USER.value)

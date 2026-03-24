@@ -2,7 +2,7 @@
 import csv
 from pathlib import Path
 
-from app.storage.repositories.user_repository import user_repository
+from app.storage.repositories.user_repository import UserRepository
 from app.constants import UserCSVFields, UserRole 
 
 
@@ -29,7 +29,7 @@ def test_get_all_users():
     test_file = get_test_file_path()
     setup_test_csv(test_file)
 
-    repo = user_repository()
+    repo = UserRepository()
     repo.file_path = test_file
 
     users = repo.get_all_users()
@@ -47,7 +47,7 @@ def test_get_user_by_username_valid():
     test_file = get_test_file_path()
     setup_test_csv(test_file)
 
-    repo = user_repository()
+    repo = UserRepository()
     repo.file_path = test_file
 
     user = repo.get_user_by_username("bheema")
@@ -64,7 +64,7 @@ def test_get_user_by_username_invalid():
     test_file = get_test_file_path()
     setup_test_csv(test_file)
 
-    repo = user_repository()
+    repo = UserRepository()
     repo.file_path = test_file
 
     user = repo.get_user_by_username("not_real")
@@ -80,7 +80,7 @@ def test_create_user():
     test_file = get_test_file_path()
     setup_test_csv(test_file)
 
-    repo = user_repository()
+    repo = UserRepository()
     repo.file_path = test_file
 
     repo.create_user("new_user", "pass123", UserRole.USER.value)
