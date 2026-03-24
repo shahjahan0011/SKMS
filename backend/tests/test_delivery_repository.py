@@ -32,7 +32,7 @@ def test_create_delivery(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     repo.create_delivery({
         "order_id": 10,
@@ -64,7 +64,7 @@ def test_update_delivery_status(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     repo.create_delivery({
         "order_id": 10,
@@ -96,7 +96,7 @@ def test_get_user_deliveries(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     repo.create_delivery({
         "order_id": 1,

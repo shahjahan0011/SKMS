@@ -22,7 +22,7 @@ def test_get_all_deliveries(tmp_path):
     delivery_service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(delivery_service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     delivery_service.repo.create_delivery({
         "order_id": 1,
@@ -46,7 +46,7 @@ def test_get_delivery_by_order_id(tmp_path):
     delivery_service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(delivery_service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     delivery_service.repo.create_delivery({
         "order_id": 2,
@@ -70,8 +70,13 @@ def test_create_delivery(tmp_path):
     delivery_service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(delivery_service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
+    delivery_service.repo.agent_file = tmp_path / "agents.csv"
+
+    with open(delivery_service.repo.agent_file, "w") as file:
+        file.write("agent_id,name,is_available\n")
+        file.write("1,agent1,True\n")
     response = client.post(
         "/deliveries",
         json={
@@ -104,7 +109,7 @@ def test_update_delivery_status(tmp_path):
     delivery_service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(delivery_service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     delivery_service.repo.create_delivery({
         "order_id": 4,
@@ -133,7 +138,7 @@ def test_get_user_deliveries(tmp_path):
     delivery_service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(delivery_service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     delivery_service.repo.create_delivery({
         "order_id": 5,
@@ -265,3 +270,16 @@ def test_get_all_locations(tmp_path):
 
     assert response.status_code == 200
     assert len(response.json()) == 1
+
+
+def test_get_available_agent(tmp_path):
+    delivery_service.repo.agent_file = tmp_path / "agents.csv"
+
+    with open(delivery_service.repo.agent_file, mode = "w") as file:
+        file.write("agent_id,name,is_available\n")
+        file.write("1,agent1,True\n")
+
+    response = client.get("/agents/available")
+
+    assert response.status_code == 200
+    assert response.json()["agent_id"] == "1"

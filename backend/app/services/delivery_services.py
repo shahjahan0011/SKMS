@@ -48,6 +48,13 @@ class delivery_services:
 
         if existing:
             raise ValueError("delivery already exists for this order")
+                
+        agent = self.repo.get_available_agent()
+
+        if agent is None:
+            raise ValueError("no delivery agents available")
+
+        self.repo.set_agent_busy(agent["agent_id"])
 
         delivery_data = {
             "order_id": order_id,
@@ -56,7 +63,9 @@ class delivery_services:
             "user_name": user_name,
             "delivery_location": delivery_location,
             "status": status,
-            "is_emergency": is_emergency
+            "is_emergency": is_emergency,
+            "agent_id": agent["agent_id"],
+            "agent_name": agent["name"]
         }
 
         self.repo.create_delivery(delivery_data)
@@ -76,6 +85,10 @@ class delivery_services:
             raise ValueError("delivery not found")
 
         self.repo.update_delivery_status(order_id, new_status)
+
+        if new_status == "delivered":
+            if delivery.get("agent_id"):
+                self.repo.set_agent_available(delivery["agent_id"])
 
         return {
             "order_id": order_id,

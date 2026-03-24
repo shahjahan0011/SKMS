@@ -18,7 +18,7 @@ def test_get_all_deliveries(tmp_path):
     service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(service.repo.file_path, "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     service.repo.create_delivery({
         "order_id": 1,
@@ -43,7 +43,7 @@ def test_get_delivery_by_order_id(tmp_path):
     service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     service.repo.create_delivery({
         "order_id": 1,
@@ -67,7 +67,13 @@ def test_create_delivery(tmp_path):
     service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
+
+    service.repo.agent_file = tmp_path / "agents.csv"
+
+    with open(service.repo.agent_file, "w") as file:
+        file.write("agent_id,name,is_available\n")
+        file.write("1,agent1,True\n")
 
     service.create_delivery(
         3,
@@ -93,7 +99,7 @@ def test_update_delivery_status(tmp_path):
     service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     service.repo.create_delivery({
         "order_id": 4,
@@ -118,7 +124,7 @@ def test_get_user_deliveries(tmp_path):
     service.repo.file_path = tmp_path / "deliveries.csv"
 
     with open(service.repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     service.repo.create_delivery({
         "order_id": 5,
@@ -280,3 +286,150 @@ def test_get_all_locations(tmp_path):
 
     assert len(locations) == 2
     
+
+def test_create_delivery_assigns_agent(tmp_path):
+    service = delivery_services()
+
+    service.repo.file_path = tmp_path / "deliveries.csv"
+    service.repo.agent_file = tmp_path / "agents.csv"
+
+    with open(service.repo.file_path, "w") as file:
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
+
+    with open(service.repo.agent_file, "w") as file:
+        file.write("agent_id,name,is_available\n")
+        file.write("1,agent1,True\n")
+
+    location = type("Location", (), {
+        "unit": 1,
+        "street": "test",
+        "postal_code": "123",
+        "province": "BC",
+        "city": "Kelowna",
+        "country": "Canada"
+    })()
+
+    result = service.create_delivery(
+        1, 1, 1, "user", location, "placed", False
+    )
+
+    assert result["order_id"] == 1
+
+
+def test_agent_becomes_busy_after_assignment(tmp_path):
+    service = delivery_services()
+
+    service.repo.file_path = tmp_path / "deliveries.csv"
+    service.repo.agent_file = tmp_path / "agents.csv"
+
+    with open(service.repo.file_path, "w") as file:
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
+
+    with open(service.repo.agent_file, "w") as file:
+        file.write("agent_id,name,is_available\n")
+        file.write("1,agent1,True\n")
+
+    location = type("Location", (), {
+        "unit": 1,
+        "street": "test",
+        "postal_code": "123",
+        "province": "BC",
+        "city": "Kelowna",
+        "country": "Canada"
+    })()
+
+    service.create_delivery(1,1,1,"user",location,"placed",False)
+
+    agent = service.repo.get_available_agent()
+
+    assert agent is None
+
+
+def test_create_delivery_no_agents(tmp_path):
+    service = delivery_services()
+
+    service.repo.file_path = tmp_path / "deliveries.csv"
+    service.repo.agent_file = tmp_path / "agents.csv"
+
+    with open(service.repo.file_path, "w") as file:
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
+
+    with open(service.repo.agent_file, "w") as file:
+        file.write("agent_id,name,is_available\n")
+        file.write("1,agent1,False\n")
+
+    location = type("Location", (), {
+        "unit": 1,
+        "street": "test",
+        "postal_code": "123",
+        "province": "BC",
+        "city": "Kelowna",
+        "country": "Canada"
+    })()
+
+    try:
+        service.create_delivery(1,1,1,"user",location,"placed",False)
+        assert False
+    except ValueError:
+        assert True    
+
+
+def test_agent_becomes_free_after_delivery(tmp_path):
+    service = delivery_services()
+
+    service.repo.file_path = tmp_path / "deliveries.csv"
+    service.repo.agent_file = tmp_path / "agents.csv"
+
+    with open(service.repo.file_path, "w") as file:
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
+
+    with open(service.repo.agent_file, "w") as file:
+        file.write("agent_id,name,is_available\n")
+        file.write("1,agent1,True\n")
+
+    location = type("Location", (), {
+        "unit": 1,
+        "street": "test",
+        "postal_code": "123",
+        "province": "BC",
+        "city": "Kelowna",
+        "country": "Canada"
+    })()
+
+    service.create_delivery(1,1,1,"user",location,"placed",False)
+
+    service.update_delivery_status(1, "delivered")
+
+    agent = service.repo.get_available_agent()
+
+    assert agent["agent_id"] == "1"
+
+
+def test_assigns_next_available_agent(tmp_path):
+    service = delivery_services()
+
+    service.repo.file_path = tmp_path / "deliveries.csv"
+    service.repo.agent_file = tmp_path / "agents.csv"
+
+    with open(service.repo.file_path, "w") as file:
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
+
+    with open(service.repo.agent_file, "w") as file:
+        file.write("agent_id,name,is_available\n")
+        file.write("1,agent1,False\n")
+        file.write("2,agent2,True\n")
+
+    location = type("Location", (), {
+        "unit": 1,
+        "street": "test",
+        "postal_code": "123",
+        "province": "BC",
+        "city": "Kelowna",
+        "country": "Canada"
+    })()
+
+    result = service.create_delivery(
+        1, 1, 1, "user", location, "placed", False
+    )
+
+    assert result["agent_id"] == "2"
