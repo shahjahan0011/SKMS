@@ -1,5 +1,6 @@
 """Business logic for user authentication"""
 from app.storage.repositories.user_repository import user_repository
+from app.constants import UserRole, UserCSVFields, ErrorMessages
 
 
 class auth_service:
@@ -8,24 +9,24 @@ class auth_service:
     def __init__(self):
         self.user_repo = user_repository()
 
-    def register_user(self, username, password, role="user"):
+    def register_user(self, username, password, role=UserRole.USER.value):
         """register a new user"""
 
         if not username:
-            raise ValueError("Please enter a username")
+            raise ValueError(ErrorMessages.USERNAME_REQUIRED)
         if not password:
-            raise ValueError("Please enter password")
+            raise ValueError(ErrorMessages.PASSWORD_REQUIRED)
 
         existing_user = self.user_repo.get_user_by_username(username)
 
         if existing_user:
-            raise ValueError("username already exists")
+            raise ValueError(ErrorMessages.USERNAME_EXISTS)
 
         self.user_repo.create_user(username, password, role)
 
         return {
-            "username": username,
-            "role": role
+            UserCSVFields.USERNAME: username,
+            UserCSVFields.ROLE: role
         }
 
     def login_user(self, username, password):
@@ -34,24 +35,25 @@ class auth_service:
         user = self.user_repo.get_user_by_username(username)
 
         if user is None:
-            raise ValueError("invalid username or password")
+            raise ValueError(ErrorMessages.INVALID_CREDENTIALS)
 
-        if user["password"] != password:
-            raise ValueError("invalid username or password")
+        if user[UserCSVFields.PASSWORD] != password:
+            raise ValueError(ErrorMessages.INVALID_CREDENTIALS)
 
         return {
-            "username": user["username"],
-            "role": user["role"]
+            UserCSVFields.USERNAME: user[UserCSVFields.USERNAME],
+            UserCSVFields.ROLE: user[UserCSVFields.ROLE]
         }
+
     def check_role(self, username, required_role):
         """check whether a user has the required role"""
 
         user = self.user_repo.get_user_by_username(username)
 
         if user is None:
-            raise ValueError("user does not exist")
+            raise ValueError(ErrorMessages.USER_NOT_FOUND)
 
-        if user["role"] != required_role:
-            raise PermissionError("user does not have required role")
+        if user[UserCSVFields.ROLE] != required_role:
+            raise PermissionError(ErrorMessages.INSUFFICIENT_PERMISSIONS)
 
         return True

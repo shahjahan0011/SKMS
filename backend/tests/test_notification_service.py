@@ -1,7 +1,7 @@
 """Unit test for notification service"""
 
 from app.services.notification_service import notification_service
-
+from app.constants import NotificationEventType, UserRole
 
 class stub_notification_repository:
     """stub repository for notification service tests"""
@@ -47,9 +47,9 @@ def test_notify_order_created():
     result = service.notify_order_created("1", "101")
 
     assert result["user_id"] == "1"
-    assert result["role"] == "customer"
-    assert result["event_type"] == "order_created"
-    assert result["event_key"] == "order_created:101:1"
+    assert result["role"] == UserRole.CUSTOMER.value
+    assert result["event_type"] == NotificationEventType.ORDER_CREATED.value
+    assert result["event_key"] == f"{NotificationEventType.ORDER_CREATED.value}:101:1" 
     assert result["order_id"] == "101"
 
 
@@ -61,7 +61,7 @@ def test_notify_payment_success():
 
     result = service.notify_payment_result("1", "101", True)
 
-    assert result["event_type"] == "payment_success"
+    assert result["event_type"] == NotificationEventType.PAYMENT_SUCCESS.value  
     assert result["message"] == "Payment for order 101 was successful."
 
 
@@ -73,7 +73,7 @@ def test_notify_payment_failure():
 
     result = service.notify_payment_result("1", "101", False)
 
-    assert result["event_type"] == "payment_failed"
+    assert result["event_type"] == NotificationEventType.PAYMENT_FAILED.value
     assert result["message"] == "Payment for order 101 failed."
 
 
@@ -85,8 +85,8 @@ def test_notify_order_status_changed():
 
     result = service.notify_order_status_changed("1", "101", "preparing")
 
-    assert result["event_type"] == "order_status_changed"
-    assert result["event_key"] == "order_status_changed:101:preparing:1"
+    assert result["event_type"] == NotificationEventType.ORDER_STATUS_CHANGED.value
+    assert result["event_key"] == f"{NotificationEventType.ORDER_STATUS_CHANGED.value}:101:preparing:1"
     assert result["message"] == "Your order 101 status changed to preparing."
 
 
@@ -99,8 +99,8 @@ def test_notify_manager_new_paid_order():
     result = service.notify_manager_new_paid_order("20", "101")
 
     assert result["user_id"] == "20"
-    assert result["role"] == "manager"
-    assert result["event_type"] == "new_paid_order"
+    assert result["role"] == UserRole.MANAGER.value
+    assert result["event_type"] == NotificationEventType.NEW_PAID_ORDER.value
     assert result["message"] == "A new paid order 101 is ready for preparation."
 
 
@@ -128,8 +128,7 @@ def test_get_role_notifications():
     service.notify_order_created("1", "101")
     service.notify_manager_new_paid_order("20", "101")
 
-    result = service.get_role_notifications("manager")
+    result = service.get_role_notifications(UserRole.MANAGER.value)  
 
     assert len(result) == 1
-    assert result[0]["role"] == "manager"
-    
+    assert result[0]["role"] == UserRole.MANAGER.value  

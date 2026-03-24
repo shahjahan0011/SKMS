@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from app.schemas.user_schema import user_login, user_register
 from app.services.auth_service import auth_service
+from app.constants import HTTPStatusCode, UserRole
 
 router = APIRouter()
 
@@ -21,7 +22,10 @@ def register(user: user_register):
         )
         return created_user
     except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error)) from error
+        raise HTTPException(
+            status_code=HTTPException.BAD_REQUEST, 
+            detail=str(error)
+        ) from error
 
 
 @router.post("/login")
@@ -37,7 +41,10 @@ def login(user: user_login):
         )
         return logged_in_user
     except ValueError as error:
-        raise HTTPException(status_code=401, detail=str(error)) from error
+        raise HTTPException(
+            status_code=HTTPStatusCode.UNAUTHORIZED, 
+            detail=str(error)
+        ) from error
 
 
 @router.post("/logout")
@@ -49,13 +56,19 @@ def logout():
 @router.get("/admin")
 def admin_access(username: str = Query(...)):
     """allow access only to admin users"""
-
+ 
     service = auth_service()
-
+ 
     try:
-        service.check_role(username, "admin")
+        service.check_role(username, UserRole.ADMIN.value)
         return {"message": "admin access granted"}
     except ValueError as error:
-        raise HTTPException(status_code=404, detail=str(error)) from error
+        raise HTTPException(
+            status_code=HTTPStatusCode.NOT_FOUND,
+            detail=str(error)
+        ) from error
     except PermissionError as error:
-        raise HTTPException(status_code=403, detail=str(error)) from error
+        raise HTTPException(
+            status_code=HTTPStatusCode.FORBIDDEN,
+            detail=str(error)
+        ) from error
