@@ -34,11 +34,12 @@ def test_create_order_success(monkeypatch):
     assert result["restaurant_id"] == "rest_1"
     assert result["quantity"] == "2"
     assert result["price"] == "10.00"
-    assert result["subtotal"] == "20.00"
+    assert result["base_cost"] == "20.00"
     assert result["tax"] == "1.00"
     assert result["delivery_fee"] == "4.99"
     assert result["total"] == "25.99"
     assert result["status"] == "pending"
+    assert result["is_premium"] == "false"
 
 
 def test_create_order_premium_user(monkeypatch):
@@ -77,6 +78,7 @@ def test_create_order_premium_user(monkeypatch):
 
     assert result["delivery_fee"] == "0.00"
     assert result["total"] == "21.00"
+    assert result["is_premium"] == "true"
 
 
 def test_create_order_invalid_menu_item(monkeypatch):
