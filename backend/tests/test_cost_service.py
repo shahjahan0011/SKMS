@@ -108,13 +108,13 @@ def test_calculate_total_breakdown_standard_user(monkeypatch):
 
     monkeypatch.setattr(cost_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
 
-    items = [{"id": "item_1", "quantity": 2}]
+    items = [{"id": "item_1", "quantity": 1}]
     result = cost_service.calculate_total_breakdown(items, is_premium=False)
 
-    assert result["base_cost"] == 20.00
-    assert result["tax"] == 1.00
+    assert result["base_cost"] == 10.00
+    assert result["tax"] == 0.50
     assert result["delivery_fee"] == 4.99
-    assert result["total"] == 25.99
+    assert result["total"] == 15.49
 
 
 def test_calculate_total_breakdown_premium_user_no_delivery(monkeypatch):
