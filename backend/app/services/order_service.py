@@ -1,6 +1,9 @@
 from datetime import datetime
 from uuid import uuid4
 from fastapi import HTTPException
+from app.services.notification_service import notification_service as default_notification_service
+
+notification_service = default_notification_service  # can be patched in tests
 
 from app.storage.repositories.order_repository import (
     get_order_by_id,
@@ -75,6 +78,17 @@ def create_order(username: str, items: list[dict], is_premium: bool = False) -> 
             "unit_price": f"{unit_price:.2f}",
             "line_total": f"{line_total:.2f}",
         })
+
+    if save_order(order) is None:
+        raise HTTPException(status_code=500, detail="Failed to create order")
+    else:
+        if notification_service:
+            try:
+                # if notification_service is callable provider in tests:
+                provider = notification_service() if callable(notification_service) else notification_service
+                provider.notify_order_created(username, order_id)
+            except Exception:
+                pass
 
     return order
 
