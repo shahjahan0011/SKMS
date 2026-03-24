@@ -3,9 +3,9 @@ from pathlib import Path
 from typing import List, Optional
 
 
-DATA_FILE = Path(__file__).resolve().parents[1] / "storage" / "data" / "orders.csv"
-MENU_DATA_FILE = Path(__file__).resolve().parents[1] / "storage" / "data" / "menus.csv"
-ORDER_ITEMS_FILE = Path(__file__).resolve().parents[1] / "storage" / "data" / "order_items.csv"
+DATA_FILE = Path(__file__).resolve().parents[1] / "data" / "orders.csv"
+MENU_DATA_FILE = Path(__file__).resolve().parents[1] / "data" / "menus.csv"
+ORDER_ITEMS_FILE = Path(__file__).resolve().parents[1] / "data" / "order_items.csv"
 
 FIELDNAMES = [
     "order_id",

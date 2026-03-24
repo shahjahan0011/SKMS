@@ -3,25 +3,19 @@ from pathlib import Path
 
 from app.storage.repositories import order_repository
 
-
 def test_save_and_get_order_by_id(tmp_path, monkeypatch):
     temp_orders_file = tmp_path / "orders.csv"
-
     monkeypatch.setattr(order_repository, "DATA_FILE", temp_orders_file)
-
     order_repository._ensure_file_exists()
 
     order = {
         "order_id": "o1",
         "username": "jahan",
         "restaurant_id": "rest_1",
-        "id": "item_1",
-        "quantity": "2",
-        "price": "10.00",
-        "subtotal": "20.00",
+        "base_cost": "10.00",
         "tax": "1.00",
         "delivery_fee": "4.99",
-        "total": "25.99",
+        "total": "15.99",
         "status": "pending",
         "created_at": "2026-03-13T12:00:00",
         "updated_at": "2026-03-13T12:00:00",
@@ -35,7 +29,6 @@ def test_save_and_get_order_by_id(tmp_path, monkeypatch):
     assert saved["order_id"] == "o1"
     assert fetched is not None
     assert fetched["username"] == "jahan"
-    assert fetched["id"] == "item_1"
 
 
 def test_update_order(tmp_path, monkeypatch):
@@ -48,10 +41,7 @@ def test_update_order(tmp_path, monkeypatch):
         "order_id": "o1",
         "username": "jahan",
         "restaurant_id": "rest_1",
-        "id": "item_1",
-        "quantity": "1",
-        "price": "10.00",
-        "subtotal": "10.00",
+        "base_cost": "10.00",
         "tax": "0.50",
         "delivery_fee": "4.99",
         "total": "15.49",
@@ -109,10 +99,7 @@ def test_get_active_orders_by_restaurant(tmp_path, monkeypatch):
             "order_id": "o1",
             "username": "u1",
             "restaurant_id": "rest_1",
-            "id": "item_1",
-            "quantity": "1",
-            "price": "10.00",
-            "subtotal": "10.00",
+            "base_cost": "10.00",
             "tax": "0.50",
             "delivery_fee": "4.99",
             "total": "15.49",
