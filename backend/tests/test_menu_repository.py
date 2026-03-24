@@ -16,7 +16,7 @@ def mock_menu_repo():
         {"id": "3", "restaurant_id": "2", "item_name": "Burger", "price": "8", "is_available": "True"},
     ]
     repo.get_all = MagicMock(return_value=mock_data)
-    # Mock the method to return None for invalid IDs
+
     repo.get_menu_item_by_id = MagicMock(side_effect=lambda id: next((item for item in mock_data if item["id"] == id), None))
     return repo
 

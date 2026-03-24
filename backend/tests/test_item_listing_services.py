@@ -35,7 +35,7 @@ class test_menu_repo:
             return {"id": "1", "restaurant_id": "1", "item_name": "Burger", "price": "10"}
         return None
 
-# pytests for item listing services
+
 def test_get_all_restaurants():
     """Test for Get All Restaurants"""
     service = item_listing_service(test_restaurant_repo(), test_menu_repo())
