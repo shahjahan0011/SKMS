@@ -180,3 +180,67 @@ def test_get_role_notifications_admin_denied(monkeypatch):
     assert response.status_code == HTTPStatusCode.FORBIDDEN 
     assert response.json()["detail"] == ErrorMessages.INSUFFICIENT_PERMISSIONS  
     
+def test_get_user_notifications_with_mocked_services():
+    """test notification endpoint with dependency injection mocking"""
+    
+    from unittest.mock import Mock
+    from app.dependencies import get_user_repository, get_notification_service
+    
+    mock_user_repo = Mock()
+    mock_user_repo.get_user_by_username.return_value = {
+        "username": "test_user",
+        "role": "user"
+    }
+    
+    mock_notification_service = Mock()
+    mock_notification_service.get_user_notifications.return_value = [
+        {"id": "1", "message": "Test notification", "user_id": "test_user"}
+    ]
+    
+    # Override both dependencies
+    app.dependency_overrides[get_user_repository] = lambda: mock_user_repo
+    app.dependency_overrides[get_notification_service] = lambda: mock_notification_service
+    
+    try:
+        response = client.get("/notifications/?username=test_user")
+        
+        assert response.status_code == HTTPStatusCode.OK
+        assert response.json()["username"] == "test_user"
+        assert len(response.json()["notifications"]) == 1
+        
+        mock_user_repo.get_user_by_username.assert_called_once_with("test_user")
+        mock_notification_service.get_user_notifications.assert_called_once_with("test_user")
+    
+    finally:
+        app.dependency_overrides.clear()
+
+
+def test_get_role_notifications_with_mocked_auth():
+    """test role notifications endpoint with mocked auth service"""
+    
+    from unittest.mock import Mock
+    from app.dependencies import get_auth_service, get_notification_service
+    
+    mock_auth = Mock()
+    mock_auth.check_role.return_value = True
+    
+    mock_notification_service = Mock()
+    mock_notification_service.get_role_notifications.return_value = [
+        {"id": "1", "role": UserRole.MANAGER.value, "message": "Manager notification"}
+    ]
+    
+    app.dependency_overrides[get_auth_service] = lambda: mock_auth
+    app.dependency_overrides[get_notification_service] = lambda: mock_notification_service
+    
+    try:
+        response = client.get(f"/notifications/role?role={UserRole.MANAGER.value}&username=admin")
+        
+        assert response.status_code == HTTPStatusCode.OK
+        assert response.json()["role"] == UserRole.MANAGER.value
+        
+        mock_auth.check_role.assert_called_once_with("admin", UserRole.ADMIN.value)
+        mock_notification_service.get_role_notifications.assert_called_once_with(UserRole.MANAGER.value)
+    
+    finally:
+        app.dependency_overrides.clear()
+        

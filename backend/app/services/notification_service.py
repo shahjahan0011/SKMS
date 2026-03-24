@@ -9,8 +9,11 @@ from app.constants import NotificationEventType, UserRole
 class notification_service:
     """service responsible for notification logic"""
 
-    def __init__(self):
-        self.notification_repo = notification_repository()
+    def __init__(self, notification_repo: notification_repository = None):
+        """Initialize notification service with optional repository injection"""
+        self.notification_repo = (
+            notification_repo if notification_repo else notification_repository()
+        )
 
     def notify_order_created(self, user_id, order_id):
         """create notification for successful order creation"""
