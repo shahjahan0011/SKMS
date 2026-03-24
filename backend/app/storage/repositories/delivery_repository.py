@@ -8,6 +8,7 @@ class delivery_repository:
     def __init__(self):
         self.file_path = "backend/app/storage/data/deliveries.csv"
         self.location_file = "backend/app/storage/data/locations.csv"
+        self.agent_file = "backend/app/storage/data/delivery_agents.csv"
 
     def get_all_deliveries(self):
         """returns all deliveries from csv """
@@ -161,3 +162,37 @@ class delivery_repository:
                 locations.append(row)
 
         return locations
+
+    def get_available_agent(self):
+        """returns first available agent"""
+
+        with open(self.agent_file, mode = "r", encoding = "utf-8", newline = "") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                if row["is_available"] == "True":
+                    return row
+
+        return None
+    
+    def set_agent_busy(self, agent_id):
+        """sets agent as busy"""
+
+        agents = []
+
+        with open(self.agent_file, mode = "r", encoding = "utf-8", newline = "") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                if row["agent_id"] == str(agent_id):
+                    row["is_available"] = "False"
+
+                agents.append(row)
+
+        with open(self.agent_file, mode = "w", encoding = "utf-8", newline = "") as file:
+            fields = ["agent_id", "name", "is_available"]
+            writer = csv.DictWriter(file, fieldnames=fields)
+
+            writer.writeheader()
+            writer.writerows(agents)
+            
