@@ -135,8 +135,11 @@ def test_logout_endpoint():
     assert response.status_code == HTTPStatusCode.OK  
     assert response.json()["message"] == "logout successful"
 
-def test_register_with_mocked_service(monkeypatch):
+def test_register_with_mocked_service():
     """test register endpoint with dependency injection mocking"""
+    
+    from unittest.mock import Mock
+    from app.dependencies import get_auth_service
     
     mock_service = Mock()
     mock_service.register_user.return_value = {
@@ -144,23 +147,53 @@ def test_register_with_mocked_service(monkeypatch):
         "role": UserRole.USER.value
     }
     
-    # Override dependency
-    def mock_get_auth_service():
-        return mock_service
+    app.dependency_overrides[get_auth_service] = lambda: mock_service
     
-    # Use monkeypatch to override the dependency
-    import app.routers.auth_router as auth_router
-    monkeypatch.setattr(auth_router, "get_auth_service", mock_get_auth_service)
+    try:
+        response = client.post(
+            "/auth/register",
+            json={
+                "username": "test",
+                "password": "pass123",
+                "role": "user"
+            }
+        )
+        
+        assert response.status_code == HTTPStatusCode.OK
+        assert response.json()["username"] == "mocked_user"
+        mock_service.register_user.assert_called_once()
     
-    response = client.post(
-        "/auth/register",
-        json={
-            "username": "test",
-            "password": "pass123",
-            "role": "user"
-        }
-    )
+    finally:
+        app.dependency_overrides.clear()
+
+
+def test_login_with_mocked_service():
+    """test login endpoint with dependency injection mocking"""
     
-    assert response.status_code == HTTPStatusCode.OK
-    assert response.json()["username"] == "mocked_user"
-    mock_service.register_user.assert_called_once()
+    from unittest.mock import Mock
+    from app.dependencies import get_auth_service
+    
+    mock_service = Mock()
+    mock_service.login_user.return_value = {
+        "username": "mocked_user",
+        "role": UserRole.ADMIN.value
+    }
+    
+    app.dependency_overrides[get_auth_service] = lambda: mock_service
+    
+    try:
+        response = client.post(
+            "/auth/login",
+            json={
+                "username": "test",
+                "password": "pass123"
+            }
+        )
+        
+        assert response.status_code == HTTPStatusCode.OK
+        assert response.json()["username"] == "mocked_user"
+        assert response.json()["role"] == UserRole.ADMIN.value
+        mock_service.login_user.assert_called_once_with("test", "pass123")
+    
+    finally:
+        app.dependency_overrides.clear()
