@@ -3,8 +3,7 @@ from fastapi import APIRouter
 from app.schemas.order_schema import UpdateOrderStatusRequest
 from app.services.order_service import get_order_status, update_order_status, create_order, cancel_order, list_active_orders
 from app.schemas.order_schema import CreateOrderRequest
-
-router = APIRouter(prefix="/orders", tags=["orders"])
+router = APIRouter(prefix="/orders", tags=["Orders"])
 
 
 @router.post("/")
