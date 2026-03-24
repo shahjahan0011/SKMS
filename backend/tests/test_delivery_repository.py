@@ -32,7 +32,7 @@ def test_create_delivery(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     repo.create_delivery({
         "order_id": 10,
@@ -64,7 +64,7 @@ def test_update_delivery_status(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, mode = "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     repo.create_delivery({
         "order_id": 10,
@@ -96,7 +96,7 @@ def test_get_user_deliveries(tmp_path):
     repo.file_path = tmp_path / "deliveries.csv"
 
     with open(repo.file_path, "w") as file:
-        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency\n")
+        file.write("order_id,restaurant_id,user_id,user_name,unit,street,postal_code,province,city,country,status,is_emergency,agent_id,agent_name\n")
 
     repo.create_delivery({
         "order_id": 1,
@@ -271,48 +271,3 @@ def test_get_all_locations(tmp_path):
     locations = repo.get_all_locations()
 
     assert len(locations) == 2
-
-
-def test_get_available_agent(tmp_path):
-    repo = delivery_repository()
-
-    repo.agent_file = tmp_path / "agents.csv"
-
-    with open(repo.agent_file, "w") as file:
-        file.write("agent_id,name,is_available\n")
-        file.write("1,agent1,\n")
-        file.write("2,agent2,True\n")
-
-    agent = repo.get_available_agent()
-
-    assert agent["agent_id"] == "2"
-
-
-def test_set_agent_busy(tmp_path):
-    repo = delivery_repository()
-
-    repo.agent_file = tmp_path / "agents.csv"
-
-    with open(repo.agent_file, "w") as file:
-        file.write("agent_id,name,is_available\n")
-        file.write("1,agent1,True\n")
-
-    repo.set_agent_busy(1)
-
-    agent = repo.get_available_agent()
-
-    assert agent is None
-
-
-def test_get_available_agent_none(tmp_path):
-    repo = delivery_repository()
-
-    repo.agent_file = tmp_path / "agents.csv"
-
-    with open(repo.agent_file, "w") as file:
-        file.write("agent_id,name,is_available\n")
-        file.write("1,agent1,False\n")
-
-    agent = repo.get_available_agent()
-
-    assert agent is None

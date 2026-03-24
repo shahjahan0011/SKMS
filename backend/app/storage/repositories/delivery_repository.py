@@ -55,7 +55,9 @@ class delivery_repository:
                 delivery["delivery_location"].city,
                 delivery["delivery_location"].country,
                 delivery["status"],
-                delivery["is_emergency"]
+                delivery["is_emergency"],
+                delivery.get("agent_id", ""),
+                delivery.get("agent_name", "")
             ])
 
     
@@ -74,7 +76,7 @@ class delivery_repository:
                 deliveries.append(row)
 
         with open(self.file_path, mode="w", encoding="utf-8", newline="") as file:
-            fields = ["order_id", "restaurant_id", "user_id", "user_name", "unit", "street", "postal_code", "province", "city", "country", "status", "is_emergency"]
+            fields = ["order_id", "restaurant_id", "user_id", "user_name", "unit", "street", "postal_code", "province", "city", "country", "status", "is_emergency", "agent_id", "agent_name"]
             writer = csv.DictWriter(file, fieldnames=fields)
 
             writer.writeheader()
@@ -195,3 +197,25 @@ class delivery_repository:
 
             writer.writeheader()
             writer.writerows(agents)
+
+    def set_agent_available(self, agent_id):
+        """sets agent back to available"""
+
+        agents = []
+
+        with open(self.agent_file, mode = "r", encoding = "utf-8", newline = "") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                if row["agent_id"] == str(agent_id):
+                    row["is_available"] = "True"
+
+                agents.append(row)
+
+        with open(self.agent_file, mode = "w", encoding = "utf-8", newline = "") as file:
+            fields = ["agent_id","name","is_available"]
+            writer = csv.DictWriter(file, fieldnames=fields)
+
+            writer.writeheader()
+            writer.writerows(agents)
+            

@@ -125,3 +125,14 @@ def get_all_locations():
     """get all saved locations"""
 
     return delivery_service.get_all_locations()
+
+
+@router.get("/agents/available")
+def get_available_agent():
+    """get first available agent"""
+    agent = delivery_service.repo.get_available_agent()
+
+    if agent is None:
+        raise HTTPException(status_code=404, detail="no available agents")
+
+    return agent
