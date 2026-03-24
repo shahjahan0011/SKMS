@@ -25,18 +25,6 @@ def _ensure_file_exists() -> None:
 
 
 def save_order_item(order_id: str, item_id: str, quantity: int, item_price: float) -> dict:
-    """
-    Save a single item in an order.
-    
-    Args:
-        order_id: The order this item belongs to
-        item_id: The menu item ID
-        quantity: How many of this item
-        item_price: Price per unit at order time
-        
-    Returns:
-        Order item dictionary with generated order_item_id
-    """
     _ensure_file_exists()
     
     order_item = {
@@ -55,15 +43,6 @@ def save_order_item(order_id: str, item_id: str, quantity: int, item_price: floa
 
 
 def get_order_items(order_id: str) -> List[dict]:
-    """
-    Get all items in an order.
-    
-    Args:
-        order_id: The order ID to fetch items for
-        
-    Returns:
-        List of order items dictionaries
-    """
     _ensure_file_exists()
     
     items = []
@@ -77,12 +56,6 @@ def get_order_items(order_id: str) -> List[dict]:
 
 
 def get_all_order_items() -> List[dict]:
-    """
-    Get all items from all orders.
-    
-    Returns:
-        List of all order items
-    """
     _ensure_file_exists()
     
     with open(DATA_FILE, "r", newline="", encoding="utf-8") as file:
@@ -91,16 +64,15 @@ def get_all_order_items() -> List[dict]:
 
 
 def delete_order_items(order_id: str) -> None:
-    """
-    Delete all items for an order (when order is cancelled).
-    
-    Args:
-        order_id: The order whose items to delete
-    """
     _ensure_file_exists()
     
     all_items = get_all_order_items()
     remaining_items = [item for item in all_items if item["order_id"] != order_id]
+    
+    with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=FIELDNAMES, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(remaining_items)
     
     with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=FIELDNAMES, extrasaction="ignore")

@@ -4,38 +4,29 @@ from pathlib import Path
 from app.storage.repositories import order_repository
 
 
-def test_save_and_get_order_by_id(tmp_path, monkeypatch):
-    temp_orders_file = tmp_path / "orders.csv"
-
-    monkeypatch.setattr(order_repository, "DATA_FILE", temp_orders_file)
-
-    order_repository._ensure_file_exists()
-
+def test_save_and_get_order_by_id():
     order = {
         "order_id": "o1",
-        "username": "jahan",
+        "username": "user1",
         "restaurant_id": "rest_1",
-        "id": "item_1",
-        "quantity": "2",
-        "price": "10.00",
-        "subtotal": "20.00",
+        "is_premium": "false",
+        "base_cost": "20.00",
         "tax": "1.00",
         "delivery_fee": "4.99",
         "total": "25.99",
         "status": "pending",
-        "created_at": "2026-03-13T12:00:00",
-        "updated_at": "2026-03-13T12:00:00",
+        "created_at": "2026-03-24T10:00:00",
+        "updated_at": "2026-03-24T10:00:00",
         "cancelled_at": "",
         "delivered_at": "",
     }
-
+    
     saved = order_repository.save_order(order)
-    fetched = order_repository.get_order_by_id("o1")
-
-    assert saved["order_id"] == "o1"
-    assert fetched is not None
-    assert fetched["username"] == "jahan"
-    assert fetched["id"] == "item_1"
+    retrieved = order_repository.get_order_by_id("o1")
+    
+    assert retrieved is not None
+    assert retrieved["username"] == "user1"
+    assert retrieved["status"] == "pending"
 
 
 def test_update_order(tmp_path, monkeypatch):

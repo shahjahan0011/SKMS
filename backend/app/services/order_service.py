@@ -31,10 +31,6 @@ def _safe_float(value) -> float:
 
 
 def create_order(username: str, id: str, quantity: int, is_premium: bool = False) -> dict:
-    """
-    Create an order (compatibility layer for single-item orders).
-    """
-    
     menu_item = get_menu_item_by_id(id)
     if menu_item is None:
         raise HTTPException(status_code=404, detail=f"Menu item not found: {id}")
@@ -42,13 +38,11 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
     restaurant_id = menu_item.get("restaurant_id")
     price = _safe_float(menu_item.get("price"))
 
-    # Use cost_service for consistent calculations
     items = [{"id": id, "quantity": quantity}]
     cost_breakdown = calculate_total_breakdown(items, is_premium=is_premium)
     
     now = _now_iso()
 
-    # Create order dict for storage
     order = {
         "order_id": str(uuid4()),
         "username": username,
@@ -63,17 +57,10 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
         "updated_at": now,
         "cancelled_at": "",
         "delivered_at": "",
-        # Add item fields here for API response
-        # (they won't be saved to CSV due to filtering in save_order())
-        "id": id,
-        "quantity": str(quantity),
-        "price": f"{price:.2f}",
     }
 
-    # save_order filters for CSV but returns full order dict
     saved_order = save_order(order)
     
-    # Save item to order_items.csv
     try:
         save_order_item(
             order_id=saved_order["order_id"],
@@ -89,7 +76,15 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
     except Exception:
         pass
 
-    return saved_order
+    response = {
+        **saved_order,
+        "id": id,
+        "quantity": str(quantity),
+        "price": f"{price:.2f}",
+    }
+    
+    return response
+
 
 def get_order_status(order_id: str) -> dict:
     order = get_order_by_id(order_id)
@@ -103,7 +98,9 @@ def update_order_status(order_id: str, new_status: str) -> dict:
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
 
-    current_status = order["status"]
+    current_status = order.get("status")
+    if not current_status:
+        raise HTTPException(status_code=400, detail="Order has invalid status")
 
     valid_transitions = {
         "pending": {"preparing", "cancelled"},
@@ -113,7 +110,7 @@ def update_order_status(order_id: str, new_status: str) -> dict:
         "cancelled": set(),
     }
 
-    if new_status not in valid_transitions[current_status]:
+    if new_status not in valid_transitions.get(current_status, set()):
         raise HTTPException(
             status_code=400,
             detail=f"Invalid status transition from '{current_status}' to '{new_status}'",
@@ -126,7 +123,8 @@ def update_order_status(order_id: str, new_status: str) -> dict:
         order["delivered_at"] = _now_iso()
 
     updated_order = update_order(order)
-    assert updated_order is not None, "Failed to update order"
+    if not updated_order:
+        raise HTTPException(status_code=500, detail="Failed to update order")
     
     try:
         NotificationService().notify_order_status_changed(
@@ -139,15 +137,17 @@ def update_order_status(order_id: str, new_status: str) -> dict:
 
     return updated_order
 
+
 def list_active_orders(restaurant_id: str) -> list[dict]:
     return get_active_orders_by_restaurant(restaurant_id)
+
 
 def cancel_order(order_id: str) -> dict:
     order = get_order_by_id(order_id)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
 
-    if order["status"] != OrderStatus.pending.value:
+    if order.get("status") != OrderStatus.pending.value:
         raise HTTPException(
             status_code=400,
             detail="Only pending orders can be cancelled",
@@ -158,56 +158,22 @@ def cancel_order(order_id: str) -> dict:
     order["cancelled_at"] = _now_iso()
 
     updated_order = update_order(order)
-    assert updated_order is not None, "Failed to update order"
+    if not updated_order:
+        raise HTTPException(status_code=500, detail="Failed to cancel order")
+    
     return updated_order
 
 
 def get_order_history(username: str) -> list[dict]:
-    """
-    Get complete order history for a user with items breakdown.
-    
-    Retrieves all orders for a user and enriches each with:
-    - Order items (from order_items.csv)
-    - Cost breakdown (already in orders.csv)
-    
-    Args:
-        username: The customer username
-        
-    Returns:
-        List of orders (newest first) with items nested
-        
-    Example response:
-        [
-            {
-                "order_id": "o1",
-                "username": "jahan",
-                "restaurant_id": "rest_1",
-                "is_premium": "true",
-                "base_cost": "35.00",
-                "tax": "1.75",
-                "delivery_fee": "0.00",
-                "total": "36.75",
-                "status": "delivered",
-                "created_at": "2026-03-24T...",
-                "items": [
-                    {"order_item_id": "oi1", "order_id": "o1", "item_id": "item_1", "quantity": "2", "item_price": "10.00"},
-                    {"order_item_id": "oi2", "order_id": "o1", "item_id": "item_3", "quantity": "1", "item_price": "15.00"}
-                ]
-            }
-        ]
-    """
     from app.storage.repositories.order_items_repository import get_order_items
     
-    # Get all orders and filter by username
     all_orders = get_all_orders()
-    user_orders = [order for order in all_orders if order["username"] == username]
+    user_orders = [order for order in all_orders if order.get("username") == username]
     
-    # Enrich each order with its items
     for order in user_orders:
-        order_items = get_order_items(order["order_id"])
+        order_items = get_order_items(order.get("order_id", ""))
         order["items"] = order_items
     
-    # Sort by created_at descending (newest first)
-    user_orders.sort(key=lambda o: o["created_at"], reverse=True)
+    user_orders.sort(key=lambda o: o.get("created_at", ""), reverse=True)
     
     return user_orders
