@@ -9,7 +9,7 @@ from typing import List, Dict, Optional
 from app.storage.repositories.base_csv_repository import BaseCSVRepository
 from app.constants import NotificationCSVFields
 
-class notification_repository(BaseCSVRepository):
+class NotificationRepository(BaseCSVRepository):
     """Stores and retrieves notification data"""
 
     def __init__(self):

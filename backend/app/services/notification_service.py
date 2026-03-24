@@ -1,18 +1,18 @@
 """Business logic for notifications"""
 
-from app.storage.repositories.notification_repository import notification_repository
-from app.schemas.notification_schema import notification_create
+from app.storage.repositories.notification_repository import NotificationRepository
+from app.schemas.notification_schema import NotificationCreate
 from app.constants import NotificationEventType, UserRole
 
 from typing import Optional, Dict
 
-class notification_service:
+class NotificationService:
     """service responsible for notification logic"""
 
-    def __init__(self, notification_repo: notification_repository = None):
+    def __init__(self, notification_repo: NotificationRepository = None):
         """Initialize notification service with optional repository injection"""
         self.notification_repo = (
-            notification_repo if notification_repo else notification_repository()
+            notification_repo if notification_repo else NotificationRepository()
         )
     
     def _create_notification_template(
@@ -27,7 +27,7 @@ class notification_service:
 
         event_key = f"{event_type}:{order_id}:{user_id}"
         
-        notification = notification_create(
+        notification = NotificationCreate(
             user_id=str(user_id),
             role=role,
             event_type=event_type,
@@ -58,21 +58,18 @@ class notification_service:
         success: bool
     ) -> Optional[Dict]:
         """Create notification for payment success or failure"""
-        # Determine event type based on success
         event_type = (
             NotificationEventType.PAYMENT_SUCCESS.value 
             if success 
             else NotificationEventType.PAYMENT_FAILED.value
         )
         
-        # Determine message based on success
         message = (
             f"Payment for order {order_id} was successful."
             if success
             else f"Payment for order {order_id} failed."
         )
 
-        # Use template method with calculated values
         return self._create_notification_template(
             user_id=user_id,
             order_id=order_id,
@@ -93,7 +90,7 @@ class notification_service:
             f"{order_id}:{new_status}:{user_id}"
         )
         
-        notification = notification_create(
+        notification = NotificationCreate(
             user_id=str(user_id),
             role=UserRole.CUSTOMER.value,
             event_type=NotificationEventType.ORDER_STATUS_CHANGED.value,

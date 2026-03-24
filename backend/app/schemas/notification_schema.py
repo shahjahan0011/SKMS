@@ -3,7 +3,7 @@
 from pydantic import BaseModel
 
 
-class notification_create(BaseModel):
+class NotificationCreate(BaseModel):
     """Schema used to create a notification"""
 
     user_id: str
@@ -14,7 +14,7 @@ class notification_create(BaseModel):
     order_id: str
 
 
-class notification_response(BaseModel):
+class NotificationResponse(BaseModel):
     """Schema returned for notification data"""
 
     id: str

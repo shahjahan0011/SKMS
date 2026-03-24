@@ -1,27 +1,25 @@
 """Dependency injection for FastAPI"""
-from app.services.auth_service import auth_service
-from app.services.notification_service import notification_service
-from app.storage.repositories.user_repository import user_repository
-from app.storage.repositories.notification_repository import notification_repository
+from app.services.auth_service import AuthService
+from app.services.notification_service import NotificationService
+from app.storage.repositories.user_repository import UserRepository
+from app.storage.repositories.notification_repository import NotificationRepository
  
  
-# Service Dependencies
-def get_auth_service() -> auth_service:
+def get_auth_service() -> AuthService:
     """Dependency that provides auth_service instance"""
-    return auth_service()
+    return AuthService()
  
  
-def get_notification_service() -> notification_service:
+def get_notification_service() -> NotificationService:
     """Dependency that provides notification_service instance"""
-    return notification_service()
+    return NotificationService()
  
  
-# Repository Dependencies
-def get_user_repository() -> user_repository:
+def get_user_repository() -> UserRepository:
     """Dependency that provides user_repository instance"""
-    return user_repository()
+    return UserRepository()
  
  
-def get_notification_repository() -> notification_repository:
+def get_notification_repository() -> NotificationRepository:
     """Dependency that provides notification_repository instance"""
-    return notification_repository()
+    return NotificationRepository()

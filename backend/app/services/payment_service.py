@@ -2,7 +2,7 @@
 
 import uuid
 from app.storage.repositories.order_repository import get_order_by_id, update_order
-from app.services.notification_service import notification_service
+from app.services.notification_service import NotificationService
 
 
 class PaymentService:
@@ -47,7 +47,7 @@ class PaymentService:
             }
 
             try:
-                notification_service().notify_payment_result(order["username"], order_id, False)
+                NotificationService().notify_payment_result(order["username"], order_id, False)
             except Exception:
                 pass
 
@@ -69,7 +69,7 @@ class PaymentService:
         }
 
         try:
-            notification_service().notify_payment_result(order["username"], order_id, True)
+            NotificationService().notify_payment_result(order["username"], order_id, True)
         except Exception:
             pass
 
