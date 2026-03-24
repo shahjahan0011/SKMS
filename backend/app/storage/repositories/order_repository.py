@@ -92,6 +92,9 @@ def save_order(order_data: dict) -> dict:
     return normalized_order
 
 def get_menu_item_by_id(id: str) -> Optional[dict]:
+    if not MENU_DATA_FILE.exists():
+        return None
+
     with open(MENU_DATA_FILE, "r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         for row in reader:
