@@ -15,8 +15,27 @@ def test_create_order_success(monkeypatch):
     def mock_save_order(order_data):
         return order_data
 
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        return {
+            "base_cost": 20.00,
+            "tax": 1.00,
+            "delivery_fee": 4.99,
+            "total": 25.99,
+        }
+
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
 
     result = order_service.create_order("jahan", "item_1", 2)
 
@@ -25,11 +44,61 @@ def test_create_order_success(monkeypatch):
     assert result["restaurant_id"] == "rest_1"
     assert result["quantity"] == "2"
     assert result["price"] == "10.00"
-    assert result["subtotal"] == "20.00"
+    assert result["base_cost"] == "20.00"
     assert result["tax"] == "1.00"
     assert result["delivery_fee"] == "4.99"
     assert result["total"] == "25.99"
     assert result["status"] == "pending"
+    assert result["is_premium"] == "false"
+
+
+def test_create_order_premium_user(monkeypatch):
+    """Test that premium users get free delivery"""
+    def mock_get_menu_item_by_id(item_id):
+        return {
+            "id": item_id,
+            "restaurant_id": "rest_1",
+            "price": "10.00",
+        }
+
+    def mock_save_order(order_data):
+        return order_data
+
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        if is_premium:
+            return {
+                "base_cost": 20.00,
+                "tax": 1.00,
+                "delivery_fee": 0.0,
+                "total": 21.00,
+            }
+        else:
+            return {
+                "base_cost": 20.00,
+                "tax": 1.00,
+                "delivery_fee": 4.99,
+                "total": 25.99,
+            }
+
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
+    monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
+    monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
+
+    result = order_service.create_order("jahan", "item_1", 2, is_premium=True)
+
+    assert result["delivery_fee"] == "0.00"
+    assert result["total"] == "21.00"
+    assert result["is_premium"] == "true"
 
 
 def test_create_order_invalid_menu_item(monkeypatch):
@@ -185,8 +254,27 @@ def test_create_order_triggers_notification(monkeypatch):
     def mock_save_order(order_data):
         return order_data
 
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        return {
+            "base_cost": 20.00,
+            "tax": 1.00,
+            "delivery_fee": 4.99,
+            "total": 25.99,
+        }
+
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.create_order("jahan", "item_1", 2)
@@ -242,11 +330,130 @@ def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
     def mock_save_order(order_data):
         return order_data
 
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        return {
+            "base_cost": 20.00,
+            "tax": 1.00,
+            "delivery_fee": 4.99,
+            "total": 25.99,
+        }
+
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.create_order("jahan", "item_1", 2)
 
     assert result["username"] == "jahan"
     assert result["status"] == "pending"
+
+def test_get_order_history(monkeypatch):
+    """Test retrieving order history with items"""
+    
+    def mock_get_all_orders():
+        return [
+            {
+                "order_id": "o1",
+                "username": "jahan",
+                "restaurant_id": "rest_1",
+                "is_premium": "true",
+                "base_cost": "35.00",
+                "tax": "1.75",
+                "delivery_fee": "0.00",
+                "total": "36.75",
+                "status": "delivered",
+                "created_at": "2026-03-20T10:00:00",
+            },
+            {
+                "order_id": "o2",
+                "username": "jahan",
+                "restaurant_id": "rest_1",
+                "is_premium": "false",
+                "base_cost": "20.00",
+                "tax": "1.00",
+                "delivery_fee": "4.99",
+                "total": "25.99",
+                "status": "pending",
+                "created_at": "2026-03-24T12:00:00",  # Newer
+            },
+            {
+                "order_id": "o3",
+                "username": "other_user",
+                "restaurant_id": "rest_2",
+                "is_premium": "false",
+                "base_cost": "15.00",
+                "tax": "0.75",
+                "delivery_fee": "4.99",
+                "total": "20.74",
+                "status": "pending",
+                "created_at": "2026-03-23T10:00:00",
+            },
+        ]
+    
+    def mock_get_order_items(order_id):
+        if order_id == "o1":
+            return [
+                {"order_item_id": "oi1", "order_id": "o1", "item_id": "item_1", "quantity": "2", "item_price": "10.00"},
+                {"order_item_id": "oi2", "order_id": "o1", "item_id": "item_3", "quantity": "1", "item_price": "15.00"},
+            ]
+        elif order_id == "o2":
+            return [
+                {"order_item_id": "oi3", "order_id": "o2", "item_id": "item_1", "quantity": "2", "item_price": "10.00"},
+            ]
+        else:
+            return []
+    
+    monkeypatch.setattr(order_service, "get_all_orders", mock_get_all_orders)
+    monkeypatch.setattr("app.storage.repositories.order_items_repository.get_order_items", mock_get_order_items)
+    
+    result = order_service.get_order_history("jahan")
+    
+    # Should return only jahan's orders
+    assert len(result) == 2
+    
+    # Should be sorted by created_at descending (newest first)
+    assert result[0]["order_id"] == "o2"  # 2026-03-24
+    assert result[1]["order_id"] == "o1"  # 2026-03-20
+    
+    # Should have items
+    assert "items" in result[0]
+    assert "items" in result[1]
+    
+    # o1 should have 2 items
+    assert len(result[1]["items"]) == 2
+    assert result[1]["items"][0]["item_id"] == "item_1"
+    
+    # o2 should have 1 item
+    assert len(result[0]["items"]) == 1
+
+
+def test_get_order_history_no_orders(monkeypatch):
+    """Test order history for user with no orders"""
+    
+    def mock_get_all_orders():
+        return [
+            {
+                "order_id": "o1",
+                "username": "other_user",
+                "restaurant_id": "rest_1",
+                "status": "pending",
+                "created_at": "2026-03-24T12:00:00",
+            },
+        ]
+    
+    monkeypatch.setattr(order_service, "get_all_orders", mock_get_all_orders)
+    
+    result = order_service.get_order_history("jahan")
+    
+    assert result == []

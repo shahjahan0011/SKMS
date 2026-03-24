@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import MagicMock
 from app.main import app
 from app.storage.repositories.menu_repository import menu_repository
-from app.routers.menu_routers import get_menu_service
+from backend.app.routers.menu_router import get_menu_service
 
 @pytest.fixture
 def mock_menu_repo():

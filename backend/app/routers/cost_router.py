@@ -1,9 +1,12 @@
 from fastapi import APIRouter
 
 from app.schemas.cost_schema import CostPreviewRequest
-from app.services.cost_service import calculate_base_cost, calculate_tax, calculate_total_breakdown
-
-router = APIRouter(prefix="/cost", tags=["cost"])
+from app.services.cost_service import (
+    calculate_base_cost,
+    calculate_tax,
+    calculate_total_breakdown,
+)
+router = APIRouter(tags=["Cost"])
 
 
 @router.post("/preview/base")
