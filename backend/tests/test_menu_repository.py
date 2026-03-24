@@ -1,51 +1,47 @@
-"""Tests for MenuRepository."""
-
+"""Integration Tests for MenuRepository."""
 import pytest
-from unittest.mock import MagicMock
-from app.main import app
 from app.storage.repositories.menu_repository import menu_repository
-from app.routers.menu_routers import get_menu_service
 
-@pytest.fixture
-def mock_menu_repo():
-    """Fixture for menu_repository with mock data."""
+
+def test_get_menu_by_restaurant_id_from_csv():
+    """
+    Test that the repository can correctly fetch and parse
+    data from the actual CSV storage.
+    """
     repo = menu_repository()
-    mock_data = [
-        {"id": "1", "restaurant_id": "1", "item_name": "Pizza", "price": "10", "is_available": "True"},
-        {"id": "2", "restaurant_id": "1", "item_name": "Pasta", "price": "12", "is_available": "True"},
-        {"id": "3", "restaurant_id": "2", "item_name": "Burger", "price": "8", "is_available": "True"},
-    ]
-    repo.get_all = MagicMock(return_value=mock_data)
-    # Mock the method to return None for invalid IDs
-    repo.get_menu_item_by_id = MagicMock(side_effect=lambda id: next((item for item in mock_data if item["id"] == id), None))
-    return repo
 
-def test_get_menu_item_by_id_valid(mock_menu_repo):
-    """Test for getting a valid menu item."""
-    item = mock_menu_repo.get_menu_item_by_id("1")
-    assert item is not None
-    assert item["id"] == "1"
-    assert item["item_name"] == "Pizza"
+    result = repo.get_active_menu_by_restaurant("13")
 
-def test_get_menu_item_by_id_invalid(mock_menu_repo):
-    """Test for trying to get an invalid menu item by ID."""
-    item = mock_menu_repo.get_menu_item_by_id("999")
-    assert item is None
+    assert isinstance(result, list)
+    assert len(result) > 0
 
-def test_search_endpoint(client):
-    """Integration test for the search endpoint using dependency overrides."""
-    mock_service = MagicMock()
-    mock_service.get_active_menu_paginated_by_restaurant.return_value = {
-        "items": [{"name": "Fried Rice", "price": 10.0}],
-        "total_items": 1, 
-        "page": 1, 
-        "page_size": 10
-    }
-    
-    app.dependency_overrides[get_menu_service] = lambda: mock_service
-    try:
-        response = client.get("/menus/1?search=rice")
-        assert response.status_code == 200
-        assert response.json()['items'][0]['name'] == 'Fried Rice'
-    finally:
-        app.dependency_overrides.clear()
+    item_names = [item["item_name"] for item in result]
+    assert "Briyani rice" in item_names
+
+
+def test_get_menu_item_by_invalid_id():
+    """
+    Test that the repository returns an empty list
+    when a non-existent restaurant_id is provided.
+    """
+    repo = menu_repository()
+
+    result = repo.get_active_menu_by_restaurant("non_existent_id")
+
+    assert result == []
+
+
+def test_get_menu_item_structure():
+    """
+    Verify that the data returned from the CSV has
+    all the required keys for the front-end.
+    """
+    repo = menu_repository()
+    result = repo.get_active_menu_by_restaurant("13")
+
+    if len(result) > 0:
+        first_item = result[0]
+        assert "id" in first_item
+        assert "item_name" in first_item
+        assert "price" in first_item
+        assert "restaurant_id" in first_item
