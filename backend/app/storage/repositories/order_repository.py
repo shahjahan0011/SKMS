@@ -11,9 +11,6 @@ FIELDNAMES = [
     "username",
     "restaurant_id",
     "is_premium",
-    "id",
-    "quantity",
-    "price",
     "base_cost",
     "tax",
     "delivery_fee",
@@ -24,34 +21,6 @@ FIELDNAMES = [
     "cancelled_at",
     "delivered_at",
 ]
-
-
-def _normalize_order(order_dict: dict) -> dict:
-    """
-    Normalize order dict for CSV compatibility.
-    
-    Handles backward compatibility:
-    - Converts old 'subtotal' field to 'base_cost'
-    - Ensures 'is_premium' field exists (defaults to 'false')
-    
-    Args:
-        order_dict: Raw order dictionary
-        
-    Returns:
-        Normalized order dictionary with correct field names
-    """
-    normalized = order_dict.copy()
-    
-    # Convert old field names to new ones
-    if "subtotal" in normalized and "base_cost" not in normalized:
-        normalized["base_cost"] = normalized.pop("subtotal")
-    
-    # Ensure is_premium exists (for old records)
-    if "is_premium" not in normalized:
-        normalized["is_premium"] = "false"
-    
-    return normalized
-
 
 def _ensure_file_exists() -> None:
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -65,9 +34,7 @@ def get_all_orders() -> List[dict]:
     _ensure_file_exists()
     with open(DATA_FILE, "r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
-        # Normalize each order as it's read (backward compatibility)
-        return [_normalize_order(order) for order in reader]
-
+        return [order for order in reader]  
 
 def get_order_by_id(order_id: str) -> Optional[dict]:
     order_id = str(order_id).strip()
@@ -83,13 +50,15 @@ def get_order_by_id(order_id: str) -> Optional[dict]:
 
 def save_order(order_data: dict) -> dict:
     _ensure_file_exists()
-    # Normalize before saving (backward compatibility)
-    normalized_order = _normalize_order(order_data)
+    
+    # Filter to FIELDNAMES only - prevents extra columns from being written to CSV
+    filtered_order = {k: v for k, v in order_data.items() if k in FIELDNAMES}
     
     with open(DATA_FILE, "a", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
-        writer.writerow(normalized_order)
-    return normalized_order
+        writer.writerow(filtered_order)
+
+    return order_data
 
 def get_menu_item_by_id(id: str) -> Optional[dict]:
     with open(MENU_DATA_FILE, "r", newline="", encoding="utf-8") as file:
@@ -101,26 +70,35 @@ def get_menu_item_by_id(id: str) -> Optional[dict]:
     return None
 
 def update_order(updated_order: dict) -> Optional[dict]:
+    """
+    Update an existing order in the CSV.
+    
+    Reads all orders, finds the one to update, replaces it, and writes back.
+    """
     orders = get_all_orders()
     updated = None
+    order_found = False
 
+    # Find and update the order
     for index, order in enumerate(orders):
-        if order["order_id"] == updated_order["order_id"]:
-            # Normalize before storing
-            normalized_order = _normalize_order(updated_order)
-            orders[index] = normalized_order
-            updated = normalized_order
+        if order.get("order_id") == updated_order.get("order_id"):
+            # Merge: keep all existing fields, update with new values
+            merged_order = {**order, **updated_order}
+            # Filter to FIELDNAMES only
+            filtered_order = {k: v for k, v in merged_order.items() if k in FIELDNAMES}
+            orders[index] = filtered_order
+            updated = filtered_order
+            order_found = True
             break
 
-    if updated is None:
+    if not order_found:
         return None
 
+    # Write back to CSV
     with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
+        writer = csv.DictWriter(file, fieldnames=FIELDNAMES, extrasaction="ignore")
         writer.writeheader()
-        # Normalize all orders before writing
-        normalized_orders = [_normalize_order(order) for order in orders]
-        writer.writerows(normalized_orders)
+        writer.writerows(orders)
 
     return updated
 

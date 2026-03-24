@@ -33,15 +33,6 @@ def _safe_float(value) -> float:
 def create_order(username: str, id: str, quantity: int, is_premium: bool = False) -> dict:
     """
     Create an order (compatibility layer for single-item orders).
-    
-    Args:
-        username: Customer username
-        id: Menu item ID (for single-item orders)
-        quantity: Item quantity
-        is_premium: Whether user is premium (affects delivery fee)
-    
-    Returns:
-        Order dictionary with all fields
     """
     
     menu_item = get_menu_item_by_id(id)
@@ -51,20 +42,18 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
     restaurant_id = menu_item.get("restaurant_id")
     price = _safe_float(menu_item.get("price"))
 
-    # Use cost_service for consistent calculations (same as preview)
+    # Use cost_service for consistent calculations
     items = [{"id": id, "quantity": quantity}]
     cost_breakdown = calculate_total_breakdown(items, is_premium=is_premium)
     
     now = _now_iso()
 
+    # Create order dict for storage
     order = {
         "order_id": str(uuid4()),
         "username": username,
         "restaurant_id": restaurant_id,
         "is_premium": "true" if is_premium else "false",
-        "id": id,
-        "quantity": str(quantity),
-        "price": f"{price:.2f}",
         "base_cost": f"{cost_breakdown['base_cost']:.2f}",
         "tax": f"{cost_breakdown['tax']:.2f}",
         "delivery_fee": f"{cost_breakdown['delivery_fee']:.2f}",
@@ -74,8 +63,14 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
         "updated_at": now,
         "cancelled_at": "",
         "delivered_at": "",
+        # Add item fields here for API response
+        # (they won't be saved to CSV due to filtering in save_order())
+        "id": id,
+        "quantity": str(quantity),
+        "price": f"{price:.2f}",
     }
 
+    # save_order filters for CSV but returns full order dict
     saved_order = save_order(order)
     
     # Save item to order_items.csv
@@ -87,7 +82,6 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
             item_price=price,
         )
     except Exception as e:
-        # Log but don't fail if item save fails
         print(f"Warning: Failed to save order item: {e}")
 
     try:
