@@ -58,7 +58,7 @@ class item_listing_service:
         """getter for the restaurant by the restaurant id"""
         restaurant = self.restaurant_repo.get_restaurant_by_id(restaurant_id)
 
-        if restaurant is None:
+        if not restaurant:
             raise ValueError("Ivalid Restaurant")
 
         return restaurant
@@ -69,7 +69,7 @@ class item_listing_service:
         """getter for the menu item but menu item id"""
         item = self.menu_repo.get_menu_item_by_id(item_id)
 
-        if item is None:
+        if not item:
             raise ValueError("Invalid Menu Item")
 
         return item
