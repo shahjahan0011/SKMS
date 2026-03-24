@@ -6,7 +6,7 @@ client = TestClient(app)
 
 
 def test_create_order_route(monkeypatch):
-    def mock_create_order(username, id, quantity):
+    def mock_create_order(username, id, quantity, is_premium):
         return {
             "order_id": "o1",
             "username": username,

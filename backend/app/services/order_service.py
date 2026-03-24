@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from app.storage.repositories.order_repository import get_order_by_id, update_order, save_order, get_menu_item_by_id, get_active_orders_by_restaurant
 from app.schemas.order_schema import OrderStatus
 from app.services.notification_service import NotificationService
+from app.services.cost_service import calculate_total_breakdown
 
 TAX_RATE = 0.05
 DELIVERY_FEE = 4.99
@@ -21,7 +22,19 @@ def _safe_float(value) -> float:
         return 0.0
 
 
-def create_order(username: str, id: str, quantity: int) -> dict:
+def create_order(username: str, id: str, quantity: int, is_premium: bool = False) -> dict:
+    """
+    Create an order (compatibility layer for single-item orders).
+    
+    Args:
+        username: Customer username
+        id: Menu item ID (for single-item orders)
+        quantity: Item quantity
+        is_premium: Whether user is premium (affects delivery fee)
+    
+    Returns:
+        Order dictionary with all fields
+    """
     
     menu_item = get_menu_item_by_id(id)
     if menu_item is None:
@@ -30,9 +43,10 @@ def create_order(username: str, id: str, quantity: int) -> dict:
     restaurant_id = menu_item.get("restaurant_id")
     price = _safe_float(menu_item.get("price"))
 
-    subtotal = round(price * quantity, 2)
-    tax = round(subtotal * TAX_RATE, 2)
-    total = round(subtotal + tax + DELIVERY_FEE, 2)
+    # Use cost_service for consistent calculations (same as preview)
+    items = [{"id": id, "quantity": quantity}]
+    cost_breakdown = calculate_total_breakdown(items, is_premium=is_premium)
+    
     now = _now_iso()
 
     order = {
@@ -42,10 +56,10 @@ def create_order(username: str, id: str, quantity: int) -> dict:
         "id": id,
         "quantity": str(quantity),
         "price": f"{price:.2f}",
-        "subtotal": f"{subtotal:.2f}",
-        "tax": f"{tax:.2f}",
-        "delivery_fee": f"{DELIVERY_FEE:.2f}",
-        "total": f"{total:.2f}",
+        "subtotal": f"{cost_breakdown['base_cost']:.2f}",
+        "tax": f"{cost_breakdown['tax']:.2f}",
+        "delivery_fee": f"{cost_breakdown['delivery_fee']:.2f}",
+        "total": f"{cost_breakdown['total']:.2f}",
         "status": OrderStatus.pending.value,
         "created_at": now,
         "updated_at": now,

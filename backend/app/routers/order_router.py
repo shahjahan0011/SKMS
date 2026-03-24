@@ -12,6 +12,7 @@ def create_new_order(payload: CreateOrderRequest):
         username=payload.username,
         id=payload.id,
         quantity=payload.quantity,
+        is_premium=payload.is_premium,
     )
 
 @router.get("/{order_id}")
