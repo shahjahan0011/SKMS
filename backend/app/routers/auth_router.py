@@ -25,7 +25,7 @@ def register(
         return created_user
     except ValueError as error:
         raise HTTPException(
-            status_code=HTTPException.BAD_REQUEST, 
+            status_code=HTTPStatusCode.BAD_REQUEST, 
             detail=str(error)
         ) from error
 
