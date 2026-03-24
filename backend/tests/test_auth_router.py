@@ -7,6 +7,8 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.storage.repositories.user_repository import user_repository
 from app.constants import HTTPStatusCode, UserRole  
+from app.dependencies import get_auth_service
+from unittest.mock import Mock
 
 
 client = TestClient(app)
@@ -132,3 +134,33 @@ def test_logout_endpoint():
 
     assert response.status_code == HTTPStatusCode.OK  
     assert response.json()["message"] == "logout successful"
+
+def test_register_with_mocked_service(monkeypatch):
+    """test register endpoint with dependency injection mocking"""
+    
+    mock_service = Mock()
+    mock_service.register_user.return_value = {
+        "username": "mocked_user",
+        "role": UserRole.USER.value
+    }
+    
+    # Override dependency
+    def mock_get_auth_service():
+        return mock_service
+    
+    # Use monkeypatch to override the dependency
+    import app.routers.auth_router as auth_router
+    monkeypatch.setattr(auth_router, "get_auth_service", mock_get_auth_service)
+    
+    response = client.post(
+        "/auth/register",
+        json={
+            "username": "test",
+            "password": "pass123",
+            "role": "user"
+        }
+    )
+    
+    assert response.status_code == HTTPStatusCode.OK
+    assert response.json()["username"] == "mocked_user"
+    mock_service.register_user.assert_called_once()

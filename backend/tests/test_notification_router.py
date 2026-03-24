@@ -180,3 +180,35 @@ def test_get_role_notifications_admin_denied(monkeypatch):
     assert response.status_code == HTTPStatusCode.FORBIDDEN 
     assert response.json()["detail"] == ErrorMessages.INSUFFICIENT_PERMISSIONS  
     
+def test_get_user_notifications_with_mocked_services(monkeypatch):
+    """test notification endpoint with dependency injection mocking"""
+    
+    from unittest.mock import Mock
+    
+    mock_user_repo = Mock()
+    mock_user_repo.get_user_by_username.return_value = {
+        "username": "test_user",
+        "role": "user"
+    }
+    
+    mock_notification_service = Mock()
+    mock_notification_service.get_user_notifications.return_value = [
+        {"id": "1", "message": "Test notification"}
+    ]
+    
+    # Override dependencies
+    def mock_get_user_repo():
+        return mock_user_repo
+    
+    def mock_get_notification_service():
+        return mock_notification_service
+    
+    import app.routers.notification_router as notification_router
+    monkeypatch.setattr(notification_router, "get_user_repository", mock_get_user_repo)
+    monkeypatch.setattr(notification_router, "get_notification_service", mock_get_notification_service)
+    
+    response = client.get("/notifications/?username=test_user")
+    
+    assert response.status_code == HTTPStatusCode.OK
+    mock_user_repo.get_user_by_username.assert_called_once_with("test_user")
+    mock_notification_service.get_user_notifications.assert_called_once()
