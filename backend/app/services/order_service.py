@@ -8,6 +8,7 @@ from app.storage.repositories.order_repository import (
     save_order,
     get_menu_item_by_id,
     get_active_orders_by_restaurant,
+    get_all_orders,
 )
 from app.storage.repositories.order_items_repository import save_order_item
 from app.schemas.order_schema import OrderStatus
@@ -165,3 +166,54 @@ def cancel_order(order_id: str) -> dict:
     updated_order = update_order(order)
     assert updated_order is not None, "Failed to update order"
     return updated_order
+
+
+def get_order_history(username: str) -> list[dict]:
+    """
+    Get complete order history for a user with items breakdown.
+    
+    Retrieves all orders for a user and enriches each with:
+    - Order items (from order_items.csv)
+    - Cost breakdown (already in orders.csv)
+    
+    Args:
+        username: The customer username
+        
+    Returns:
+        List of orders (newest first) with items nested
+        
+    Example response:
+        [
+            {
+                "order_id": "o1",
+                "username": "jahan",
+                "restaurant_id": "rest_1",
+                "is_premium": "true",
+                "base_cost": "35.00",
+                "tax": "1.75",
+                "delivery_fee": "0.00",
+                "total": "36.75",
+                "status": "delivered",
+                "created_at": "2026-03-24T...",
+                "items": [
+                    {"order_item_id": "oi1", "order_id": "o1", "item_id": "item_1", "quantity": "2", "item_price": "10.00"},
+                    {"order_item_id": "oi2", "order_id": "o1", "item_id": "item_3", "quantity": "1", "item_price": "15.00"}
+                ]
+            }
+        ]
+    """
+    from app.storage.repositories.order_items_repository import get_order_items
+    
+    # Get all orders and filter by username
+    all_orders = get_all_orders()
+    user_orders = [order for order in all_orders if order["username"] == username]
+    
+    # Enrich each order with its items
+    for order in user_orders:
+        order_items = get_order_items(order["order_id"])
+        order["items"] = order_items
+    
+    # Sort by created_at descending (newest first)
+    user_orders.sort(key=lambda o: o["created_at"], reverse=True)
+    
+    return user_orders
