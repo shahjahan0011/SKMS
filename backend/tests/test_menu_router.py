@@ -6,7 +6,6 @@ from backend.app.routers.menu_router import get_menu_service
 
 client = TestClient(app)
 
-
 def override_get_menu_service():
     mock_service = MagicMock()
 
@@ -18,7 +17,6 @@ def override_get_menu_service():
         "page": 1,
         "size": 10
     }
-
 
     mock_service.get_global_menus.return_value = [
          {"id": "item_1", "item_name": "Chicken Briyani", "price": 12.99}
@@ -45,7 +43,6 @@ def test_get_menu_by_restaurant_success():
     assert data["items"][0]["item_name"] == "Briyani rice"
 
 
-
 @pytest.mark.parametrize("invalid_price", [
     "abc",
     "free",
@@ -53,9 +50,8 @@ def test_get_menu_by_restaurant_success():
 def test_global_menus_invalid_price_type(invalid_price):
     """Test that FastAPI correctly blocks non-numeric price queries."""
     response = client.get(f"/menus?price={invalid_price}")
-    # FastAPI should automatically throw a 422 Unprocessable Entity
-    assert response.status_code == 422
 
+    assert response.status_code == 422
 
 
 @pytest.mark.parametrize("test_size, expected_status", [
@@ -80,11 +76,9 @@ def test_restaurant_999999_hardcoded_404():
 
     app.dependency_overrides[get_menu_service] = override_empty_service
 
-
     response = client.get("/menus/999999")
 
     assert response.status_code == 404
     assert "Restaurant or menu not found" in response.json()["detail"]
-
 
     app.dependency_overrides[get_menu_service] = override_get_menu_service
