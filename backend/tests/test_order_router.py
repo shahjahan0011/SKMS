@@ -97,3 +97,38 @@ def test_get_active_orders_for_restaurant_route(monkeypatch):
     data = response.json()
     assert len(data) == 2
     assert data[0]["restaurant_id"] == "rest_1"
+
+def test_get_order_history_route(monkeypatch):
+    """Test order history endpoint"""
+    
+    def mock_get_order_history(username):
+        return [
+            {
+                "order_id": "o1",
+                "username": username,
+                "restaurant_id": "rest_1",
+                "is_premium": "true",
+                "base_cost": "35.00",
+                "tax": "1.75",
+                "delivery_fee": "0.00",
+                "total": "36.75",
+                "status": "delivered",
+                "created_at": "2026-03-24T12:00:00",
+                "items": [
+                    {"order_item_id": "oi1", "item_id": "item_1", "quantity": "2", "item_price": "10.00"},
+                ],
+            }
+        ]
+    
+    monkeypatch.setattr(order_router, "get_order_history", mock_get_order_history)
+    
+    response = client.get("/orders/jahan/history")
+    
+    assert response.status_code == 200
+    data = response.json()
+    
+    assert len(data) == 1
+    assert data[0]["username"] == "jahan"
+    assert data[0]["order_id"] == "o1"
+    assert "items" in data[0]
+    assert len(data[0]["items"]) == 1
