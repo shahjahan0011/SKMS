@@ -103,6 +103,6 @@ def delete_order_items(order_id: str) -> None:
     remaining_items = [item for item in all_items if item["order_id"] != order_id]
     
     with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
+        writer = csv.DictWriter(file, fieldnames=FIELDNAMES, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(remaining_items)

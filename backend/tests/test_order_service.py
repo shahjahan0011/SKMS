@@ -23,9 +23,19 @@ def test_create_order_success(monkeypatch):
             "total": 25.99,
         }
 
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
     monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
 
     result = order_service.create_order("jahan", "item_1", 2)
 
@@ -70,9 +80,19 @@ def test_create_order_premium_user(monkeypatch):
                 "total": 25.99,
             }
 
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
     monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
 
     result = order_service.create_order("jahan", "item_1", 2, is_premium=True)
 
@@ -242,9 +262,19 @@ def test_create_order_triggers_notification(monkeypatch):
             "total": 25.99,
         }
 
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
     monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.create_order("jahan", "item_1", 2)
@@ -308,9 +338,19 @@ def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
             "total": 25.99,
         }
 
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
     monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
     result = order_service.create_order("jahan", "item_1", 2)
