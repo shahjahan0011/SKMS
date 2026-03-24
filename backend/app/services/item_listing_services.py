@@ -59,7 +59,7 @@ class item_listing_service:
         restaurant = self.restaurant_repo.get_restaurant_by_id(restaurant_id)
 
         if not restaurant:
-            raise ValueError("Ivalid Restaurant")
+            raise ValueError("Invalid Restaurant")
 
         return restaurant
 
