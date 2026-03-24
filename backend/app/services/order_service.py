@@ -2,7 +2,14 @@ from datetime import datetime
 from uuid import uuid4
 from fastapi import HTTPException
 
-from app.storage.repositories.order_repository import get_order_by_id, update_order, save_order, get_menu_item_by_id, get_active_orders_by_restaurant
+from app.storage.repositories.order_repository import (
+    get_order_by_id,
+    update_order,
+    save_order,
+    get_menu_item_by_id,
+    get_active_orders_by_restaurant,
+)
+from app.storage.repositories.order_items_repository import save_order_item
 from app.schemas.order_schema import OrderStatus
 from app.services.notification_service import NotificationService
 from app.services.cost_service import calculate_total_breakdown
@@ -69,6 +76,18 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
     }
 
     saved_order = save_order(order)
+    
+    # Save item to order_items.csv
+    try:
+        save_order_item(
+            order_id=saved_order["order_id"],
+            item_id=id,
+            quantity=quantity,
+            item_price=price,
+        )
+    except Exception as e:
+        # Log but don't fail if item save fails
+        print(f"Warning: Failed to save order item: {e}")
 
     try:
         NotificationService().notify_order_created(username, saved_order["order_id"])
