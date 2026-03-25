@@ -54,15 +54,24 @@ class delivery_services:
         
 
 
-    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
-        """creates a new delivery"""
-        
-        self._validate_delivery(order_id, status)        
+    def _assign_agent(self):
+        """assigns a delivery agent"""
         agent = self.repo.get_available_agent()
 
         if agent is None:
             raise ValueError("no delivery agents available")
+
         self.repo.set_agent_busy(agent["agent_id"])
+
+        return agent
+
+
+
+    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
+        """creates a new delivery"""
+        
+        self._validate_delivery(order_id, status)        
+        agent = self._assign_agent()
 
         delivery_data = {
             "order_id": order_id,
