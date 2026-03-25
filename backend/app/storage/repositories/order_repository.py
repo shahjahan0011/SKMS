@@ -90,6 +90,8 @@ def update_order(updated_order: dict) -> Optional[dict]:
 
     return updated
 
+def get_orders_by_username(username: str) -> List[dict]:
+    return [o for o in get_all_orders() if o.get("username") == username]
 
 def get_active_orders_by_restaurant(restaurant_id: str) -> list[dict]:
     active_statuses = {"pending", "preparing", "in-transit"}

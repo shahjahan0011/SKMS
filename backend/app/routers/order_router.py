@@ -22,6 +22,7 @@ def create_new_order(payload: CreateOrderRequest):
         is_premium=payload.is_premium,
     )
 
+
 @router.get("/{order_id}")
 def get_order(order_id: str):
     return get_order_status(order_id)
@@ -31,13 +32,16 @@ def get_order(order_id: str):
 def patch_order_status(order_id: str, payload: UpdateOrderStatusRequest):
     return update_order_status(order_id, payload.status.value)
 
+
 @router.patch("/{order_id}/cancel")
 def patch_cancel_order(order_id: str):
     return cancel_order(order_id)
 
+
 @router.get("/restaurant/{restaurant_id}/active")
 def get_active_orders_for_restaurant(restaurant_id: str):
     return list_active_orders(restaurant_id)
+
 
 @router.get("/{username}/history")
 def get_user_order_history(username: str):
