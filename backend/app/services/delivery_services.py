@@ -18,11 +18,14 @@ class delivery_services:
         "delivered"
     ]
 
+
+
     def get_all_deliveries(self):
         """returns all deliveries"""
         deliveries = self.repo.get_all_deliveries()
         return deliveries
     
+
 
     def get_delivery_by_order_id(self, order_id):
         """returns delivery for an order by order id"""
@@ -35,12 +38,12 @@ class delivery_services:
         return delivery
     
 
-    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
-        """creates a new delivery"""
 
+    def _validate_delivery(self, order_id, status):
+        """checks if a delivery is valid"""
         if status not in self.status_set:
             raise ValueError("invalid delivery status")
-        
+
         if not order_id:
             raise ValueError("order id required")
 
@@ -48,12 +51,17 @@ class delivery_services:
 
         if existing:
             raise ValueError("delivery already exists for this order")
-                
+        
+
+
+    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
+        """creates a new delivery"""
+        
+        self._validate_delivery(order_id, status)        
         agent = self.repo.get_available_agent()
 
         if agent is None:
             raise ValueError("no delivery agents available")
-
         self.repo.set_agent_busy(agent["agent_id"])
 
         delivery_data = {
@@ -72,6 +80,7 @@ class delivery_services:
 
         return delivery_data
     
+
 
     def update_delivery_status(self, order_id, new_status):
         """updates status of a delivery"""
@@ -97,6 +106,7 @@ class delivery_services:
         }
     
 
+
     def get_user_deliveries(self, user_id):
         """returns deliveries for a user"""
 
@@ -104,6 +114,7 @@ class delivery_services:
 
         return deliveries
     
+
 
     def save_location(self, location):
         """saves location for user"""
@@ -128,6 +139,7 @@ class delivery_services:
         return location
     
 
+
     def get_user_locations(self, user_id):
         """returns saved locations for a user"""
         
@@ -138,6 +150,7 @@ class delivery_services:
 
         return locations
     
+
 
     def delete_location(self, location_id):
         """deletes a saved location"""
@@ -158,6 +171,7 @@ class delivery_services:
 
         return {"message": "location deleted"}
     
+
 
     def get_all_locations(self):
         """returns all saved locations"""
