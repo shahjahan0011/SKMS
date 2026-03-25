@@ -23,11 +23,3 @@ app.include_router(payment_router, tags=["Payments"])
 app.include_router(notification_router, tags=["Notifications"])
 app.include_router(cost_router, prefix="/cost", tags=["Cost"])
 app.include_router(restaurant_router, prefix="/restaurants", tags=["Restaurants"])
-
-@app.on_event("startup")
-def log_routes():
-    print("\n=== REGISTERED ROUTES ===")
-    for route in app.routes:
-        if hasattr(route, 'path'):
-            print(f"Path: {route.path} | Methods: {route.methods}")
-    print("=========================\n")

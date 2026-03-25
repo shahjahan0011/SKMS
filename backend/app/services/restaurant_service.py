@@ -14,10 +14,6 @@ class RestaurantService:
 
         all_restaurants = self.repo.get_all_restaurants()
 
-        print(f"DEBUG: Loaded {len(all_restaurants)} restaurants from CSV", flush=True)
-        if len(all_restaurants) > 0:
-            print(f"DEBUG: First restaurant data: {all_restaurants[0]}", flush=True)
-
         #defensive programming to ensure the code does not crash if heading changes between status and is_active
         active_restaurants = [
             r for r in all_restaurants
