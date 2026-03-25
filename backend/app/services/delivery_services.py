@@ -66,14 +66,9 @@ class delivery_services:
         return agent
 
 
-
-    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
-        """creates a new delivery"""
-        
-        self._validate_delivery(order_id, status)        
-        agent = self._assign_agent()
-
-        delivery_data = {
+    def delivery_data(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency, agent):
+        """builds delivery data"""
+        return {
             "order_id": order_id,
             "restaurant_id": restaurant_id,
             "user_id": user_id,
@@ -85,9 +80,27 @@ class delivery_services:
             "agent_name": agent["name"]
         }
 
-        self.repo.create_delivery(delivery_data)
 
-        return delivery_data
+
+    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
+        """creates a new delivery"""
+        
+        self._validate_delivery(order_id, status)        
+        agent = self._assign_agent()
+        data = self.delivery_data(
+            order_id,
+            restaurant_id,
+            user_id,
+            user_name,
+            delivery_location,
+            status,
+            is_emergency,
+            agent
+        )
+
+        self.repo.create_delivery(data)
+
+        return data
     
 
 
