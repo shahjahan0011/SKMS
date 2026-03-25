@@ -11,9 +11,6 @@ FIELDNAMES = [
     "username",
     "restaurant_id",
     "is_premium",
-    "id",
-    "quantity",
-    "price",
     "base_cost",
     "tax",
     "delivery_fee",
@@ -24,33 +21,6 @@ FIELDNAMES = [
     "cancelled_at",
     "delivered_at",
 ]
-
-
-def _normalize_order(order_dict: dict) -> dict:
-    """
-    Normalize order dict for CSV compatibility.
-    
-    Handles backward compatibility:
-    - Converts old 'subtotal' field to 'base_cost'
-    - Ensures 'is_premium' field exists (defaults to 'false')
-    
-    Args:
-        order_dict: Raw order dictionary
-        
-    Returns:
-        Normalized order dictionary with correct field names
-    """
-    normalized = order_dict.copy()
-    
-    # Convert old field names to new ones
-    if "subtotal" in normalized and "base_cost" not in normalized:
-        normalized["base_cost"] = normalized.pop("subtotal")
-    
-    # Ensure is_premium exists (for old records)
-    if "is_premium" not in normalized:
-        normalized["is_premium"] = "false"
-    
-    return normalized
 
 
 def _ensure_file_exists() -> None:
@@ -65,31 +35,29 @@ def get_all_orders() -> List[dict]:
     _ensure_file_exists()
     with open(DATA_FILE, "r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
-        # Normalize each order as it's read (backward compatibility)
-        return [_normalize_order(order) for order in reader]
+        return list(reader) if reader else []
 
 
 def get_order_by_id(order_id: str) -> Optional[dict]:
     order_id = str(order_id).strip()
-
     orders = get_all_orders()
-    order_map = {
-        str(order.get("order_id", "")).strip(): order
-        for order in orders
-    }
-
-    return order_map.get(order_id)
+    
+    for order in orders:
+        if str(order.get("order_id", "")).strip() == order_id:
+            return order
+    return None
 
 
 def save_order(order_data: dict) -> dict:
     _ensure_file_exists()
-    # Normalize before saving (backward compatibility)
-    normalized_order = _normalize_order(order_data)
+    filtered_order = {k: v for k, v in order_data.items() if k in FIELDNAMES}
     
     with open(DATA_FILE, "a", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
-        writer.writerow(normalized_order)
-    return normalized_order
+        writer.writerow(filtered_order)
+    
+    return filtered_order
+
 
 def get_menu_item_by_id(id: str) -> Optional[dict]:
     if not MENU_DATA_FILE.exists():
@@ -98,42 +66,44 @@ def get_menu_item_by_id(id: str) -> Optional[dict]:
     with open(MENU_DATA_FILE, "r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         for row in reader:
-            row_id = row.get("id")
-            if row_id == id:
+            if row.get("id") == id:
                 return row
     return None
+
 
 def update_order(updated_order: dict) -> Optional[dict]:
     orders = get_all_orders()
     updated = None
 
     for index, order in enumerate(orders):
-        if order["order_id"] == updated_order["order_id"]:
-            # Normalize before storing
-            normalized_order = _normalize_order(updated_order)
-            orders[index] = normalized_order
-            updated = normalized_order
+        if order.get("order_id") == updated_order.get("order_id"):
+            merged = {**order, **updated_order}
+            filtered = {k: v for k, v in merged.items() if k in FIELDNAMES}
+            orders[index] = filtered
+            updated = filtered
             break
 
     if updated is None:
         return None
 
     with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
+        writer = csv.DictWriter(file, fieldnames=FIELDNAMES, extrasaction="ignore")
         writer.writeheader()
-        # Normalize all orders before writing
-        normalized_orders = [_normalize_order(order) for order in orders]
-        writer.writerows(normalized_orders)
+        writer.writerows(orders)
 
     return updated
 
+def get_orders_by_username(username: str) -> List[dict]:
+    return [o for o in get_all_orders() if o.get("username") == username]
+
 def get_active_orders_by_restaurant(restaurant_id: str) -> list[dict]:
     active_statuses = {"pending", "preparing", "in-transit"}
-
-    orders = [
-        order for order in get_all_orders()
-        if order["restaurant_id"] == restaurant_id and order["status"] in active_statuses
+    orders = get_all_orders()
+    
+    filtered = [
+        o for o in orders 
+        if o.get("restaurant_id") == restaurant_id and o.get("status") in active_statuses
     ]
-
-    orders.sort(key=lambda order: order["created_at"])
-    return orders
+    
+    filtered.sort(key=lambda o: o.get("created_at", ""))
+    return filtered

@@ -135,6 +135,7 @@ def test_get_order_status_not_found(monkeypatch):
 def test_update_order_status_success(monkeypatch):
     order = {
         "order_id": "o1",
+        "username": "jahan",
         "status": "pending",
         "updated_at": "",
         "delivered_at": "",
@@ -148,6 +149,46 @@ def test_update_order_status_success(monkeypatch):
     assert result["status"] == "preparing"
     assert result["updated_at"] != ""
 
+
+def test_list_active_orders_new(monkeypatch):
+    mock_orders = [
+        {"order_id": "o1", "restaurant_id": "rest_1", "status": "pending"},
+        {"order_id": "o2", "restaurant_id": "rest_1", "status": "preparing"},
+    ]
+
+    monkeypatch.setattr(order_service, "get_active_orders_by_restaurant", lambda restaurant_id: mock_orders)
+
+    result = order_service.list_active_orders("rest_1")
+
+    assert result == mock_orders
+    assert len(result) == 2
+
+
+def test_get_order_history_new(monkeypatch):
+    def mock_get_orders_by_username(username):
+        return [
+            {
+                "order_id": "o1",
+                "username": "jahan",
+                "restaurant_id": "rest_1",
+                "status": "delivered",
+                "created_at": "2026-03-24T10:00:00",
+            },
+        ]
+
+    def mock_get_order_items(order_id):
+        return [
+            {"order_item_id": "oi1", "item_id": "item_1", "quantity": "2"},
+        ]
+
+    monkeypatch.setattr(order_service, "get_orders_by_username", mock_get_orders_by_username)
+    monkeypatch.setattr("app.storage.repositories.order_items_repository.get_order_items", mock_get_order_items)
+
+    result = order_service.get_order_history("jahan")
+
+    assert len(result) == 1
+    assert result[0]["username"] == "jahan"
+    assert "items" in result[0]
 
 def test_update_order_status_to_delivered_sets_delivered_at(monkeypatch):
     order = {
@@ -169,6 +210,7 @@ def test_update_order_status_to_delivered_sets_delivered_at(monkeypatch):
 def test_update_order_status_invalid_transition(monkeypatch):
     order = {
         "order_id": "o1",
+        "username": "jahan",
         "status": "pending",
         "updated_at": "",
         "delivered_at": "",
@@ -414,7 +456,7 @@ def test_get_order_history(monkeypatch):
         else:
             return []
     
-    monkeypatch.setattr(order_service, "get_all_orders", mock_get_all_orders)
+    monkeypatch.setattr("app.storage.repositories.order_repository.get_all_orders", mock_get_all_orders)
     monkeypatch.setattr("app.storage.repositories.order_items_repository.get_order_items", mock_get_order_items)
     
     result = order_service.get_order_history("jahan")
@@ -452,7 +494,7 @@ def test_get_order_history_no_orders(monkeypatch):
             },
         ]
     
-    monkeypatch.setattr(order_service, "get_all_orders", mock_get_all_orders)
+    monkeypatch.setattr("app.storage.repositories.order_repository.get_all_orders", mock_get_all_orders)
     
     result = order_service.get_order_history("jahan")
     
