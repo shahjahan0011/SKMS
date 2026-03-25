@@ -13,7 +13,18 @@ class NotificationRepository(BaseCSVRepository):
     """Stores and retrieves notification data"""
 
     def __init__(self):
-        super().__init__("notifications.csv")
+        headers = [
+            NotificationCSVFields.ID,
+            NotificationCSVFields.USER_ID,
+            NotificationCSVFields.ROLE,
+            NotificationCSVFields.EVENT_TYPE,
+            NotificationCSVFields.EVENT_KEY,
+            NotificationCSVFields.MESSAGE,
+            NotificationCSVFields.ORDER_ID,
+            NotificationCSVFields.CREATED_AT,
+        ]
+        super().__init__("notifications.csv", headers=headers)
+
 
     def get_all_notifications(self):
         """returns all notifications from csv"""

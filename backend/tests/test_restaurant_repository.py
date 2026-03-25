@@ -15,12 +15,10 @@ def mock_restaurant_repo():
         {"id": "3", "name": "Burger Joint", "cuisine": "American", "is_active": "false"},
     ]
 
-    # Mock the get_all method to return our mock_data
     repo.get_all = MagicMock(return_value=mock_data)
     repo.get_all_restaurants = MagicMock(return_value=mock_data)
-    
-    return repo
 
+    return repo
 
 def test_get_restaurant_by_id_valid(mock_restaurant_repo):
     """Test for getting a valid restaurant by ID."""
@@ -33,7 +31,6 @@ def test_get_restaurant_by_id_invalid(mock_restaurant_repo):
     """Test for trying to get an invalid restaurant."""
     restaurant = mock_restaurant_repo.get_restaurant_by_id("999")
     assert restaurant is None
-
 
 def test_search_restaurant_by_cuisine(mock_restaurant_repo):
     """Test searching by cuisine keyword."""
