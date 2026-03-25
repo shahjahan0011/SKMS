@@ -1,14 +1,19 @@
 """Delivery Repository"""
 
 import csv
+import os
 
 class delivery_repository:
     """Stores and Retrieves Delivery Data"""
 
+
     def __init__(self):
-        self.file_path = "backend/app/storage/data/deliveries.csv"
-        self.location_file = "backend/app/storage/data/locations.csv"
-        self.agent_file = "backend/app/storage/data/delivery_agents.csv"
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        DATA_DIR = os.path.join(BASE_DIR, "data")
+
+        self.file_path = os.path.join(DATA_DIR, "deliveries.csv")
+        self.location_file = os.path.join(DATA_DIR, "locations.csv")
+        self.agent_file = os.path.join(DATA_DIR, "delivery_agents.csv")
 
 
 
@@ -58,24 +63,29 @@ class delivery_repository:
         """writes a new delivery into csv data"""
 
         with open(self.file_path, mode = "a", encoding = "utf-8", newline = "") as file:
-            writer = csv.writer(file)
-
-            writer.writerow([
-                delivery["order_id"],
-                delivery["restaurant_id"],
-                delivery["user_id"],
-                delivery["user_name"],
-                delivery["delivery_location"].unit,
-                delivery["delivery_location"].street,
-                delivery["delivery_location"].postal_code,
-                delivery["delivery_location"].province,
-                delivery["delivery_location"].city,
-                delivery["delivery_location"].country,
-                delivery["status"],
-                delivery["is_emergency"],
-                delivery.get("agent_id", ""),
-                delivery.get("agent_name", "")
+            writer = csv.DictWriter(file, fieldnames=[
+                "order_id", "restaurant_id", "user_id", "user_name",
+                "unit", "street", "postal_code", "province",
+                "city", "country", "status", "is_emergency",
+                "agent_id", "agent_name"
             ])
+
+            writer.writerow({
+                "order_id": delivery["order_id"],
+                "restaurant_id": delivery["restaurant_id"],
+                "user_id": delivery["user_id"],
+                "user_name": delivery["user_name"],
+                "unit": delivery["delivery_location"].unit,
+                "street": delivery["delivery_location"].street,
+                "postal_code": delivery["delivery_location"].postal_code,
+                "province": delivery["delivery_location"].province,
+                "city": delivery["delivery_location"].city,
+                "country": delivery["delivery_location"].country,
+                "status": delivery["status"],
+                "is_emergency": delivery["is_emergency"],
+                "agent_id": delivery.get("agent_id", ""),
+                "agent_name": delivery.get("agent_name", "")
+            })
 
     
 
@@ -111,20 +121,30 @@ class delivery_repository:
     def save_location(self, location):
         """lets users save location"""
 
-        with open(self.location_file, mode = "a", encoding = "utf-8", newline = "") as file:
-            writer = csv.writer(file)
+        fieldnames = [
+            "location_id","user_id","name","unit","street",
+            "postal_code","province","city","country"
+        ]
 
-            writer.writerow([
-                location["location_id"],
-                location["user_id"],
-                location["name"],
-                location["unit"],
-                location["street"],
-                location["postal_code"],
-                location["province"],
-                location["city"],
-                location["country"]
-            ])
+        file_exists = os.path.exists(self.location_file)
+
+        with open(self.location_file, mode="a", encoding="utf-8", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+            if not file_exists:
+                writer.writeheader()
+
+            writer.writerow({
+                "location_id": location["location_id"],
+                "user_id": location["user_id"],
+                "name": location["name"],
+                "unit": location["unit"],
+                "street": location["street"],
+                "postal_code": location["postal_code"],
+                "province": location["province"],
+                "city": location["city"],
+                "country": location["country"]
+            })
     
 
 
