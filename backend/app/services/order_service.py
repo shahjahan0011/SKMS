@@ -38,7 +38,8 @@ def _get_order_or_404(order_id: str) -> dict:
 def _validate_status_transition(current: str, new: str) -> None:
     """Helper: Validate status transition."""
     valid_transitions = {
-        "pending": {"preparing", "cancelled"},
+        "pending": {"paid", "cancelled"},
+        "paid": {"preparing"},
         "preparing": {"in-transit"},
         "in-transit": {"delivered"},
         "delivered": set(),
