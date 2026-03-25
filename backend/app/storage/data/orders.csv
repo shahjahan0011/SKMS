@@ -1,8 +1,2 @@
-order_id, username, restaurant_id, is_premium, base_cost, tax, delivery_fee, total, status, created_at, updated_at,cancelled_at,delivered_at
-cdc9699c-c1dd-45e4-8309-a41fadb50d57,jahan2,1,true,35.27,1.76,0.00,37.03,pending,2026-03-24T10:52:16.298001,2026-03-24T10:52:16.298001,,
-e3736942-772a-4449-b806-6e853c6ac32f,zane,2,false,28.97,1.45,0.00,30.42,pending,2026-03-24T10:53:05.283205,2026-03-24T10:53:05.283205,,
-42638d2e-7d09-49b0-92b4-6a8ca7c2496f,ne,1,false,36.40,1.82,0.00,38.22,pending,2026-03-24T10:54:54.444591,2026-03-24T10:54:54.444591,,
-4e00a42d-bfb2-4baf-b352-da5b91ad3cba,jahan,1,false,18.20,0.91,4.99,24.10,pending,2026-03-25T01:59:59.797224,2026-03-25T01:59:59.797224,,
-o1,user1,rest_1,false,20.00,1.00,4.99,25.99,pending,2026-03-24T10:00:00,2026-03-24T10:00:00,,
-o1,user1,rest_1,false,20.00,1.00,4.99,25.99,pending,2026-03-24T10:00:00,2026-03-24T10:00:00,,
-o1,user1,rest_1,false,20.00,1.00,4.99,25.99,pending,2026-03-24T10:00:00,2026-03-24T10:00:00,,
+order_id,username,restaurant_id,is_premium,base_cost,tax,delivery_fee,total,status,created_at,updated_at,cancelled_at,delivered_at
+
