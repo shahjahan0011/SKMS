@@ -1,0 +1,95 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0
+rootdir: /Users/bheemamarabai/COSC 310/SKMS
+configfile: pytest.ini
+plugins: anyio-4.12.1, cov-7.1.0
+collected 204 items
+
+backend/tests/test_auth_router.py ......                                 [  2%]
+backend/tests/test_auth_service.py ......                                [  5%]
+backend/tests/test_authorization.py ...                                  [  7%]
+backend/tests/test_base_csv_repository.py .........                      [ 11%]
+backend/tests/test_cost_router.py .....                                  [ 14%]
+backend/tests/test_cost_service.py ............                          [ 20%]
+backend/tests/test_csv_store.py ..                                       [ 21%]
+backend/tests/test_delivery_repository.py .........                      [ 25%]
+backend/tests/test_delivery_router.py ..........                         [ 30%]
+backend/tests/test_delivery_services.py ..............                   [ 37%]
+backend/tests/test_dependencies.py .......                               [ 40%]
+backend/tests/test_item_listing_routers.py .......                       [ 44%]
+backend/tests/test_item_listing_services.py .......                      [ 47%]
+backend/tests/test_menu_pagination.py ....                               [ 49%]
+backend/tests/test_menu_repository.py ...                                [ 50%]
+backend/tests/test_menu_router.py .........                              [ 55%]
+backend/tests/test_menu_service.py ...                                   [ 56%]
+backend/tests/test_notification_repository.py ....                       [ 58%]
+backend/tests/test_notification_router.py ......                         [ 61%]
+backend/tests/test_notification_service.py ..........                    [ 66%]
+backend/tests/test_order_items_repository.py .........                   [ 71%]
+backend/tests/test_order_repository.py ....                              [ 73%]
+backend/tests/test_order_router.py ......                                [ 75%]
+backend/tests/test_order_service.py ................                     [ 83%]
+backend/tests/test_payment_router.py ...............                     [ 91%]
+backend/tests/test_restaurant_repository.py ....                         [ 93%]
+backend/tests/test_restaurant_router.py ..                               [ 94%]
+backend/tests/test_restaurant_service.py ...                             [ 95%]
+backend/tests/test_user_repository.py ....                               [ 97%]
+backend/tests/test_user_schema.py .....                                  [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.13.7-final-0 _______________
+
+Name                                                          Stmts   Miss  Cover   Missing
+-------------------------------------------------------------------------------------------
+backend/app/__init__.py                                           0      0   100%
+backend/app/constants.py                                         41      0   100%
+backend/app/dependencies.py                                      12      0   100%
+backend/app/main.py                                              27      5    81%   29-33
+backend/app/routers/__init__.py                                   0      0   100%
+backend/app/routers/auth_router.py                               32      2    94%   26-27
+backend/app/routers/cost_router.py                               19      0   100%
+backend/app/routers/delivery_router.py                           62     13    79%   28-29, 49-50, 66-67, 97-98, 108-109, 119-120, 136
+backend/app/routers/item_listing_router.py                       29      4    86%   42-45
+backend/app/routers/menu_router.py                               18      0   100%
+backend/app/routers/notification_router.py                       24      1    96%   53
+backend/app/routers/order_router.py                              22      0   100%
+backend/app/routers/payment_router.py                            19      0   100%
+backend/app/routers/restaurant_router.py                         11      0   100%
+backend/app/routers/restaurants_router.py                        11     11     0%   1-21
+backend/app/schemas/__init__.py                                   0      0   100%
+backend/app/schemas/cost_schema.py                                9      0   100%
+backend/app/schemas/delivery_schema.py                           10      0   100%
+backend/app/schemas/location_schema.py                            8      0   100%
+backend/app/schemas/menu_item_schema.py                           6      6     0%   2-13
+backend/app/schemas/menu_schema.py                                6      6     0%   2-13
+backend/app/schemas/notification_schema.py                       17      0   100%
+backend/app/schemas/order_schema.py                              15      0   100%
+backend/app/schemas/restaurant_schema.py                          5      5     0%   3-13
+backend/app/schemas/user_schema.py                               12      0   100%
+backend/app/services/__init__.py                                  0      0   100%
+backend/app/services/auth_service.py                             29      6    79%   52-60
+backend/app/services/cost_service.py                             34      0   100%
+backend/app/services/delivery_services.py                        77     13    83%   33, 42, 45, 50, 82, 85, 112, 115, 118, 121, 135, 146, 156
+backend/app/services/item_listing_services.py                    29      1    97%   34
+backend/app/services/menu_services.py                            30      6    80%   17, 21-27, 46, 78
+backend/app/services/notification_service.py                     27      0   100%
+backend/app/services/order_service.py                            84      6    93%   29-30, 89-91, 110, 154
+backend/app/services/payment_service.py                          35      5    86%   27, 55-56, 77-78
+backend/app/services/restaurant_service.py                       18      0   100%
+backend/app/storage/__init__.py                                   0      0   100%
+backend/app/storage/csv_store.py                                 12      0   100%
+backend/app/storage/data/__init__.py                              0      0   100%
+backend/app/storage/repositories/__init__.py                      0      0   100%
+backend/app/storage/repositories/base_csv_repository.py          39      3    92%   25-27
+backend/app/storage/repositories/delivery_repository.py         109      1    99%   145
+backend/app/storage/repositories/menu_repository.py              42      4    90%   85, 91-92, 98
+backend/app/storage/repositories/notification_repository.py      26      1    96%   32
+backend/app/storage/repositories/order_items_repository.py       41      3    93%   22-24
+backend/app/storage/repositories/order_repository.py             68      3    96%   96, 104, 119
+backend/app/storage/repositories/restaurant_repository.py        24      1    96%   37
+backend/app/storage/repositories/user_repository.py              15      0   100%
+-------------------------------------------------------------------------------------------
+TOTAL                                                          1154    106    91%
+Coverage HTML written to dir testing-documents/coverage_html
+Coverage XML written to file testing-documents/coverage.xml
+============================= 204 passed in 0.80s ==============================

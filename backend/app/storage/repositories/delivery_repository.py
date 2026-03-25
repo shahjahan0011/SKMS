@@ -3,39 +3,56 @@
 import csv
 
 class delivery_repository:
-    """Stores and retrieves delivery data"""
+    """Stores and Retrieves Delivery Data"""
 
     def __init__(self):
         self.file_path = "backend/app/storage/data/deliveries.csv"
         self.location_file = "backend/app/storage/data/locations.csv"
         self.agent_file = "backend/app/storage/data/delivery_agents.csv"
 
+
+
+    def _read_csv(self, file_path):
+        """reads csv and returns list of dicts"""
+        
+        data = []
+        with open(file_path, mode = "r", encoding = "utf-8", newline = "") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                data.append(row)
+
+        return data
+    
+
+
+    def _write_csv(self, file_path, data, fieldnames):
+        """writes list of dicts to csv"""
+        
+        with open(file_path, mode = "w", encoding = "utf-8", newline = "") as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(data)
+
+
+
     def get_all_deliveries(self):
         """returns all deliveries from csv """
-
-        deliveries = []
-
-        with open(self.file_path, mode = "r", encoding = "utf-8", newline = "") as file: 
-            reader = csv.DictReader(file)
-
-            for row in reader:
-                deliveries.append(row)
-
-        return deliveries
         
+        return self._read_csv(self.file_path)
+        
+
 
     def get_delivery_by_order_id(self, order_id):
         """returns the order by order id"""
+        
+        deliveries = self._read_csv(self.file_path)
+        for row in deliveries:
+            if row["order_id"] == str(order_id):
+                return row
 
-        with open(self.file_path, mode = "r", encoding = "utf-8", newline = "") as file: 
-            reader = csv.DictReader(file)
-
-            for row in reader:
-                if row["order_id"] == str(order_id):
-                    return row
-                
-            return None
+        return None
     
+
 
     def create_delivery(self, delivery):
         """writes a new delivery into csv data"""
@@ -61,42 +78,35 @@ class delivery_repository:
             ])
 
     
+
     def update_delivery_status(self, order_id, new_status):
         """updates the delivery status for an order"""
 
-        deliveries = []
+        deliveries = self._read_csv(self.file_path)
+        for row in deliveries:
+            if row["order_id"] == str(order_id):
+                row["status"] = new_status
 
-        with open(self.file_path, mode="r", encoding="utf-8", newline="") as file:
-            reader = csv.DictReader(file)
+        fields = [
+            "order_id", "restaurant_id", "user_id", "user_name",
+            "unit", "street", "postal_code", "province",
+            "city", "country", "status", "is_emergency",
+            "agent_id", "agent_name"
+        ]
 
-            for row in reader:
-                if row["order_id"] == str(order_id):
-                    row["status"] = new_status
-
-                deliveries.append(row)
-
-        with open(self.file_path, mode="w", encoding="utf-8", newline="") as file:
-            fields = ["order_id", "restaurant_id", "user_id", "user_name", "unit", "street", "postal_code", "province", "city", "country", "status", "is_emergency", "agent_id", "agent_name"]
-            writer = csv.DictWriter(file, fieldnames=fields)
-
-            writer.writeheader()
-            writer.writerows(deliveries)
+        self._write_csv(self.file_path, deliveries, fields)
 
     
+
     def get_user_deliveries(self, user_id):
         """returns all deliveries made by a user"""
 
-        user_deliveries = []
-
-        with open(self.file_path, mode="r", encoding="utf-8", newline="") as file:
-            reader = csv.DictReader(file)
-
-            for row in reader:
-                if row["user_id"] == str(user_id):
-                    user_deliveries.append(row)
-
-        return user_deliveries    
+        deliveries = self._read_csv(self.file_path)
+        return [
+            row for row in deliveries if row["user_id"] == str(user_id)
+        ]   
     
+
 
     def save_location(self, location):
         """lets users save location"""
@@ -117,105 +127,69 @@ class delivery_repository:
             ])
     
 
+
     def get_user_locations(self, user_id):
         """returns saved locations for a user based on their user id"""
-
-        locations = []
-
-        with open(self.location_file, mode = "r", encoding = "utf-8", newline = "") as file:
-            reader = csv.DictReader(file)
-
-            for row in reader:
-                if row["user_id"] == str(user_id):
-                    locations.append(row)
-
-        return locations
+        
+        locations = self._read_csv(self.location_file)
+        return [
+            loc for loc in locations if loc["user_id"] == str(user_id)
+        ]
     
+
 
     def delete_location(self, location_id):
         """lets user delete saved locations"""
 
-        locations = []
-
-        with open(self.location_file, mode = "r", encoding = "utf-8", newline = "") as file:
-            reader = csv.DictReader(file)
-
-            for row in reader:
-                if row["location_id"] != str(location_id):
-                    locations.append(row)
-
-        with open(self.location_file, mode = "w", encoding = "utf-8", newline = "") as file:
-            fields = ["location_id","user_id","name","unit","street","postal_code","province","city","country"]
-            writer = csv.DictWriter(file, fieldnames=fields)
-
-            writer.writeheader()
-            writer.writerows(locations)
+        locations = self._read_csv(self.location_file)
+        updated = [loc for loc in locations if loc["location_id"] != str(location_id)]
+        fields = ["location_id","user_id","name","unit","street","postal_code","province","city","country"]
+        
+        self._write_csv(self.location_file, updated, fields)
     
+
 
     def get_all_locations(self):
         """returns all locations"""
+        
+        return self._read_csv(self.location_file)
 
-        locations = []
 
-        with open(self.location_file, mode = "r", encoding = "utf-8", newline = "") as file:
-            reader = csv.DictReader(file)
-
-            for row in reader:
-                locations.append(row)
-
-        return locations
 
     def get_available_agent(self):
         """returns first available agent"""
 
-        with open(self.agent_file, mode = "r", encoding = "utf-8", newline = "") as file:
-            reader = csv.DictReader(file)
+        agents = self._read_csv(self.agent_file)
 
-            for row in reader:
-                if row["is_available"] == "True":
-                    return row
+        for agent in agents:
+            if agent["is_available"] == "True":
+                return agent
 
         return None
     
+
+
     def set_agent_busy(self, agent_id):
         """sets agent as busy"""
 
-        agents = []
+        agents = self._read_csv(self.agent_file)
+        for agent in agents:
+            if agent["agent_id"] == str(agent_id):
+                agent["is_available"] = "False"
+        fields = ["agent_id","name","is_available"]
+        
+        self._write_csv(self.agent_file, agents, fields)
 
-        with open(self.agent_file, mode = "r", encoding = "utf-8", newline = "") as file:
-            reader = csv.DictReader(file)
 
-            for row in reader:
-                if row["agent_id"] == str(agent_id):
-                    row["is_available"] = "False"
-
-                agents.append(row)
-
-        with open(self.agent_file, mode = "w", encoding = "utf-8", newline = "") as file:
-            fields = ["agent_id","name","is_available"]
-            writer = csv.DictWriter(file, fieldnames = fields)
-
-            writer.writeheader()
-            writer.writerows(agents)
 
     def set_agent_available(self, agent_id):
         """sets agent back to available"""
 
-        agents = []
-
-        with open(self.agent_file, mode = "r", encoding = "utf-8", newline = "") as file:
-            reader = csv.DictReader(file)
-
-            for row in reader:
-                if row["agent_id"] == str(agent_id):
-                    row["is_available"] = "True"
-
-                agents.append(row)
-
-        with open(self.agent_file, mode = "w", encoding = "utf-8", newline = "") as file:
-            fields = ["agent_id","name","is_available"]
-            writer = csv.DictWriter(file, fieldnames=fields)
-
-            writer.writeheader()
-            writer.writerows(agents)
+        agents = self._read_csv(self.agent_file)
+        for agent in agents:
+            if agent["agent_id"] == str(agent_id):
+                agent["is_available"] = "True"
+        fields = ["agent_id","name","is_available"]
+        
+        self._write_csv(self.agent_file, agents, fields)
             
