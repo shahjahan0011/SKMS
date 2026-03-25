@@ -17,7 +17,7 @@ class RestaurantService:
         #defensive programming to ensure the code does not crash if heading changes between status and is_active
         active_restaurants = [
             r for r in all_restaurants
-            if str(r.get('status', r.get('is_active', ''))).lower() in ['true', '1', 'yes']
+            if str(r.get('status', r.get('is_active', ''))).strip().lower() in ['true', '1', 'yes']
         ]
 
         result = active_restaurants
@@ -25,7 +25,8 @@ class RestaurantService:
             keyword_clean = keyword.lower().strip()
             result = [
                 r for r in active_restaurants
-                if keyword_clean in r.get('name', '').lower()
+                if keyword_clean in str(r.get('name', '')).strip().lower()
+                or keyword_clean in str(r.get('cuisine', '')).strip().lower()
             ]
 
         total_items = len(result)

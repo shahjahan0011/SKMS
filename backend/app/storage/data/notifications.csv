@@ -1,1 +1,5 @@
 id,user_id,role,event_type,event_key,message,order_id,created_at.
+0df443e2-ee82-432b-a4c3-d3e3cd426828,jahan,customer,order_created,order_created:c7f3479d-e731-46a2-a4f6-bdf5a455bcfd:jahan,Your order c7f3479d-e731-46a2-a4f6-bdf5a455bcfd was created successfully.,c7f3479d-e731-46a2-a4f6-bdf5a455bcfd,2026-03-25T03:40:45.887485+00:00
+2e742f66-6142-4688-9c39-8acbcea69cb9,jahan,customer,order_status_changed,order_status_changed:c7f3479d-e731-46a2-a4f6-bdf5a455bcfd:preparing:jahan,Your order c7f3479d-e731-46a2-a4f6-bdf5a455bcfd status changed to preparing.,c7f3479d-e731-46a2-a4f6-bdf5a455bcfd,2026-03-25T03:42:47.658462+00:00
+0c4e0e16-c00d-4ede-ba88-d8fca634a570,kushi,customer,order_created,order_created:69e08e9e-0d5c-4948-a86f-60036955ca63:kushi,Your order 69e08e9e-0d5c-4948-a86f-60036955ca63 was created successfully.,69e08e9e-0d5c-4948-a86f-60036955ca63,2026-03-25T03:56:15.271195+00:00
+64f08d8f-391c-4e2b-b210-b902ee7a5dc6,kushi,customer,payment_success,payment_success:69e08e9e-0d5c-4948-a86f-60036955ca63:kushi,Payment for order 69e08e9e-0d5c-4948-a86f-60036955ca63 was successful.,69e08e9e-0d5c-4948-a86f-60036955ca63,2026-03-25T03:57:16.332863+00:00

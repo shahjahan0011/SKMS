@@ -1,1 +1,5 @@
-username,password,rolejahan,1234,user
+username,password,role
+kushi,gabi,admin
+jahan,bheema,admin
+customer,nobody,user
+new customer,string,user
