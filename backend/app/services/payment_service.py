@@ -38,6 +38,10 @@ class PaymentService:
         payment_amount = float(amount) if amount is not None else expected_total
 
         if payment_amount >= 1000.00:
+            update_order({
+                **order,
+                "status": "payment_failed"
+            })
             result = {
                 "transaction_id": None,
                 "order_id": order_id,
@@ -74,4 +78,3 @@ class PaymentService:
             pass
 
         return result
-    

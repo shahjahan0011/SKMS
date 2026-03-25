@@ -18,11 +18,14 @@ class delivery_services:
         "delivered"
     ]
 
+
+
     def get_all_deliveries(self):
         """returns all deliveries"""
         deliveries = self.repo.get_all_deliveries()
         return deliveries
     
+
 
     def get_delivery_by_order_id(self, order_id):
         """returns delivery for an order by order id"""
@@ -35,12 +38,12 @@ class delivery_services:
         return delivery
     
 
-    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
-        """creates a new delivery"""
 
+    def _validate_delivery(self, order_id, status):
+        """checks if a delivery is valid"""
         if status not in self.status_set:
             raise ValueError("invalid delivery status")
-        
+
         if not order_id:
             raise ValueError("order id required")
 
@@ -48,7 +51,11 @@ class delivery_services:
 
         if existing:
             raise ValueError("delivery already exists for this order")
-                
+        
+
+
+    def _assign_agent(self):
+        """assigns a delivery agent"""
         agent = self.repo.get_available_agent()
 
         if agent is None:
@@ -56,7 +63,12 @@ class delivery_services:
 
         self.repo.set_agent_busy(agent["agent_id"])
 
-        delivery_data = {
+        return agent
+
+
+    def _create_delivery_data(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency, agent):
+        """builds delivery data"""
+        return {
             "order_id": order_id,
             "restaurant_id": restaurant_id,
             "user_id": user_id,
@@ -68,34 +80,57 @@ class delivery_services:
             "agent_name": agent["name"]
         }
 
-        self.repo.create_delivery(delivery_data)
 
-        return delivery_data
+
+    def create_delivery(self, order_id, restaurant_id, user_id, user_name, delivery_location, status, is_emergency):
+        """creates a new delivery"""
+        
+        self._validate_delivery(order_id, status)        
+        agent = self._assign_agent()
+        data = self._create_delivery_data(
+            order_id,
+            restaurant_id,
+            user_id,
+            user_name,
+            delivery_location,
+            status,
+            is_emergency,
+            agent
+        )
+
+        self.repo.create_delivery(data)
+
+        return data
     
+
+    def _handle_agent_release(self, delivery, new_status):
+        if new_status == "delivered" and delivery.get("agent_id"):
+            self.repo.set_agent_available(delivery["agent_id"])
+
+
 
     def update_delivery_status(self, order_id, new_status):
         """updates status of a delivery"""
 
-        delivery = self.repo.get_delivery_by_order_id(order_id)
-
         if new_status not in self.status_set:
             raise ValueError("invalid delivery status")
-        
+
+        delivery = self.repo.get_delivery_by_order_id(order_id)
+
         if delivery is None:
             raise ValueError("delivery not found")
-
+        
         self.repo.update_delivery_status(order_id, new_status)
 
         updated_delivery = self.repo.get_delivery_by_order_id(order_id)
+        self._handle_agent_release(updated_delivery, new_status)
 
-        if new_status == "delivered":
-            if updated_delivery.get("agent_id"):
-                self.repo.set_agent_available(updated_delivery["agent_id"])
         return {
             "order_id": order_id,
             "new_status": new_status
         }
     
+
 
     def get_user_deliveries(self, user_id):
         """returns deliveries for a user"""
@@ -105,20 +140,21 @@ class delivery_services:
         return deliveries
     
 
+
     def save_location(self, location):
         """saves location for user"""
 
         if not location["user_id"]:
-            raise ValueError("user id required")
+            raise ValueError("User ID cannot be empty")
 
         if not location["name"]:
-            raise ValueError("location name required")
+            raise ValueError("Location name cannot be empty")
 
         if not location["street"] or not location["postal_code"] or not location["city"] or not location["country"]:
-            raise ValueError("location fields cannot be empty")
+            raise ValueError("Location cannot be empty")
 
         if location["unit"] is None:
-            raise ValueError("unit is required")
+            raise ValueError("Unit cannot be empty")
 
         all_locations = self.repo.get_all_locations()
         location["location_id"] = len(all_locations) + 1
@@ -128,22 +164,24 @@ class delivery_services:
         return location
     
 
+
     def get_user_locations(self, user_id):
         """returns saved locations for a user"""
         
         if not user_id:
-            raise ValueError("user id required")
+            raise ValueError("User ID cannot be empty")
         
         locations = self.repo.get_user_locations(user_id)
 
         return locations
     
 
+
     def delete_location(self, location_id):
         """deletes a saved location"""
         
         if not location_id:
-            raise ValueError("location id required")
+            raise ValueError("Location id is required")
 
         locations = self.repo.get_all_locations()
         found = False
@@ -153,11 +191,12 @@ class delivery_services:
                 break
 
         if not found:
-            raise ValueError("location not found")
+            raise ValueError("Invalid Location")
         self.repo.delete_location(location_id)
 
-        return {"message": "location deleted"}
+        return {"message": "Deleted Location"}
     
+
 
     def get_all_locations(self):
         """returns all saved locations"""
@@ -166,3 +205,12 @@ class delivery_services:
 
         return locations
     
+
+
+    def get_available_agent(self):
+        agent = self.repo.get_available_agent()
+
+        if agent is None:
+            raise ValueError("no delivery agents available")
+
+        return agent
