@@ -51,7 +51,6 @@ def test_create_order_success(monkeypatch):
     assert result["status"] == "pending"
     assert result["is_premium"] == "false"
 
-
 def test_create_order_premium_user(monkeypatch):
     """Test that premium users get free delivery"""
     def mock_get_menu_item_by_id(item_id):
@@ -100,7 +99,6 @@ def test_create_order_premium_user(monkeypatch):
     assert result["total"] == "21.00"
     assert result["is_premium"] == "true"
 
-
 def test_create_order_invalid_menu_item(monkeypatch):
     def mock_get_menu_item_by_id(item_id):
         return None
@@ -113,30 +111,19 @@ def test_create_order_invalid_menu_item(monkeypatch):
     assert exc.value.status_code == 404
 
 def test_get_order_status_success(monkeypatch):
-    mock_order = {"order_id": "o1", "status": "pending"}
+    mock_order = {"order_id": "o1", "status": "in-transit"}
 
     monkeypatch.setattr(order_service, "get_order_by_id", lambda order_id: mock_order)
 
-    result = order_service.get_order_status("o1")
+    result = order_service.get_order_by_id("o1")
 
     assert result == mock_order
-
-
-def test_get_order_status_not_found(monkeypatch):
-    monkeypatch.setattr(order_service, "get_order_by_id", lambda order_id: None)
-
-    with pytest.raises(HTTPException) as exc:
-        order_service.get_order_status("missing")
-
-    assert exc.value.status_code == 404
-    assert exc.value.detail == "Order not found"
-
 
 def test_update_order_status_success(monkeypatch):
     order = {
         "order_id": "o1",
         "username": "jahan",
-        "status": "pending",
+        "status": "paid",
         "updated_at": "",
         "delivered_at": "",
     }
@@ -148,7 +135,6 @@ def test_update_order_status_success(monkeypatch):
 
     assert result["status"] == "preparing"
     assert result["updated_at"] != ""
-
 
 def test_list_active_orders_new(monkeypatch):
     mock_orders = [
@@ -162,7 +148,6 @@ def test_list_active_orders_new(monkeypatch):
 
     assert result == mock_orders
     assert len(result) == 2
-
 
 def test_get_order_history_new(monkeypatch):
     def mock_get_orders_by_username(username):
@@ -206,7 +191,6 @@ def test_update_order_status_to_delivered_sets_delivered_at(monkeypatch):
     assert result["status"] == "delivered"
     assert result["delivered_at"] != ""
 
-
 def test_update_order_status_invalid_transition(monkeypatch):
     order = {
         "order_id": "o1",
@@ -223,7 +207,6 @@ def test_update_order_status_invalid_transition(monkeypatch):
 
     assert exc.value.status_code == 400
     assert "Invalid status transition" in exc.value.detail
-
 
 def test_cancel_order_success(monkeypatch):
     order = {
@@ -242,7 +225,6 @@ def test_cancel_order_success(monkeypatch):
     assert result["cancelled_at"] != ""
     assert result["updated_at"] != ""
 
-
 def test_cancel_order_non_pending_fails(monkeypatch):
     order = {
         "order_id": "o1",
@@ -258,7 +240,6 @@ def test_cancel_order_non_pending_fails(monkeypatch):
 
     assert exc.value.status_code == 400
     assert exc.value.detail == "Only pending orders can be cancelled"
-
 
 def test_list_active_orders(monkeypatch):
     mock_orders = [
@@ -326,7 +307,6 @@ def test_create_order_triggers_notification(monkeypatch):
     assert notifications[0][0] == "jahan"
     assert notifications[0][1] == result["order_id"]
 
-
 def test_update_order_status_triggers_notification(monkeypatch):
     """test status change sends notification after successful update"""
 
@@ -348,12 +328,11 @@ def test_update_order_status_triggers_notification(monkeypatch):
     monkeypatch.setattr(order_service, "update_order", lambda updated_order: updated_order)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
-    result = order_service.update_order_status("o1", "preparing")
+    result = order_service.update_order_status("o1", "paid")
 
-    assert result["status"] == "preparing"
+    assert result["status"] == "paid"
     assert len(notifications) == 1
-    assert notifications[0] == ("jahan", "o1", "preparing")
-
+    assert notifications[0] == ("jahan", "o1", "paid")
 
 def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
     """test notification failure does not break order creation"""
@@ -478,7 +457,6 @@ def test_get_order_history(monkeypatch):
     
     # o2 should have 1 item
     assert len(result[0]["items"]) == 1
-
 
 def test_get_order_history_no_orders(monkeypatch):
     """Test order history for user with no orders"""

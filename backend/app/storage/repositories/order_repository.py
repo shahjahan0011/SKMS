@@ -30,13 +30,11 @@ def _ensure_file_exists() -> None:
             writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
             writer.writeheader()
 
-
 def get_all_orders() -> List[dict]:
     _ensure_file_exists()
     with open(DATA_FILE, "r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         return list(reader) if reader else []
-
 
 def get_order_by_id(order_id: str) -> Optional[dict]:
     order_id = str(order_id).strip()
@@ -46,7 +44,6 @@ def get_order_by_id(order_id: str) -> Optional[dict]:
         if str(order.get("order_id", "")).strip() == order_id:
             return order
     return None
-
 
 def save_order(order_data: dict) -> dict:
     _ensure_file_exists()
@@ -58,18 +55,18 @@ def save_order(order_data: dict) -> dict:
     
     return filtered_order
 
-
 def get_menu_item_by_id(id: str) -> Optional[dict]:
-    if not MENU_DATA_FILE.exists():
+    try:
+        with open(MENU_DATA_FILE, "r", newline="", encoding="utf-8") as file:
+            reader = csv.DictReader(file)
+            if not reader:
+                return None
+            for row in reader:
+                if row.get("id") == id:
+                    return row
+    except FileNotFoundError:
         return None
-
-    with open(MENU_DATA_FILE, "r", newline="", encoding="utf-8") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            if row.get("id") == id:
-                return row
     return None
-
 
 def update_order(updated_order: dict) -> Optional[dict]:
     orders = get_all_orders()
@@ -93,17 +90,18 @@ def update_order(updated_order: dict) -> Optional[dict]:
 
     return updated
 
+def _filter_orders(predicate) -> list[dict]:
+    return [o for o in get_all_orders() if predicate(o)]
+
 def get_orders_by_username(username: str) -> List[dict]:
-    return [o for o in get_all_orders() if o.get("username") == username]
+    return _filter_orders(lambda o: o.get("username") == username)
 
 def get_active_orders_by_restaurant(restaurant_id: str) -> list[dict]:
-    active_statuses = {"pending", "preparing", "in-transit"}
-    orders = get_all_orders()
+    active_statuses = {"pending","paid", "preparing", "in-transit"}
     
-    filtered = [
-        o for o in orders 
-        if o.get("restaurant_id") == restaurant_id and o.get("status") in active_statuses
-    ]
-    
+    filtered = _filter_orders(
+        lambda o: o.get("restaurant_id") == restaurant_id 
+        and o.get("status") in active_statuses
+    )
     filtered.sort(key=lambda o: o.get("created_at", ""))
     return filtered

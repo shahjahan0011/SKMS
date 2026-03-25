@@ -44,7 +44,7 @@ def test_get_order_route(monkeypatch):
     def mock_get_order_status(order_id):
         return {"order_id": order_id, "status": "pending"}
 
-    monkeypatch.setattr(order_router, "get_order_status", mock_get_order_status)
+    monkeypatch.setattr(order_router, "get_order_by_id", mock_get_order_status)
 
     response = client.get("/orders/o1")
 

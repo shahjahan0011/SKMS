@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 class OrderStatus(str, Enum):
     pending = "pending"
+    paid = "paid"
     preparing = "preparing"
     in_transit = "in-transit"
     delivered = "delivered"
