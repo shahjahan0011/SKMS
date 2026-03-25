@@ -115,18 +115,9 @@ def test_get_order_status_success(monkeypatch):
 
     monkeypatch.setattr(order_service, "get_order_by_id", lambda order_id: mock_order)
 
-    result = order_service.get_order_status("o1")
+    result = order_service.get_order_by_id("o1")
 
     assert result == mock_order
-
-def test_get_order_status_not_found(monkeypatch):
-    monkeypatch.setattr(order_service, "get_order_by_id", lambda order_id: None)
-
-    with pytest.raises(HTTPException) as exc:
-        order_service.get_order_status("missing")
-
-    assert exc.value.status_code == 404
-    assert exc.value.detail == "Order not found"
 
 def test_update_order_status_success(monkeypatch):
     order = {

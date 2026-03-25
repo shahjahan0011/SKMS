@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from app.schemas.order_schema import UpdateOrderStatusRequest, CreateOrderRequest
 from app.services.order_service import (
-    get_order_status,
+    get_order_by_id,
     update_order_status,
     create_order,
     cancel_order,
@@ -25,7 +25,7 @@ def create_new_order(payload: CreateOrderRequest):
 
 @router.get("/{order_id}")
 def get_order(order_id: str):
-    return get_order_status(order_id)
+    return get_order_by_id(order_id)
 
 
 @router.patch("/{order_id}/status")
