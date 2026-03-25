@@ -11,7 +11,7 @@ from app.dependencies import (
 )
 from app.constants import HTTPStatusCode, UserRole, ErrorMessages
 
-router = APIRouter(prefix="/notifications", tags=["notifications"])
+router = APIRouter(prefix="/Notifications", tags=["Notifications"])
 
 
 @router.get("/")
