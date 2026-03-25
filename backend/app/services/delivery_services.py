@@ -33,7 +33,7 @@ class delivery_services:
         delivery = self.repo.get_delivery_by_order_id(order_id)
 
         if delivery is None:
-            raise ValueError("Invalid Delivery")
+            raise ValueError("delivery not found")
 
         return delivery
     
@@ -50,7 +50,7 @@ class delivery_services:
         existing = self.repo.get_delivery_by_order_id(order_id)
 
         if existing:
-            raise ValueError("Order already has Delivery")
+            raise ValueError("delivery already exists for this order")
         
 
 
@@ -118,7 +118,7 @@ class delivery_services:
         delivery = self.repo.get_delivery_by_order_id(order_id)
 
         if delivery is None:
-            raise ValueError("Invalid Delivery")
+            raise ValueError("delivery not found")
         
         self.repo.update_delivery_status(order_id, new_status)
 
@@ -205,3 +205,12 @@ class delivery_services:
 
         return locations
     
+
+
+    def get_available_agent(self):
+        agent = self.repo.get_available_agent()
+
+        if agent is None:
+            raise ValueError("no delivery agents available")
+
+        return agent

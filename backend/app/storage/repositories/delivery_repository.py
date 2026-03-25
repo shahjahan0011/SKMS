@@ -159,12 +159,11 @@ class delivery_repository:
     def get_available_agent(self):
         """returns first available agent"""
 
-        with open(self.agent_file, mode = "r", encoding = "utf-8", newline = "") as file:
-            reader = csv.DictReader(file)
+        agents = self._read_csv(self.agent_file)
 
-            for row in reader:
-                if row["is_available"] == "True":
-                    return row
+        for agent in agents:
+            if agent["is_available"] == "True":
+                return agent
 
         return None
     
