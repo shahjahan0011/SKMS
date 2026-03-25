@@ -10,9 +10,13 @@ client = TestClient(app)
 def test_get_all_restaurants():
     """test for getting restaurants endpoint"""
     response = client.get("/restaurants")
-    print(f"DEBUG RESPONSE: {response.json()}")
+
     assert response.status_code == 200
-    assert isinstance(response.json()["data"], list)
+    data = response.json()["data"]
+
+    assert isinstance(data, list)
+    assert len(data) > 0
+    assert "id" in data[0]
 
 
 
@@ -38,7 +42,10 @@ def test_get_restaurant_menu_valid():
     response = client.get("/restaurants/1/menu")
 
     assert response.status_code == 200
-    assert isinstance(response.json().get("items", []), list)
+    data = response.json()
+
+    assert "items" in data
+    assert isinstance(data["items"], list)
 
 
 
@@ -64,3 +71,19 @@ def test_get_menu_item_by_id_invalid():
     response = client.get("/menu/999999")
 
     assert response.status_code == 404
+
+
+
+def test_get_restaurant_menu_empty_id():
+    """test for empty restaurant id"""
+    response = client.get("/restaurants//menu")
+
+    assert response.status_code in [404, 422]
+
+
+
+def test_get_menu_item_not_numeric():
+    """test invalid type for menu item id"""
+    response = client.get("/menu/abc")
+
+    assert response.status_code in [404, 422]
