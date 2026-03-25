@@ -73,8 +73,3 @@ def delete_order_items(order_id: str) -> None:
         writer = csv.DictWriter(file, fieldnames=FIELDNAMES, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(remaining_items)
-    
-    with open(DATA_FILE, "w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=FIELDNAMES, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(remaining_items)
