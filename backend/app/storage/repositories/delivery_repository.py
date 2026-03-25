@@ -3,12 +3,34 @@
 import csv
 
 class delivery_repository:
-    """Stores and retrieves delivery data"""
+    """Stores and Retrieves Delivery Data"""
 
     def __init__(self):
         self.file_path = "backend/app/storage/data/deliveries.csv"
         self.location_file = "backend/app/storage/data/locations.csv"
         self.agent_file = "backend/app/storage/data/delivery_agents.csv"
+
+
+    def _read_csv(self, file_path):
+        """reads csv and returns list of dicts"""
+        data = []
+
+        with open(file_path, mode = "r", encoding = "utf-8", newline = "") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                data.append(row)
+
+        return data
+    
+
+    def _write_csv(self, file_path, data, fieldnames):
+        """writes list of dicts to csv"""
+        with open(file_path, mode = "w", encoding = "utf-8", newline = "") as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(data)
+
+
 
     def get_all_deliveries(self):
         """returns all deliveries from csv """
@@ -24,6 +46,7 @@ class delivery_repository:
         return deliveries
         
 
+
     def get_delivery_by_order_id(self, order_id):
         """returns the order by order id"""
 
@@ -36,6 +59,7 @@ class delivery_repository:
                 
             return None
     
+
 
     def create_delivery(self, delivery):
         """writes a new delivery into csv data"""
@@ -61,6 +85,7 @@ class delivery_repository:
             ])
 
     
+
     def update_delivery_status(self, order_id, new_status):
         """updates the delivery status for an order"""
 
@@ -83,6 +108,7 @@ class delivery_repository:
             writer.writerows(deliveries)
 
     
+
     def get_user_deliveries(self, user_id):
         """returns all deliveries made by a user"""
 
@@ -97,6 +123,7 @@ class delivery_repository:
 
         return user_deliveries    
     
+
 
     def save_location(self, location):
         """lets users save location"""
@@ -117,6 +144,7 @@ class delivery_repository:
             ])
     
 
+
     def get_user_locations(self, user_id):
         """returns saved locations for a user based on their user id"""
 
@@ -131,6 +159,7 @@ class delivery_repository:
 
         return locations
     
+
 
     def delete_location(self, location_id):
         """lets user delete saved locations"""
@@ -152,6 +181,7 @@ class delivery_repository:
             writer.writerows(locations)
     
 
+
     def get_all_locations(self):
         """returns all locations"""
 
@@ -165,6 +195,8 @@ class delivery_repository:
 
         return locations
 
+
+
     def get_available_agent(self):
         """returns first available agent"""
 
@@ -177,6 +209,8 @@ class delivery_repository:
 
         return None
     
+
+
     def set_agent_busy(self, agent_id):
         """sets agent as busy"""
 
@@ -197,6 +231,8 @@ class delivery_repository:
 
             writer.writeheader()
             writer.writerows(agents)
+
+
 
     def set_agent_available(self, agent_id):
         """sets agent back to available"""
