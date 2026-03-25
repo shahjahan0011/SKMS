@@ -19,24 +19,25 @@ from app.services.cost_service import calculate_total_breakdown
 def _now_iso() -> str:
     return datetime.utcnow().isoformat()
 
-
 def _safe_float(value) -> float:
     try:
         return float(value)
     except (TypeError, ValueError):
         return 0.0
 
+def _safe_notify(callback, *args) -> None:
+    try:
+        callback(*args)
+    except Exception:
+        pass
 
 def _get_order_or_404(order_id: str) -> dict:
-    """Helper: Get order or raise 404."""
     order = get_order_by_id(order_id)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
     return order
 
-
 def _validate_status_transition(current: str, new: str) -> None:
-    """Helper: Validate status transition."""
     valid_transitions = {
         "pending": {"paid", "cancelled"},
         "paid": {"preparing"},
@@ -51,7 +52,6 @@ def _validate_status_transition(current: str, new: str) -> None:
             status_code=400,
             detail=f"Invalid status transition from '{current}' to '{new}'",
         )
-
 
 def create_order(username: str, id: str, quantity: int, is_premium: bool = False) -> dict:
     menu_item = get_menu_item_by_id(id)
@@ -95,7 +95,9 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
         print(f"Warning: Failed to save order item: {e}")
 
     try:
-        NotificationService().notify_order_created(username, saved_order["order_id"])
+        _safe_notify(
+            lambda: NotificationService().notify_order_created(username, saved_order["order_id"])
+    )
     except Exception:
         pass
 
@@ -105,11 +107,6 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
         "quantity": str(quantity),
         "price": f"{price:.2f}",
     }
-
-
-def get_order_status(order_id: str) -> dict:
-    return _get_order_or_404(order_id)
-
 
 def update_order_status(order_id: str, new_status: str) -> dict:
     order = _get_order_or_404(order_id)
@@ -131,16 +128,17 @@ def update_order_status(order_id: str, new_status: str) -> dict:
         raise HTTPException(status_code=500, detail="Failed to update order")
     
     try:
-        NotificationService().notify_order_status_changed(
-            updated_order["username"],
-            updated_order["order_id"],
-            new_status
-        )
+        _safe_notify(
+        lambda: NotificationService().notify_order_status_changed(
+                updated_order["username"],
+                updated_order["order_id"],
+                new_status
+    )
+)
     except Exception:
         pass
 
     return updated_order
-
 
 def cancel_order(order_id: str) -> dict:
     order = _get_order_or_404(order_id)
@@ -158,13 +156,11 @@ def cancel_order(order_id: str) -> dict:
     updated_order = update_order(order)
     if not updated_order:
         raise HTTPException(status_code=500, detail="Failed to cancel order")
-    
-    return updated_order
 
+    return updated_order
 
 def list_active_orders(restaurant_id: str) -> list[dict]:
     return get_active_orders_by_restaurant(restaurant_id)
-
 
 def get_order_history(username: str) -> list[dict]:
     from app.storage.repositories.order_items_repository import get_order_items
