@@ -1,0 +1,22 @@
+SCRUM MEETING #10 - 25/03/2026 at 7pm
+
+AGENDA:
+Final updates from everyone
+Finalizing the PDF to submit
+
+
+ATTENDEES:
+Bheema Marabai, Gabriel Sofekun, Jahan Shah, Khushi Lakshmi Kishan
+
+COMPLETED TASKS:
+Final implementation and polishing
+ 
+IN PROGRESS:
+Submit document
+Finish Traceability Matrix
+
+BLOCKERS:
+
+
+NOTES: 
+Next meeting:  - April 5, 2026
