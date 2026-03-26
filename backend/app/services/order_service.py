@@ -53,19 +53,27 @@ def _validate_status_transition(current: str, new: str) -> None:
             detail=f"Invalid status transition from '{current}' to '{new}'",
         )
 
-def create_order(username: str, id: str, quantity: int, is_premium: bool = False) -> dict:
-    menu_item = get_menu_item_by_id(id)
-    if not menu_item:
-        raise HTTPException(status_code=404, detail=f"Menu item not found: {id}")
-
-    restaurant_id = menu_item.get("restaurant_id")
-    price = _safe_float(menu_item.get("price"))
-
-    items = [{"id": id, "quantity": quantity}]
-    cost_breakdown = calculate_total_breakdown(items, is_premium=is_premium)
+def create_order(username: str, items: list[dict], is_premium: bool = False) -> dict:
+    
+    validated_items = []
+    restaurant_id = None
+    
+    for item in items:
+        menu_item = get_menu_item_by_id(item["id"])
+        if not menu_item:
+            raise HTTPException(status_code=404, detail=f"Menu item not found: {item['id']}")
+        
+        if restaurant_id is None:
+            restaurant_id = menu_item.get("restaurant_id")
+        elif restaurant_id != menu_item.get("restaurant_id"):
+            raise HTTPException(status_code=400, detail="All items must be from same restaurant")
+        
+        validated_items.append(item)
+    
+    cost_breakdown = calculate_total_breakdown(validated_items, is_premium=is_premium)
     
     now = _now_iso()
-
+    
     order = {
         "order_id": str(uuid4()),
         "username": username,
@@ -81,32 +89,31 @@ def create_order(username: str, id: str, quantity: int, is_premium: bool = False
         "cancelled_at": "",
         "delivered_at": "",
     }
-
+    
     saved_order = save_order(order)
     
-    try:
-        save_order_item(
-            order_id=saved_order["order_id"],
-            item_id=id,
-            quantity=quantity,
-            item_price=price,
-        )
-    except Exception as e:
-        print(f"Warning: Failed to save order item: {e}")
-
+    # Save all items
+    for item in validated_items:
+        try:
+            menu_item = get_menu_item_by_id(item["id"])
+            price = _safe_float(menu_item.get("price")) if menu_item else 0.0
+            save_order_item(
+                order_id=saved_order["order_id"],
+                item_id=item["id"],
+                quantity=item["quantity"],
+                item_price=price,
+            )
+        except Exception as e:
+            print(f"Warning: Failed to save order item: {e}")
+    
     try:
         _safe_notify(
             lambda: NotificationService().notify_order_created(username, saved_order["order_id"])
-    )
+        )
     except Exception:
         pass
-
-    return {
-        **saved_order,
-        "id": id,
-        "quantity": str(quantity),
-        "price": f"{price:.2f}",
-    }
+    
+    return saved_order
 
 def update_order_status(order_id: str, new_status: str) -> dict:
     order = _get_order_or_404(order_id)

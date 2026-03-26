@@ -15,10 +15,10 @@ router = APIRouter(prefix="/orders", tags=["Orders"])
 
 @router.post("/")
 def create_new_order(payload: CreateOrderRequest):
+    items_list = [{"id": item.id, "quantity": item.quantity} for item in payload.items]
     return create_order(
         username=payload.username,
-        id=payload.id,
-        quantity=payload.quantity,
+        items=items_list,
         is_premium=payload.is_premium,
     )
 
