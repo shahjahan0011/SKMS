@@ -37,13 +37,13 @@ def test_create_order_success(monkeypatch):
     monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
     monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
 
-    result = order_service.create_order("jahan", "item_1", 2)
+    result = order_service.create_order(
+        "jahan",
+        [{"id": "item_1", "quantity": 2}],
+    )
 
     assert result["username"] == "jahan"
-    assert result["id"] == "item_1"
     assert result["restaurant_id"] == "rest_1"
-    assert result["quantity"] == "2"
-    assert result["price"] == "10.00"
     assert result["base_cost"] == "20.00"
     assert result["tax"] == "1.00"
     assert result["delivery_fee"] == "4.99"
@@ -93,7 +93,11 @@ def test_create_order_premium_user(monkeypatch):
     monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
     monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
 
-    result = order_service.create_order("jahan", "item_1", 2, is_premium=True)
+    result = order_service.create_order(
+        "jahan",
+        [{"id": "item_1", "quantity": 2}],
+        is_premium=True,
+    )
 
     assert result["delivery_fee"] == "0.00"
     assert result["total"] == "21.00"
@@ -106,7 +110,7 @@ def test_create_order_invalid_menu_item(monkeypatch):
     monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
 
     with pytest.raises(HTTPException) as exc:
-        order_service.create_order("jahan", "bad_item", 1)
+        order_service.create_order("jahan", [{"id": "bad_item", "quantity": 1}])
 
     assert exc.value.status_code == 404
 
@@ -300,7 +304,10 @@ def test_create_order_triggers_notification(monkeypatch):
     monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
-    result = order_service.create_order("jahan", "item_1", 2)
+    result = order_service.create_order(
+        "jahan",
+        [{"id": "item_1", "quantity": 2}],
+    )
 
     assert result["username"] == "jahan"
     assert len(notifications) == 1
@@ -374,7 +381,10 @@ def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
     monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
     monkeypatch.setattr(order_service, "NotificationService", lambda: mock_notification_service())
 
-    result = order_service.create_order("jahan", "item_1", 2)
+    result = order_service.create_order(
+        "jahan",
+        [{"id": "item_1", "quantity": 2}],
+    )
 
     assert result["username"] == "jahan"
     assert result["status"] == "pending"
@@ -382,7 +392,9 @@ def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
 def test_get_order_history(monkeypatch):
     """Test retrieving order history with items"""
     
-    def mock_get_all_orders():
+    def mock_get_orders_by_username(username):
+        if username != "jahan":
+            return []
         return [
             {
                 "order_id": "o1",
@@ -408,18 +420,6 @@ def test_get_order_history(monkeypatch):
                 "status": "pending",
                 "created_at": "2026-03-24T12:00:00",  # Newer
             },
-            {
-                "order_id": "o3",
-                "username": "other_user",
-                "restaurant_id": "rest_2",
-                "is_premium": "false",
-                "base_cost": "15.00",
-                "tax": "0.75",
-                "delivery_fee": "4.99",
-                "total": "20.74",
-                "status": "pending",
-                "created_at": "2026-03-23T10:00:00",
-            },
         ]
     
     def mock_get_order_items(order_id):
@@ -435,7 +435,7 @@ def test_get_order_history(monkeypatch):
         else:
             return []
     
-    monkeypatch.setattr("app.storage.repositories.order_repository.get_all_orders", mock_get_all_orders)
+    monkeypatch.setattr(order_service, "get_orders_by_username", mock_get_orders_by_username)
     monkeypatch.setattr("app.storage.repositories.order_items_repository.get_order_items", mock_get_order_items)
     
     result = order_service.get_order_history("jahan")
@@ -461,19 +461,98 @@ def test_get_order_history(monkeypatch):
 def test_get_order_history_no_orders(monkeypatch):
     """Test order history for user with no orders"""
     
-    def mock_get_all_orders():
-        return [
-            {
-                "order_id": "o1",
-                "username": "other_user",
-                "restaurant_id": "rest_1",
-                "status": "pending",
-                "created_at": "2026-03-24T12:00:00",
-            },
-        ]
-    
-    monkeypatch.setattr("app.storage.repositories.order_repository.get_all_orders", mock_get_all_orders)
+    monkeypatch.setattr(order_service, "get_orders_by_username", lambda username: [])
     
     result = order_service.get_order_history("jahan")
     
     assert result == []
+
+def test_create_multi_item_order(monkeypatch):
+    """Test creating order with multiple items"""
+    
+    def mock_get_menu_item_by_id(item_id):
+        items = {
+            "item_1": {"id": "item_1", "restaurant_id": "rest_1", "price": "10.00"},
+            "item_2": {"id": "item_2", "restaurant_id": "rest_1", "price": "15.00"},
+        }
+        return items.get(item_id)
+
+    def mock_save_order(order_data):
+        return order_data
+
+    def mock_calculate_total_breakdown(items, is_premium=False):
+        return {
+            "base_cost": 35.00,  # (10*1) + (15*2)
+            "tax": 1.75,
+            "delivery_fee": 0.0,
+            "total": 36.75,
+        }
+
+    def mock_save_order_item(order_id, item_id, quantity, item_price):
+        return {
+            "order_item_id": "oi1",
+            "order_id": order_id,
+            "item_id": item_id,
+            "quantity": str(quantity),
+            "item_price": f"{float(item_price):.2f}",
+        }
+
+    monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
+    monkeypatch.setattr(order_service, "save_order", mock_save_order)
+    monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
+    monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
+
+    items = [
+        {"id": "item_1", "quantity": 1},
+        {"id": "item_2", "quantity": 2},
+    ]
+    result = order_service.create_order("jahan", items)
+
+    assert result["username"] == "jahan"
+    assert result["base_cost"] == "35.00"
+    assert result["total"] == "36.75"
+    assert result["status"] == "pending"
+
+def test_create_multi_item_order_different_restaurants(monkeypatch):
+    """Test creating order with items from different restaurants fails"""
+    
+    def mock_get_menu_item_by_id(item_id):
+        items = {
+            "item_1": {"id": "item_1", "restaurant_id": "rest_1", "price": "10.00"},
+            "item_2": {"id": "item_2", "restaurant_id": "rest_2", "price": "15.00"},
+        }
+        return items.get(item_id)
+
+    monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
+
+    items = [
+        {"id": "item_1", "quantity": 1},
+        {"id": "item_2", "quantity": 1},
+    ]
+
+    with pytest.raises(HTTPException) as exc:
+        order_service.create_order("jahan", items)
+
+    assert exc.value.status_code == 400
+    assert "same restaurant" in exc.value.detail
+
+def test_create_multi_item_order_one_invalid_item(monkeypatch):
+    """Test creating multi-item order fails if any item is invalid"""
+    
+    def mock_get_menu_item_by_id(item_id):
+        items = {
+            "item_1": {"id": "item_1", "restaurant_id": "rest_1", "price": "10.00"},
+        }
+        return items.get(item_id)
+
+    monkeypatch.setattr(order_service, "get_menu_item_by_id", mock_get_menu_item_by_id)
+
+    items = [
+        {"id": "item_1", "quantity": 1},
+        {"id": "bad_item", "quantity": 1},
+    ]
+
+    with pytest.raises(HTTPException) as exc:
+        order_service.create_order("jahan", items)
+
+    assert exc.value.status_code == 404
