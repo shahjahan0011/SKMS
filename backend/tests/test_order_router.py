@@ -6,12 +6,11 @@ client = TestClient(app)
 
 
 def test_create_order_route(monkeypatch):
-    def mock_create_order(username, id, quantity, is_premium=False):
+    def mock_create_order(username, items, is_premium=False):
         return {
             "order_id": "o1",
             "username": username,
-            "id": id,
-            "quantity": str(quantity),
+            "restaurant_id": "rest_1",
             "is_premium": "true" if is_premium else "false",
             "base_cost": "20.00",
             "tax": "1.00",
@@ -26,8 +25,9 @@ def test_create_order_route(monkeypatch):
         "/orders/",
         json={
             "username": "jahan",
-            "id": "item_1",
-            "quantity": 2,
+            "items": [
+                {"id": "item_1", "quantity": 2},
+            ],
             "is_premium": False,
         },
     )
@@ -35,10 +35,9 @@ def test_create_order_route(monkeypatch):
     assert response.status_code == 200
     data = response.json()
     assert data["username"] == "jahan"
-    assert data["id"] == "item_1"
+    assert data["restaurant_id"] == "rest_1"
     assert data["status"] == "pending"
     assert data["is_premium"] == "false"
-
 
 def test_get_order_route(monkeypatch):
     def mock_get_order_status(order_id):
@@ -51,7 +50,6 @@ def test_get_order_route(monkeypatch):
     assert response.status_code == 200
     assert response.json()["order_id"] == "o1"
     assert response.json()["status"] == "pending"
-
 
 def test_patch_order_status_route(monkeypatch):
     def mock_update_order_status(order_id, new_status):
@@ -68,7 +66,6 @@ def test_patch_order_status_route(monkeypatch):
     assert response.json()["order_id"] == "o1"
     assert response.json()["status"] == "preparing"
 
-
 def test_patch_cancel_order_route(monkeypatch):
     def mock_cancel_order(order_id):
         return {"order_id": order_id, "status": "cancelled"}
@@ -80,7 +77,6 @@ def test_patch_cancel_order_route(monkeypatch):
     assert response.status_code == 200
     assert response.json()["order_id"] == "o1"
     assert response.json()["status"] == "cancelled"
-
 
 def test_get_active_orders_for_restaurant_route(monkeypatch):
     def mock_list_active_orders(restaurant_id):
@@ -132,3 +128,36 @@ def test_get_order_history_route(monkeypatch):
     assert data[0]["order_id"] == "o1"
     assert "items" in data[0]
     assert len(data[0]["items"]) == 1
+
+def test_create_multi_item_order_route(monkeypatch):
+    def mock_create_order(username, items, is_premium=False):
+        return {
+            "order_id": "o1",
+            "username": username,
+            "restaurant_id": "rest_1",
+            "is_premium": "false",
+            "base_cost": "25.00",
+            "tax": "1.25",
+            "delivery_fee": "4.99",
+            "total": "31.24",
+            "status": "pending",
+        }
+
+    monkeypatch.setattr(order_router, "create_order", mock_create_order)
+
+    response = client.post(
+        "/orders/",
+        json={
+            "username": "jahan",
+            "items": [
+                {"id": "item_1", "quantity": 1},
+                {"id": "item_2", "quantity": 1},
+            ],
+            "is_premium": False,
+        },
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["username"] == "jahan"
+    assert data["status"] == "pending"

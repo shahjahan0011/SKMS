@@ -10,11 +10,13 @@ class OrderStatus(str, Enum):
     delivered = "delivered"
     cancelled = "cancelled"
 
+class OrderItemRequest(BaseModel):
+    id: str = Field(..., min_length=1)
+    quantity: int = Field(default=1, ge=1)
 
 class CreateOrderRequest(BaseModel):
     username: str = Field(..., min_length=1)
-    id: str = Field(..., min_length=1)
-    quantity: int = Field(default=1, ge=1)
+    items: list[OrderItemRequest] = Field(..., min_length=1)
     is_premium: bool = Field(default=False)
 
 class UpdateOrderStatusRequest(BaseModel):
