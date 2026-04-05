@@ -1,7 +1,7 @@
 """Constants and enums for the application"""
 from enum import Enum
- 
- 
+
+
 class UserRole(Enum):
     """Enum for user roles"""
     ADMIN = "admin"
@@ -10,8 +10,8 @@ class UserRole(Enum):
     MANAGER = "manager"
     RESTAURANT_OWNER = "restaurant_owner"
     DELIVERY_DRIVER = "delivery_driver"
- 
- 
+
+
 class NotificationEventType(Enum):
     """Enum for notification event types"""
     ORDER_CREATED = "order_created"
@@ -19,8 +19,12 @@ class NotificationEventType(Enum):
     PAYMENT_FAILED = "payment_failed"
     ORDER_STATUS_CHANGED = "order_status_changed"
     NEW_PAID_ORDER = "new_paid_order"
- 
- 
+
+    # Added for M4: Inventory Alerts
+    ITEM_SOLD_OUT = "inventory_sold_out"
+    ITEM_LOW_STOCK = "inventory_low_stock"
+
+
 class HTTPStatusCode:
     """HTTP status codes used in the application"""
     OK = 200
@@ -29,15 +33,15 @@ class HTTPStatusCode:
     UNAUTHORIZED = 401
     FORBIDDEN = 403
     NOT_FOUND = 404
- 
- 
+
+
 class UserCSVFields:
     """CSV field names for user storage"""
     USERNAME = "username"
     PASSWORD = "password"
     ROLE = "role"
- 
- 
+
+
 class NotificationCSVFields:
     """CSV field names for notification storage"""
     ID = "id"
@@ -48,8 +52,8 @@ class NotificationCSVFields:
     MESSAGE = "message"
     ORDER_ID = "order_id"
     CREATED_AT = "created_at"
- 
- 
+
+
 class ErrorMessages:
     """Centralized error messages"""
     # Auth errors

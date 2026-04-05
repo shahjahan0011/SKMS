@@ -2,12 +2,18 @@
 
 from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, Query, HTTPException
+from pydantic import BaseModel # for M4 Admin request body
 
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import menu_repository
 from app.storage.repositories.restaurant_repository import restaurant_repository
 
 router = APIRouter()
+
+class RestockRequest(BaseModel):
+    """Request body for restocking an item."""
+
+    added_stock: int
 
 def get_menu_service():
     """Dependency injection for MenuService."""
@@ -29,10 +35,10 @@ def get_menu_by_restaurant(
         page=page,
         page_size=page_size
     )
-    
+
     if not result.get("items") and restaurant_id == "999999":
         raise HTTPException(status_code=404, detail="Restaurant or menu not found")
-        
+
     return result
 
 @router.get("/menus")
@@ -48,3 +54,17 @@ def browse_menus(
         price=price,
         restaurant_id=target_res_id
     )
+
+
+# M4: ADMIN INVENTORY ENDPOINT
+@router.patch("/menus/{item_id}/restock")
+def restock_item(
+    item_id: str,
+    restock: RestockRequest,
+    service: MenuService = Depends(get_menu_service)
+):
+    """
+    M4 Admin Feature: Adds stock back to an item and automatically
+    makes it available again.
+    """
+    return service.admin_restock_item(item_id, restock.added_stock)

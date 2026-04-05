@@ -1,3 +1,1 @@
 order_id,username,restaurant_id,is_premium,base_cost,tax,delivery_fee,total,status,created_at,updated_at,cancelled_at,delivered_at
-c7f3479d-e731-46a2-a4f6-bdf5a455bcfd,jahan,1,false,24.86,1.24,0.00,26.10,preparing,2026-03-25T03:40:45.788858,2026-03-25T03:42:47.584902,,
-69e08e9e-0d5c-4948-a86f-60036955ca63,kushi,1,false,24.88,1.24,0.00,26.12,paid,2026-03-25T03:56:15.020523,2026-03-25T03:56:15.020523,,

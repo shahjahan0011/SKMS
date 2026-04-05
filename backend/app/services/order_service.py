@@ -15,6 +15,12 @@ from app.schemas.order_schema import OrderStatus
 from app.services.notification_service import NotificationService
 from app.services.cost_service import calculate_total_breakdown
 
+#update for M4: Core Menu Management Logic
+from app.services.menu_services import MenuService
+from app.storage.repositories.menu_repository import menu_repository
+from app.storage.repositories.restaurant_repository import restaurant_repository
+
+
 
 def _now_iso() -> str:
     return datetime.utcnow().isoformat()
@@ -28,7 +34,7 @@ def _validate_status_transition(current: str, new: str) -> None:
         "delivered": set(),
         "cancelled": set(),
     }
-    
+
     if new not in valid_transitions.get(current, set()):
         raise HTTPException(
             status_code=400,
@@ -36,26 +42,32 @@ def _validate_status_transition(current: str, new: str) -> None:
         )
 
 def create_order(username: str, items: list[dict], is_premium: bool = False) -> dict:
-    
+
     validated_items = []
     restaurant_id = None
-    
+
+# Initialize your Menu Service: M4
+    menu_service = MenuService(menu_repository(), restaurant_repository())
+
     for item in items:
         menu_item = get_menu_item_by_id(item["id"])
         if not menu_item:
             raise HTTPException(status_code=404, detail=f"Menu item not found: {item['id']}")
-        
+
         if restaurant_id is None:
             restaurant_id = menu_item.get("restaurant_id")
         elif restaurant_id != menu_item.get("restaurant_id"):
             raise HTTPException(status_code=400, detail="All items must be from same restaurant")
-        
+
+    #M4: Deduct inventory and handle business logic in one step
+        menu_service.process_item_order(item_id=str(item["id"]), quantity=item["quantity"])
+
         validated_items.append(item)
-    
+
     cost_breakdown = calculate_total_breakdown(validated_items, is_premium=is_premium)
-    
+
     now = _now_iso()
-    
+
     order = {
         "order_id": str(uuid4()),
         "username": username,
@@ -71,9 +83,9 @@ def create_order(username: str, items: list[dict], is_premium: bool = False) -> 
         "cancelled_at": "",
         "delivered_at": "",
     }
-    
+
     saved_order = save_order(order)
-    
+
     # Save all items
     for item in validated_items:
         try:
@@ -87,12 +99,12 @@ def create_order(username: str, items: list[dict], is_premium: bool = False) -> 
             )
         except Exception as e:
             print(f"Warning: Failed to save order item: {e}")
-    
+
     try:
         NotificationService().notify_order_created(username, saved_order["order_id"])
     except Exception:
         pass
-    
+
     return saved_order
 
 def update_order_status(order_id: str, new_status: str) -> dict:
@@ -100,7 +112,7 @@ def update_order_status(order_id: str, new_status: str) -> dict:
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
     current_status = order.get("status", "")
-    
+
     if not current_status:
         raise HTTPException(status_code=400, detail="Order has invalid status")
 
@@ -115,7 +127,7 @@ def update_order_status(order_id: str, new_status: str) -> dict:
     updated_order = update_order(order)
     if not updated_order:
         raise HTTPException(status_code=500, detail="Failed to update order")
-    
+
     try:
         NotificationService().notify_order_status_changed(
                 updated_order["username"],
@@ -131,7 +143,7 @@ def cancel_order(order_id: str) -> dict:
     order = get_order_by_id(order_id)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
-    
+
     if order.get("status") != OrderStatus.pending.value:
         raise HTTPException(
             status_code=400,
@@ -153,12 +165,12 @@ def list_active_orders(restaurant_id: str) -> list[dict]:
 
 def get_order_history(username: str) -> list[dict]:
     from app.storage.repositories.order_items_repository import get_order_items
-    
+
     user_orders = get_orders_by_username(username)
-    
+
     for order in user_orders:
         order["items"] = get_order_items(order.get("order_id", ""))
-    
+
     user_orders.sort(key=lambda o: o.get("created_at", ""), reverse=True)
-    
+
     return user_orders

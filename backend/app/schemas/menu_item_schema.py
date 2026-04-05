@@ -11,3 +11,11 @@ class menu_item(BaseModel):
     item_id: int
     item_name: str
     price: float
+    stock_count: int # updated for M4 field
+    is_available: bool # updated for M4 field
+
+class MenuInventoryUpdate(BaseModel):
+    """
+    When Admin updates the stock count of a menu item, this schema is used to add more inventory.
+    """
+    stock_count: int

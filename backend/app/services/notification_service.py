@@ -14,7 +14,7 @@ class NotificationService:
         self.notification_repo = (
             notification_repo if notification_repo else NotificationRepository()
         )
-    
+
     def _create_notification_template(
         self,
         user_id: str,
@@ -26,7 +26,7 @@ class NotificationService:
         """Template Handles ALL the common notification creation logic"""
 
         event_key = f"{event_type}:{order_id}:{user_id}"
-        
+
         notification = NotificationCreate(
             user_id=str(user_id),
             role=role,
@@ -46,9 +46,9 @@ class NotificationService:
         return self._create_notification_template(
             user_id=user_id,
             order_id=order_id,
-            role=UserRole.CUSTOMER.value,              
-            event_type=NotificationEventType.ORDER_CREATED.value,  
-            message=f"Your order {order_id} was created successfully."  
+            role=UserRole.CUSTOMER.value,
+            event_type=NotificationEventType.ORDER_CREATED.value,
+            message=f"Your order {order_id} was created successfully."
         )
 
     def notify_payment_result(
@@ -59,11 +59,11 @@ class NotificationService:
     ) -> Optional[Dict]:
         """Create notification for payment success or failure"""
         event_type = (
-            NotificationEventType.PAYMENT_SUCCESS.value 
-            if success 
+            NotificationEventType.PAYMENT_SUCCESS.value
+            if success
             else NotificationEventType.PAYMENT_FAILED.value
         )
-        
+
         message = (
             f"Payment for order {order_id} was successful."
             if success
@@ -89,12 +89,12 @@ class NotificationService:
             f"{NotificationEventType.ORDER_STATUS_CHANGED.value}:"
             f"{order_id}:{new_status}:{user_id}"
         )
-        
+
         notification = NotificationCreate(
             user_id=str(user_id),
             role=UserRole.CUSTOMER.value,
             event_type=NotificationEventType.ORDER_STATUS_CHANGED.value,
-            event_key=event_key,  
+            event_key=event_key,
             message=f"Your order {order_id} status changed to {new_status}.",
             order_id=str(order_id)
         )
@@ -110,10 +110,33 @@ class NotificationService:
         return self._create_notification_template(
             user_id=manager_id,
             order_id=order_id,
-            role=UserRole.MANAGER.value,              
-            event_type=NotificationEventType.NEW_PAID_ORDER.value, 
-            message=f"A new paid order {order_id} is ready for preparation."  
+            role=UserRole.MANAGER.value,
+            event_type=NotificationEventType.NEW_PAID_ORDER.value,
+            message=f"A new paid order {order_id} is ready for preparation."
         )
+
+
+    # M4: ADMIN INVENTORY ALERTS
+    def notify_admin_sold_out(self, item_id: str) -> Optional[Dict]:
+        """Create notification for manager when an item hits 0 stock"""
+        return self._create_notification_template(
+            user_id="system",
+            order_id=item_id,
+            role=UserRole.MANAGER.value,
+            event_type="inventory_sold_out",
+            message=f"URGENT: Item {item_id} has completely sold out and is now offline."
+        )
+
+    def notify_admin_low_stock(self, item_id: str, remaining_stock: int) -> Optional[Dict]:
+        """Create notification for manager when an item is running low"""
+        return self._create_notification_template(
+            user_id="system",
+            order_id=item_id,
+            role=UserRole.MANAGER.value,
+            event_type="inventory_low_stock",
+            message=f"WARNING: Item {item_id} is running low! Only {remaining_stock} left in stock."
+        )
+
 
     def get_user_notifications(self, user_id: str):
         """return all notifications for a user"""
