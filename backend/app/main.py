@@ -9,6 +9,7 @@ from app.routers.item_listing_router import router as item_listing_router
 from app.routers.delivery_router import router as delivery_router
 from app.routers.payment_router import router as payment_router
 from app.routers.notification_router import router as notification_router
+from app.routers.favorite_router import router as favorite_router
 
 app = FastAPI(title="SKMS Backend", redirect_slashes=True)
 
@@ -21,3 +22,4 @@ app.include_router(payment_router, tags=["Payments"])
 
 app.include_router(notification_router, tags=["Notifications"])
 app.include_router(restaurant_router, prefix="/restaurants", tags=["Restaurants"])
+app.include_router(favorite_router, tags=["Favorites"])
