@@ -85,7 +85,7 @@ class MenuService:
         )
 
 
-    # M4: CORE INVENTORY BUSINESS LOGIC
+    # M4: New functionalities to process order and trigger notification service
     def process_item_order(self, item_id: str, quantity: int) -> Dict[str, Any]:
         """
         M4 Core: Processes an order, triggers deductions, and handles side-effects.
@@ -98,7 +98,7 @@ class MenuService:
         if not result["success"]:
             raise HTTPException(status_code=400, detail=result["error"])
 
-        # M4: TRIGGER TEAMMATE'S NOTIFICATION SYSTEM
+
         if result.get("sold_out_just_now") or result.get("low_stock_warning"):
 
             notifier = NotificationService()
@@ -118,7 +118,7 @@ class MenuService:
 
     def admin_restock_item(self, item_id: str, added_stock: int) -> Dict[str, Any]:
         """
-        M4 Admin Feature: Allows a restaurant manager to add new stock to an item.
+        M4 Admin, allows a restaurant manager to add new stock to an item.
         """
         if added_stock <= 0:
             raise HTTPException(status_code=400, detail="Must add at least 1 item to stock.")

@@ -15,7 +15,7 @@ from app.schemas.order_schema import OrderStatus
 from app.services.notification_service import NotificationService
 from app.services.cost_service import calculate_total_breakdown
 
-#update for M4: Core Menu Management Logic
+#update for M4: Menu Mgt
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import menu_repository
 from app.storage.repositories.restaurant_repository import restaurant_repository
@@ -46,7 +46,7 @@ def create_order(username: str, items: list[dict], is_premium: bool = False) -> 
     validated_items = []
     restaurant_id = None
 
-# Initialize your Menu Service: M4
+# Added to initialize M4 menu service
     menu_service = MenuService(menu_repository(), restaurant_repository())
 
     for item in items:
@@ -59,7 +59,6 @@ def create_order(username: str, items: list[dict], is_premium: bool = False) -> 
         elif restaurant_id != menu_item.get("restaurant_id"):
             raise HTTPException(status_code=400, detail="All items must be from same restaurant")
 
-    #M4: Deduct inventory and handle business logic in one step
         menu_service.process_item_order(item_id=str(item["id"]), quantity=item["quantity"])
 
         validated_items.append(item)

@@ -116,7 +116,7 @@ class NotificationService:
         )
 
 
-    # M4: ADMIN INVENTORY ALERTS
+    # M4: To add admin inventory notifications
     def notify_admin_sold_out(self, item_id: str) -> Optional[Dict]:
         """Create notification for manager when an item hits 0 stock"""
         return self._create_notification_template(
@@ -136,7 +136,6 @@ class NotificationService:
             event_type="inventory_low_stock",
             message=f"WARNING: Item {item_id} is running low! Only {remaining_stock} left in stock."
         )
-
 
     def get_user_notifications(self, user_id: str):
         """return all notifications for a user"""

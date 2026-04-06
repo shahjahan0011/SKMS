@@ -117,7 +117,7 @@ class menu_repository:
         return filtered_menus
 
 
-# NEW M4 INVENTORY METHOD
+# New M4 inventory methods
     def update_item_inventory(self, item_id: str, new_stock: int, is_available: bool) -> bool:
         """
         M4 Admin Feature: Updates the stock count and availability
@@ -149,14 +149,12 @@ class menu_repository:
 
     def deduct_inventory(self, item_id: str, quantity_ordered: int) -> Dict[str, Any]:
         """
-        M4 Business Logic: Deducts stock safely, prevents negative inventory,
-        and automatically toggles availability.
+        M4 Deducts stock safely and automatically toggles availability.
         """
 
         items = []
         item_found = False
 
-        #result payload to return after inventory update to service layer for further processing
         result = {
             "success": False,
             "error": None,

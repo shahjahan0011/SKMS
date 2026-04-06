@@ -20,7 +20,7 @@ class NotificationEventType(Enum):
     ORDER_STATUS_CHANGED = "order_status_changed"
     NEW_PAID_ORDER = "new_paid_order"
 
-    # Added for M4: Inventory Alerts
+    # Added for M4 inventory alerts
     ITEM_SOLD_OUT = "inventory_sold_out"
     ITEM_LOW_STOCK = "inventory_low_stock"
 

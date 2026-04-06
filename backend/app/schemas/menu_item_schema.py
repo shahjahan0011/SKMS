@@ -11,8 +11,8 @@ class menu_item(BaseModel):
     item_id: int
     item_name: str
     price: float
-    stock_count: int # updated for M4 field
-    is_available: bool # updated for M4 field
+    stock_count: int # updated for new M4 field
+    is_available: bool # updated for new M4 field
 
 class MenuInventoryUpdate(BaseModel):
     """

@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, Query, HTTPException
-from pydantic import BaseModel # for M4 Admin request body
+from pydantic import BaseModel # for M4 admin request body
 
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import menu_repository
@@ -56,7 +56,7 @@ def browse_menus(
     )
 
 
-# M4: ADMIN INVENTORY ENDPOINT
+# M4 inventory added route
 @router.patch("/menus/{item_id}/restock")
 def restock_item(
     item_id: str,
@@ -64,7 +64,7 @@ def restock_item(
     service: MenuService = Depends(get_menu_service)
 ):
     """
-    M4 Admin Feature: Adds stock back to an item and automatically
+    M4 , admin adds stock back to an item and automatically
     makes it available again.
     """
     return service.admin_restock_item(item_id, restock.added_stock)

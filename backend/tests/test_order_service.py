@@ -48,7 +48,7 @@ def test_create_order_success(monkeypatch):
     monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
     monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
 
-    # M4 - Mock the inventory deduction to always succeed with remaining stock of 10
+    # M4 - Add inventory deduction Mock to allow success with remaining stock of 10
     monkeypatch.setattr("app.services.menu_services.MenuService.process_item_order",
                         lambda self, item_id, quantity: {"status": "success", "remaining_stock": 10})
 
