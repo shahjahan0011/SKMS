@@ -82,3 +82,37 @@ def test_restaurant_999999_hardcoded_404():
     assert "Restaurant or menu not found" in response.json()["detail"]
 
     app.dependency_overrides[get_menu_service] = override_get_menu_service
+
+
+# M4 inventory restock tests
+def test_restock_unauthorized_user():
+    """Test that a non-admin user is blocked from restocking."""
+    payload = {"added_stock": 50}
+
+    response = client.patch(
+        "/menus/1/restock?username=random_customer",
+        json=payload
+    )
+
+    assert response.status_code in [403, 404]
+    assert "detail" in response.json()
+
+
+def test_restock_success_with_admin(monkeypatch):
+    """Test that a valid admin can successfully restock an item."""
+    def mock_check_role(self, username , role) -> None:
+        pass
+
+    monkeypatch.setattr(
+        "app.services.auth_service.AuthService.check_role",
+        mock_check_role
+    )
+
+    payload = {"added_stock": 20}
+    response = client.patch(
+        "/menus/1/restock?username=real_admin",
+        json=payload
+    )
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "success"

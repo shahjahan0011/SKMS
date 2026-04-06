@@ -172,23 +172,23 @@ class menu_repository:
                 item_found = True
                 current_stock = int(item.get("stock_count", 0))
 
-                # Prevent negative stock
+                # prevent negative stock
                 if current_stock < quantity_ordered:
                     result["error"] = f"Insufficient stock. Only {current_stock} left."
                     return result
 
-                #Calculate new stock
+                #calculate new stock
                 new_stock = current_stock - quantity_ordered
                 item["stock_count"] = str(new_stock)
 
-                # Auto-toggle availability if it hits exactly 0
+                # toggle availability if it hits exactly 0
                 if new_stock == 0:
                     item["is_available"] = "False"
                     result["sold_out_just_now"] = True
                 else:
                     item["is_available"] = "True"
 
-                # Trigger a low stock warning for the Admin
+                #trigger a low stock warning for the Admin
                 if 0 < new_stock <= 5:
                     result["low_stock_warning"] = True
 

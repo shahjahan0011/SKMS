@@ -1,5 +1,5 @@
 id,restaurant_id,item_name,price,stock_count,is_available
-1,1,Beef pie,24.88,22,True
+1,1,Beef pie,24.88,20,True
 2,1,Briyani rice,27.98,16,True
 3,1,Burger,24.86,32,True
 4,1,Burritos,31.51,30,True
@@ -11,7 +11,7 @@ id,restaurant_id,item_name,price,stock_count,is_available
 10,1,Dumplings,31.3,42,True
 11,1,Fried chicken,29.25,17,True
 12,1,Pasta,28.91,16,True
-13,1,PastrySmoothie,33.14,71,True
+13,1,PastrySmoothie,33.14,104,True
 14,1,Pizza,22.54,28,True
 15,1,Salad,21.78,29,True
 16,1,Shawarma,18.2,47,True

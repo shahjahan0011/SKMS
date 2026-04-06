@@ -3,6 +3,10 @@
 from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, Query, HTTPException
 from pydantic import BaseModel # for M4 admin request body
+from fastapi import Query
+from app.services.auth_service import AuthService
+from app.routers.auth_router import get_auth_service
+from app.constants import UserRole
 
 from app.services.menu_services import MenuService
 from app.storage.repositories.menu_repository import menu_repository
@@ -18,6 +22,20 @@ class RestockRequest(BaseModel):
 def get_menu_service():
     """Dependency injection for MenuService."""
     return MenuService(menu_repository(), restaurant_repository())
+
+def verify_admin_role(
+    username: str = Query(..., description="User must be admin"),
+    auth_service: AuthService = Depends(get_auth_service)
+) -> str:
+    """Dependency to verify admin role for a user."""
+    try:
+        auth_service.check_role(username, UserRole.ADMIN.value)
+        return username
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    except PermissionError as error:
+        raise HTTPException(status_code=403, detail="User is not an admin")
+
 
 @router.get("/menus/{restaurant_id}", response_model=Dict[str, Any])
 @router.get("/restaurants/{restaurant_id}/menu", response_model=Dict[str, Any])
@@ -57,14 +75,13 @@ def browse_menus(
 
 
 # M4 inventory added route
-@router.patch("/menus/{item_id}/restock")
+@router.patch("/menus/{item_id}/restock", dependencies=[Depends(verify_admin_role)])
 def restock_item(
     item_id: str,
     restock: RestockRequest,
-    service: MenuService = Depends(get_menu_service)
+    service: MenuService = Depends(get_menu_service),
 ):
     """
-    M4 , admin adds stock back to an item and automatically
-    makes it available again.
+    M4, admin adds stock back to an item
     """
     return service.admin_restock_item(item_id, restock.added_stock)
