@@ -1,6 +1,8 @@
 """FastAPI Application"""
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.routers.auth_router import router as auth_router
 from app.routers.order_router import router as order_router
 from app.routers.menu_router import router as menu_router
@@ -15,6 +17,14 @@ from app.routers.promo_router import router as promo_router
 
 
 app = FastAPI(title="SKMS Backend", redirect_slashes=True)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 app.include_router(delivery_router, tags=["Deliveries & Locations"])
