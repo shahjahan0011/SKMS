@@ -2,7 +2,18 @@ import pytest
 from fastapi import HTTPException
 
 from app.services import order_service
+from app.services.menu_services import MenuService
 
+@pytest.fixture(autouse=True)
+def bypass_menu_inventory(monkeypatch):
+    """
+    Automatically intercepts the M4 inventory logic for ALL tests in this file.
+    """
+    monkeypatch.setattr(
+        MenuService,
+        "process_item_order",
+        lambda self, item_id, quantity: {"status": "success", "remaining_stock": 10}
+    )
 
 def test_create_order_success(monkeypatch):
     def mock_get_menu_item_by_id(item_id):
@@ -36,6 +47,11 @@ def test_create_order_success(monkeypatch):
     monkeypatch.setattr(order_service, "save_order", mock_save_order)
     monkeypatch.setattr(order_service, "calculate_total_breakdown", mock_calculate_total_breakdown)
     monkeypatch.setattr(order_service, "save_order_item", mock_save_order_item)
+
+    # M4 - Add inventory deduction Mock to allow success with remaining stock of 10
+    monkeypatch.setattr("app.services.menu_services.MenuService.process_item_order",
+                        lambda self, item_id, quantity: {"status": "success", "remaining_stock": 10})
+
 
     result = order_service.create_order(
         "jahan",
@@ -391,7 +407,7 @@ def test_create_order_still_succeeds_if_notification_fails(monkeypatch):
 
 def test_get_order_history(monkeypatch):
     """Test retrieving order history with items"""
-    
+
     def mock_get_orders_by_username(username):
         if username != "jahan":
             return []
@@ -421,7 +437,7 @@ def test_get_order_history(monkeypatch):
                 "created_at": "2026-03-24T12:00:00",  # Newer
             },
         ]
-    
+
     def mock_get_order_items(order_id):
         if order_id == "o1":
             return [
@@ -434,42 +450,42 @@ def test_get_order_history(monkeypatch):
             ]
         else:
             return []
-    
+
     monkeypatch.setattr(order_service, "get_orders_by_username", mock_get_orders_by_username)
     monkeypatch.setattr("app.storage.repositories.order_items_repository.get_order_items", mock_get_order_items)
-    
+
     result = order_service.get_order_history("jahan")
-    
+
     # Should return only jahan's orders
     assert len(result) == 2
-    
+
     # Should be sorted by created_at descending (newest first)
     assert result[0]["order_id"] == "o2"  # 2026-03-24
     assert result[1]["order_id"] == "o1"  # 2026-03-20
-    
+
     # Should have items
     assert "items" in result[0]
     assert "items" in result[1]
-    
+
     # o1 should have 2 items
     assert len(result[1]["items"]) == 2
     assert result[1]["items"][0]["item_id"] == "item_1"
-    
+
     # o2 should have 1 item
     assert len(result[0]["items"]) == 1
 
 def test_get_order_history_no_orders(monkeypatch):
     """Test order history for user with no orders"""
-    
+
     monkeypatch.setattr(order_service, "get_orders_by_username", lambda username: [])
-    
+
     result = order_service.get_order_history("jahan")
-    
+
     assert result == []
 
 def test_create_multi_item_order(monkeypatch):
     """Test creating order with multiple items"""
-    
+
     def mock_get_menu_item_by_id(item_id):
         items = {
             "item_1": {"id": "item_1", "restaurant_id": "rest_1", "price": "10.00"},
@@ -515,7 +531,7 @@ def test_create_multi_item_order(monkeypatch):
 
 def test_create_multi_item_order_different_restaurants(monkeypatch):
     """Test creating order with items from different restaurants fails"""
-    
+
     def mock_get_menu_item_by_id(item_id):
         items = {
             "item_1": {"id": "item_1", "restaurant_id": "rest_1", "price": "10.00"},
@@ -538,7 +554,7 @@ def test_create_multi_item_order_different_restaurants(monkeypatch):
 
 def test_create_multi_item_order_one_invalid_item(monkeypatch):
     """Test creating multi-item order fails if any item is invalid"""
-    
+
     def mock_get_menu_item_by_id(item_id):
         items = {
             "item_1": {"id": "item_1", "restaurant_id": "rest_1", "price": "10.00"},

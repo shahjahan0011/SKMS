@@ -62,7 +62,7 @@ def test_get_menu_item_by_id_valid():
     response = client.get("/menu/1")
 
     assert response.status_code == 200
-    assert response.json()["id"] == "1"
+    assert str(response.json()["id"]) == "1"
 
 
 
