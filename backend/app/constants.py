@@ -63,3 +63,26 @@ class ErrorMessages:
     INVALID_CREDENTIALS = "invalid username or password"
     USER_NOT_FOUND = "user does not exist"
     INSUFFICIENT_PERMISSIONS = "user does not have required role"
+
+
+
+class PromoCSVFields:
+    """CSV field names for promo code storage"""
+    CODE = "code"
+    DISCOUNT_PERCENT = "discount_percent"
+    MAX_USES = "max_uses"
+    TIMES_USED = "times_used"
+    ACTIVE = "active"
+    CREATED_AT = "created_at"
+
+
+class PromoErrorMessages:
+    """Error messages for promo code feature"""
+    CODE_REQUIRED = "promo code is required"
+    CODE_EXISTS = "promo code already exists"
+    CODE_NOT_FOUND = "promo code does not exist"
+    CODE_INACTIVE = "promo code is not active"
+    CODE_USAGE_LIMIT_REACHED = "promo code has reached its usage limit"
+    INVALID_DISCOUNT = "discount percent must be between 1 and 100"
+    INVALID_MAX_USES = "max uses must be 0 (unlimited) or greater than 0"
+    INVALID_ORDER_TOTAL = "order total must be greater than 0"

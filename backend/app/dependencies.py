@@ -3,6 +3,9 @@ from app.services.auth_service import AuthService
 from app.services.notification_service import NotificationService
 from app.storage.repositories.user_repository import UserRepository
 from app.storage.repositories.notification_repository import NotificationRepository
+from app.services.promo_service import PromoService
+from app.storage.repositories.promo_repository import PromoRepository
+
  
  
 def get_auth_service() -> AuthService:
@@ -23,3 +26,12 @@ def get_user_repository() -> UserRepository:
 def get_notification_repository() -> NotificationRepository:
     """Dependency that provides notification_repository instance"""
     return NotificationRepository()
+
+def get_promo_service() -> PromoService:
+    """Dependency that provides promo_service instance"""
+    return PromoService()
+
+
+def get_promo_repository() -> PromoRepository:
+    """Dependency that provides promo_repository instance"""
+    return PromoRepository()
