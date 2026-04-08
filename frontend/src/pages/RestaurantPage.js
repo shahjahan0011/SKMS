@@ -10,7 +10,8 @@ export default function RestaurantPage({ session }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [error, setError] = useState("");
-  const { addToCart } = useCart();
+  const { cart, addToCart, removeFromCart } = useCart();
+  const [message, setMessage] = useState("");
 
   const load = async () => {
     setError("");
@@ -19,21 +20,36 @@ export default function RestaurantPage({ session }) {
       setRestaurant(r);
       const menu = await getMenu(id, search, page, 10);
       const list = menu.items || menu.menu || menu.data || [];
-      setItems(Array.isArray(list) ? list : []);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+
+        const filtered = list.filter(
+          (item) => String(item.restaurant_id) === String(id)
+        );
+
+        setItems(Array.isArray(filtered) ? filtered : []);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
 
   useEffect(() => { load(); }, [id, page]);
 
   const handleAdd = (item) => {
-    addToCart({ id: item.id || item.item_id, name: item.item_name || item.name, price: Number(item.price) }, id);
+    const itemId = item.id || item.item_id;
+
+    addToCart(
+      {
+        id: itemId,
+        name: item.item_name || item.name,
+        price: Number(item.price),
+      },
+      id
+    );
   };
 
   return (
     <div className="container">
       <h2 className="page-title">{restaurant?.name || "Menu"}</h2>
+      {message && <div className="success">{message}</div>}
       {restaurant && (
         <div className="card">
           <div className="meta">{restaurant.cuisine} · ★ {restaurant.rating}</div>
@@ -59,11 +75,13 @@ export default function RestaurantPage({ session }) {
             const itemId = item.id || item.item_id;
             const stock = item.stock_count !== undefined ? Number(item.stock_count) : null;
             const outOfStock = stock !== null && stock <= 0;
+            const cartItem = cart.find((c) => c.id === itemId);
+            const qty = cartItem ? cartItem.quantity : 0;
             return (
               <div key={itemId} className="menu-item">
                 <div className="info">
                   <div><strong>{item.item_name || item.name}</strong></div>
-                  {stock !== null && (
+                  {session.role !== "user" && stock !== null && (
                     <div className="meta">
                       {outOfStock ? (
                         <span className="badge out-of-stock">Out of stock</span>
@@ -74,7 +92,17 @@ export default function RestaurantPage({ session }) {
                   )}
                 </div>
                 <div className="price">${Number(item.price).toFixed(2)}</div>
-                <button onClick={() => handleAdd(item)} disabled={outOfStock}>Add</button>
+                {qty === 0 ? (
+                  <button onClick={() => handleAdd(item)} disabled={outOfStock}>
+                    Add
+                  </button>
+                ) : (
+                  <div className="row" style={{ gap: 8, alignItems: "center" }}>
+                    <button onClick={() => removeFromCart(itemId)}>−</button>
+                    <span>{qty}</span>
+                    <button onClick={() => handleAdd(item)}>+</button>
+                  </div>
+                )}
               </div>
             );
           })

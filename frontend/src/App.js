@@ -73,16 +73,31 @@ export default function App() {
         if (!window.confirm("Cart contains items from another restaurant. Clear cart?")) return prev;
         return [{ ...item, restaurantId, quantity: 1 }];
       }
+
       const existing = prev.find((i) => i.id === item.id);
+
       if (existing) {
-        return prev.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i));
+        return prev.map((i) =>
+          i.id === item.id
+            ? { ...i, quantity: i.quantity + 1 }
+            : i
+        );
       }
+
       return [...prev, { ...item, restaurantId, quantity: 1 }];
     });
   };
 
   const removeFromCart = (itemId) => {
-    setCart((prev) => prev.filter((i) => i.id !== itemId));
+    setCart((prev) =>
+      prev
+        .map((item) =>
+          item.id === itemId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
   };
 
   const clearCart = () => setCart([]);

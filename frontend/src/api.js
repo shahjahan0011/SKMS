@@ -30,7 +30,7 @@ export const getRestaurant = (id) => request(`/restaurants/${id}`);
 export const getMenu = (restaurantId, search = "", page = 1, pageSize = 10) => {
   const params = new URLSearchParams({ page, page_size: pageSize });
   if (search) params.set("search", search);
-  return request(`/menus/${restaurantId}?${params}`);
+  return request(`/restaurants/${restaurantId}/menu?${params}`);
 };
 
 export const restockItem = (itemId, addedStock, username) =>
