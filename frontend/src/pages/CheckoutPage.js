@@ -52,7 +52,8 @@ export default function CheckoutPage({ session }) {
       const items = cart.map((c) => ({ id: String(c.id), quantity: c.quantity }));
       const order = await createOrder(session.username, items, isPremium);
       const orderId = order.order_id || order.id;
-      await initiatePayment(orderId, finalTotal);
+      const backendTotal = Number(order.total || order.final_total || 0);
+      await initiatePayment(orderId, backendTotal);
       setSuccess(`Order placed and paid! Redirecting...`);
       clearCart();
       setTimeout(() => navigate(`/orders/${orderId}`), 1500);
@@ -62,7 +63,6 @@ export default function CheckoutPage({ session }) {
       setProcessing(false);
     }
   };
-
   if (cart.length === 0) {
     return (
       <div className="container">
