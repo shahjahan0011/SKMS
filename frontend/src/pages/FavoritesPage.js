@@ -12,11 +12,13 @@ export default function FavoritesPage({ session }) {
       const favs = await getUserFavorites(session.userId);
       const list = Array.isArray(favs) ? favs : [];
       const enriched = await Promise.all(
-        list.map(async (f) => {
-          const rid = f.restaurant_id || f;
-          const r = await getRestaurant(rid).catch(() => ({ id: rid, name: `Restaurant ${rid}` }));
-          return { ...r, restaurant_id: rid };
-        })
+       list.map(async (f) => {
+        const rid = f.id || f.restaurant_id;
+        return {
+          ...f,
+          restaurant_id: rid
+        };
+      })
       );
       setFavorites(enriched);
     } catch (err) {

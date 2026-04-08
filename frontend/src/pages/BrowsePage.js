@@ -18,7 +18,7 @@ export default function BrowsePage({ session }) {
       const list = data.restaurants || data.items || data.data || data || [];
       setRestaurants(Array.isArray(list) ? list : []);
       const favs = await getUserFavorites(session.userId).catch(() => []);
-      setFavorites(Array.isArray(favs) ? favs.map((f) => Number(f.restaurant_id || f)) : []);
+      setFavorites(Array.isArray(favs) ? favs.map((f) => Number(f.id || f.restaurant_id)): []);
     } catch (err) {
       setError(err.message);
     }
