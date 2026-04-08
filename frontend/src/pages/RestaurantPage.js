@@ -28,7 +28,7 @@ export default function RestaurantPage({ session }) {
   useEffect(() => { load(); }, [id, page]);
 
   const handleAdd = (item) => {
-    addToCart({ id: item.id || item.item_id, name: item.name, price: Number(item.price) }, id);
+    addToCart({ id: item.id || item.item_id, name: item.item_name || item.name, price: Number(item.price) }, id);
   };
 
   return (
@@ -62,8 +62,7 @@ export default function RestaurantPage({ session }) {
             return (
               <div key={itemId} className="menu-item">
                 <div className="info">
-                  <div><strong>{item.name}</strong></div>
-                  <div className="meta">{item.description}</div>
+                  <div><strong>{item.item_name || item.name}</strong></div>
                   {stock !== null && (
                     <div className="meta">
                       {outOfStock ? (
