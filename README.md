@@ -1,7 +1,7 @@
 # Step by Step Handover Guide
 
 ## Installation Instructions
-###Option 1:
+## Option 1:
 To run the whole app through docker, do the following:
 
 To clone the github repository, do the following command:
@@ -9,7 +9,7 @@ To clone the github repository, do the following command:
 git clone https://github.com/shahjahan0011/SKMS.git
 ```
 
-## Docker Setup
+### Docker Setup
 To run the entire project through docker, do the following command:
 ```bash
 docker compose up --build
@@ -24,7 +24,7 @@ docker compose up --build
 ```
 
 ---
-##Option 2:
+## Option 2:
 To run the backend and frontend separately, you can do the following instead. 
 
 To clone the github repository, do the following command
