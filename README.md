@@ -44,8 +44,6 @@ uvicorn app.main:app --reload
 
 This will let you access backend at http://localhost:8000/docs  
 
----
-
 ### Frontend Setup
 This installs all dependencies for frontend and runs the frontend server.
 
