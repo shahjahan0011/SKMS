@@ -1,6 +1,8 @@
 # Step by Step Handover Guide
 
 ## Installation Instructions
+###Option 1:
+To run the whole app through docker, do the following:
 
 To clone the github repository, do the following command:
 ```bash
@@ -22,8 +24,15 @@ docker compose up --build
 ```
 
 ---
+##Option 2:
+To run the backend and frontend separately, you can do the following instead. 
 
-## Backend Setup
+To clone the github repository, do the following command
+```bash
+git clone https://github.com/shahjahan0011/SKMS.git
+```
+
+### Backend Setup
 This is to install all dependencies and run the backend server.
 
 Open the terminal and do the following:
@@ -37,7 +46,7 @@ This will let you access backend at http://localhost:8000/docs
 
 ---
 
-## Frontend Setup
+### Frontend Setup
 This installs all dependencies for frontend and runs the frontend server.
 
 For this, open a second terminal and run:
